@@ -1,0 +1,6 @@
+{
+	"title": "Time wheel",
+	"description": "A time you set by turning a wheel, in two styles: flat, as on iOS (the neighbours shrink and fade), or a drum (the rows sit on a cylinder). Hours and minutes in 24 or 12 hours with an am/pm column, one highlight bar across the columns. Drag, mouse wheel, click a row, or ArrowUp/ArrowDown on a focused column (instant). Wheel is one column on its own, for any list.",
+	"dependencies": ["embla-carousel-svelte", "embla-carousel"],
+	"registryDependencies": []
+}

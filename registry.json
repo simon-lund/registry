@@ -1,0 +1,128 @@
+{
+  "$schema": "https://shadcn-svelte.com/schema/registry.json",
+  "name": "simon-lund",
+  "homepage": "https://ui.simon-lund.com",
+  "aliases": {
+    "lib": "#lib",
+    "ui": "#lib/registry/ui",
+    "components": "#lib/components",
+    "utils": "#lib/utils",
+    "hooks": "#lib/hooks"
+  },
+  "items": [
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "cn() (clsx + tailwind-merge) and the WithElementRef / WithoutChild… type helpers. Every item depends on it.",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "utils.ts"
+        }
+      ]
+    },
+    {
+      "name": "agent-tree",
+      "type": "registry:ui",
+      "title": "Agent tree",
+      "description": "Coding agents as a process tree, with the rules Linux uses: every agent has a pid, a parent and exactly one state (working R, waiting or needs-you S, paused T, done or failed with an exit code); you are process 1 at the top. Selecting an agent shows its reach: what it steers (everything below it, in the one colour) and whom it reports to. Sockets between siblings, opened by a shared ancestor, and two agents in one file show on the rows. Keyboard: arrows move, Enter selects. An `actions` snippet renders the app's own Pause, Stop, Message inside the selected row.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/agent-tree/agent-tree-node.svelte",
+          "type": "registry:ui",
+          "target": "agent-tree/agent-tree-node.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/agent-tree/agent-tree-state.svelte",
+          "type": "registry:ui",
+          "target": "agent-tree/agent-tree-state.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/agent-tree/agent-tree.svelte",
+          "type": "registry:ui",
+          "target": "agent-tree/agent-tree.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/agent-tree/context.svelte.ts",
+          "type": "registry:ui",
+          "target": "agent-tree/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/agent-tree/index.ts",
+          "type": "registry:ui",
+          "target": "agent-tree/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "number-input",
+      "type": "registry:ui",
+      "title": "Number input",
+      "description": "A number you step with two chevrons or type; the digits roll to the new value, as an odometer does, so you see what changed and which way. Arrow keys step (Shift: ten steps; Home and End: the bounds), a chevron held keeps stepping, and the field never holds an invalid value: typed text is taken as soon as it reads as a number and clamped when you leave. Formats through Intl.NumberFormat (locale, currency, decimals). AnimatedNumber, the rolling digits, is exported on its own for a counter that only shows.",
+      "dependencies": [
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/number-input/animated-number.svelte",
+          "type": "registry:ui",
+          "target": "number-input/animated-number.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/number-input/index.ts",
+          "type": "registry:ui",
+          "target": "number-input/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/number-input/number-input.svelte",
+          "type": "registry:ui",
+          "target": "number-input/number-input.svelte"
+        }
+      ]
+    },
+    {
+      "name": "time-wheel",
+      "type": "registry:ui",
+      "title": "Time wheel",
+      "description": "A time you set by turning a wheel, in two styles: flat, as on iOS (the neighbours shrink and fade), or a drum (the rows sit on a cylinder). Hours and minutes in 24 or 12 hours with an am/pm column, one highlight bar across the columns. Drag, mouse wheel, click a row, or ArrowUp/ArrowDown on a focused column (instant). Wheel is one column on its own, for any list.",
+      "dependencies": [
+        "embla-carousel-svelte",
+        "embla-carousel"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/time-wheel/index.ts",
+          "type": "registry:ui",
+          "target": "time-wheel/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/time-wheel/time-wheel.svelte",
+          "type": "registry:ui",
+          "target": "time-wheel/time-wheel.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/time-wheel/wheel.svelte",
+          "type": "registry:ui",
+          "target": "time-wheel/wheel.svelte"
+        }
+      ]
+    }
+  ]
+}
