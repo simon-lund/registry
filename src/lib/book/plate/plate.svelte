@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { install } from '../catalogue.js';
+	import PlateCode from './plate-code.svelte';
 
 	interface Props {
 		/** The registry item's name: the install command is built from it. */
@@ -22,8 +23,7 @@
 	<header class="flex flex-col gap-2">
 		<p class="text-muted-foreground text-sm">{kind}</p>
 		<h1 class="text-4xl">{title}</h1>
-		<pre
-			class="bg-muted text-muted-foreground mt-2 overflow-x-auto rounded-md px-3 py-2 font-mono text-xs select-all"><code>{install(name)}</code></pre>
+		<PlateCode code={install(name)} label="install command" class="mt-2" />
 	</header>
 	{@render children()}
 </article>

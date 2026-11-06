@@ -7,7 +7,8 @@
 		PlateStates,
 		PlateState,
 		PlateMeasures,
-		PlateMeasure
+		PlateMeasure,
+		PlateCode
 	} from '#lib/book/plate/index.js';
 	import {
 		AgentTree,
@@ -35,6 +36,16 @@
 	const one = (agent: Agent): Agent[] => [agent];
 	const buttonClass =
 		'border-border hover:bg-accent rounded-md border px-2 py-0.5 text-xs text-foreground';
+
+	const usage = `import { AgentTree } from '#lib/registry/ui/agent-tree';
+
+let selected = $state<number | undefined>();
+
+<AgentTree {agents} bind:selected>
+	{#snippet actions(agent)}
+		<button onclick={() => stop(agent.pid)}>Stop</button>
+	{/snippet}
+</AgentTree>`;
 </script>
 
 {#snippet actions(agent: Agent)}
@@ -57,6 +68,8 @@
 			</ul>
 		</div>
 	</PlateStage>
+
+	<PlateCode code={usage} label="usage" />
 
 	<PlateNotes>
 		<PlateSection title="Intention">

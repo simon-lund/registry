@@ -8,12 +8,19 @@
 		PlateStates,
 		PlateState,
 		PlateMeasures,
-		PlateMeasure
+		PlateMeasure,
+		PlateCode
 	} from '#lib/book/plate/index.js';
 
 	let date = $state(new Date(2026, 10, 6, 9, 41));
 	const pad = (n: number) => n.toString().padStart(2, '0');
 	const time = $derived(`${pad(date.getHours())}:${pad(date.getMinutes())}`);
+
+	const usage = `import { TimeWheel } from '#lib/registry/ui/time-wheel';
+
+let date = $state(new Date());
+
+<TimeWheel bind:date format="24" variant="flat" />`;
 </script>
 
 <Plate name="time-wheel" title="Time wheel" kind="Picker · Svelte">
@@ -21,6 +28,8 @@
 		<TimeWheel bind:date />
 		<p class="text-muted-foreground m-0 font-mono text-sm">selected {time}</p>
 	</PlateStage>
+
+	<PlateCode code={usage} label="usage" />
 
 	<PlateNotes>
 		<PlateSection title="Intention">

@@ -6,3 +6,4 @@ export { default as PlateStates } from './plate-states.svelte';
 export { default as PlateState } from './plate-state.svelte';
 export { default as PlateMeasures } from './plate-measures.svelte';
 export { default as PlateMeasure } from './plate-measure.svelte';
+export { default as PlateCode } from './plate-code.svelte';

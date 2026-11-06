@@ -1,0 +1,58 @@
+<script lang="ts">
+	import { cn } from '#lib/utils.js';
+
+	interface Props {
+		/** The text, copied as is. */
+		code: string;
+		/** Read to assistive tech with the button, e.g. "install command". */
+		label?: string;
+		class?: string;
+	}
+
+	let { code, label = 'code', class: className }: Props = $props();
+
+	let copied = $state(false);
+	let pre: HTMLElement | undefined = $state();
+	let timer: ReturnType<typeof setTimeout> | undefined;
+
+	// Copying the selection works on any click, but only inside the click itself, so it goes
+	// first; the clipboard API, which may ask for permission, is the fallback.
+	async function copy() {
+		let done = false;
+		if (pre) {
+			const range = document.createRange();
+			range.selectNodeContents(pre);
+			const selection = getSelection();
+			selection?.removeAllRanges();
+			selection?.addRange(range);
+			done = document.execCommand('copy');
+			selection?.removeAllRanges();
+		}
+		if (!done) {
+			try {
+				await navigator.clipboard.writeText(code);
+				done = true;
+			} catch {
+				// denied: the text is still there to select by hand
+			}
+		}
+		if (!done) return;
+		copied = true;
+		clearTimeout(timer);
+		timer = setTimeout(() => (copied = false), 1500);
+	}
+</script>
+
+<!-- the text scrolls sideways under its own padding; the button stands beside it, never over it -->
+<div class={cn('bg-muted flex items-start rounded-md', className)}>
+	<pre bind:this={pre} class="text-muted-foreground m-0 min-w-0 flex-1 overflow-x-auto px-3 py-2 font-mono text-xs select-all"><code>{code}</code></pre>
+	<button
+		type="button"
+		onclick={copy}
+		aria-live="polite"
+		aria-label={copied ? `Copied the ${label}` : `Copy the ${label}`}
+		class="text-muted-foreground hover:text-foreground focus-visible:ring-ring m-1 shrink-0 rounded px-2 py-1 text-xs focus-visible:ring-2 focus-visible:outline-none"
+	>
+		{copied ? 'Copied' : 'Copy'}
+	</button>
+</div>

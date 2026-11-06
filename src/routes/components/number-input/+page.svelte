@@ -7,7 +7,8 @@
 		PlateStates,
 		PlateState,
 		PlateMeasures,
-		PlateMeasure
+		PlateMeasure,
+		PlateCode
 	} from '#lib/book/plate/index.js';
 	import { NumberInput, AnimatedNumber } from '#lib/registry/ui/number-input/index.js';
 
@@ -17,6 +18,12 @@
 	let views = $state(12808);
 	let typing = $state(42);
 	let locked = $state(3);
+
+	const usage = `import { NumberInput } from '#lib/registry/ui/number-input';
+
+let quantity = $state(1);
+
+<NumberInput bind:value={quantity} min={0} max={99} step={1} aria-label="Quantity" />`;
 </script>
 
 <Plate name="number-input" title="Number input" kind="Input · Svelte">
@@ -27,6 +34,8 @@
 		</div>
 		<p class="text-muted-foreground font-mono text-xs">value: {quantity}</p>
 	</PlateStage>
+
+	<PlateCode code={usage} label="usage" />
 
 	<PlateNotes>
 		<PlateSection title="Intention">
