@@ -179,17 +179,5 @@
 				<PlateMeasure label="Working mark" value="one turn in 3s, linear; still under reduced motion" />
 			</PlateMeasures>
 		</PlateSection>
-		<PlateSection title="The concept it was built from">
-		<p>
-			The earlier drawing, before the blueprint: the tree with its states, beside what one agent can
-			reach. The build is compared with it side by side; what differs is in the measurements.
-		</p>
-		<img
-			src="/agents-tree.webp"
-			alt="A tree of coding agents with their states, beside what one agent can reach and the Linux rules it follows."
-			class="bg-muted w-full rounded-lg"
-			loading="lazy"
-		/>
-	</PlateSection>
 </PlateNotes>
 </Plate>

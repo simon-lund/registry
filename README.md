@@ -42,7 +42,6 @@ it.** Everything on the site sits on:
 | `src/lib/book/` | the book's own parts (the plate, the sidebar, the theme toggle) and its catalogue (`catalogue.ts`, which the index and the sidebar read); never shipped |
 | `src/routes/components/<name>/` | the plate of one component |
 | `scripts/build-registry-json.js` | walks the items into `registry.json`; `shadcn-svelte registry build` turns that into `static/r/<item>.json` |
-| `static/agents-tree.webp` | the drawing the agent tree was built from, shown on its plate |
 
 ## Run it
 
