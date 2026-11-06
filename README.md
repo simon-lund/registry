@@ -39,7 +39,7 @@ it.** Everything on the site sits on:
 | `src/lib/registry/ui/<name>/` | one item: one file per part, `index.ts`, and its `meta.json` (title, description, npm and registry dependencies) |
 | `src/lib/utils.ts` | `cn` and the type helpers; the item `utils`, which every item depends on |
 | `src/app.css` | the theme: the tokens, the fonts, the base |
-| `src/lib/book/` | the book's own parts (the plate) and its catalogue (`catalogue.ts`); never shipped |
+| `src/lib/book/` | the book's own parts (the plate, the sidebar, the theme toggle) and its catalogue (`catalogue.ts`, which the index and the sidebar read); never shipped |
 | `src/routes/components/<name>/` | the plate of one component |
 | `scripts/build-registry-json.js` | walks the items into `registry.json`; `shadcn-svelte registry build` turns that into `static/r/<item>.json` |
 | `static/agents-tree.webp` | the drawing the agent tree was built from, shown on its plate |
