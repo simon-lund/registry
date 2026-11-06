@@ -1,0 +1,18 @@
+// ui.simon-lund.com: the Storybook (storybook-static/, with the live apps under /app and /roomfinder),
+// served by worker/index.ts, which lets in only browsers that came through the secret link.
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "simon-lund-ui",
+	"main": "worker/index.ts",
+	"compatibility_date": "2026-10-01",
+	"assets": {
+		"directory": "./storybook-static",
+		"binding": "ASSETS",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "none",
+		// every request passes the gate first
+		"run_worker_first": true
+	},
+	"routes": [{ "pattern": "ui.simon-lund.com", "custom_domain": true }],
+	"observability": { "enabled": true }
+}

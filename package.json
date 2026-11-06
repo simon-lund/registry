@@ -1,0 +1,18 @@
+{
+	"name": "registry",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@11.0.5",
+	"scripts": {
+		"dev": "storybook dev -p 6040 --no-open",
+		"build": "bash scripts/build.sh",
+		"deploy": "bash scripts/build.sh && wrangler deploy"
+	},
+	"devDependencies": {
+		"@storybook/html-vite": "^10.6.0",
+		"storybook": "^10.6.0",
+		"typescript": "^6.0.3",
+		"vite": "^8.0.0",
+		"wrangler": "^4.151.0"
+	}
+}
