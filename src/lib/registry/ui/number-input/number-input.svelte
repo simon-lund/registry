@@ -77,6 +77,8 @@
 		if (next === value) return;
 		value = next;
 		onValueChange?.(next);
+		// a step while the field is focused shows the new value, not the text typed before it
+		text = formatter.format(next);
 	}
 
 	// What the field shows while you type; otherwise the formatted value.
@@ -128,7 +130,6 @@
 		else if (e.key === 'Enter') commit();
 		else return;
 		e.preventDefault();
-		text = formatter.format(value);
 	}
 
 	// A chevron held keeps stepping: after 400ms, every 60ms.
