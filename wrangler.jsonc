@@ -1,17 +1,14 @@
-// ui.simon-lund.com: the Storybook (storybook-static/, with the live apps under /app and /roomfinder),
-// served by worker/index.ts, which lets in only browsers that came through the secret link.
+// ui.simon-lund.com: the registry (static/r/<item>.json, the URLs `shadcn-svelte add` takes) and
+// the book, one page per component, as a SvelteKit app on a Worker. Public: no gate.
 {
 	"$schema": "./node_modules/wrangler/config-schema.json",
 	"name": "simon-lund-ui",
-	"main": "worker/index.ts",
+	"main": ".svelte-kit/cloudflare/_worker.js",
 	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_als"],
 	"assets": {
-		"directory": "./storybook-static",
 		"binding": "ASSETS",
-		"html_handling": "auto-trailing-slash",
-		"not_found_handling": "none",
-		// every request passes the gate first
-		"run_worker_first": true
+		"directory": ".svelte-kit/cloudflare"
 	},
 	"routes": [{ "pattern": "ui.simon-lund.com", "custom_domain": true }],
 	"observability": { "enabled": true }

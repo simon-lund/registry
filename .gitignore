@@ -1,5 +1,18 @@
 node_modules
-storybook-static
-apps
+
+# Output
+/.svelte-kit
+/build
+# the registry items, generated from registry.json by `pnpm registry`
+/static/r
+
+# OS
+.DS_Store
+
+# Vite
+vite.config.ts.timestamp-*
+
+# Cloudflare
 .wrangler
 .dev.vars
+worker-configuration.d.ts

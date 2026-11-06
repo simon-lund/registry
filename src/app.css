@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+
+/*
+ * The theme. One vocabulary, shadcn's token names, so an item installs into any shadcn-svelte app
+ * and the book's own chrome uses the same words. The values are simon-lund.com's (cream, ink,
+ * stone), so the three sites read as one. The one colour with one meaning is copper (primary):
+ * it marks the value in your hand, what you act on right now, and sits nowhere else.
+ */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+	--radius: 0.5rem;
+
+	--background: #faf6f0; /* cream */
+	--foreground: #1a1917; /* ink */
+	--muted: #f0ebe4; /* cream, dark */
+	--muted-foreground: #6b6760; /* stone */
+	--border: #d9d4cd;
+	--input: #c4bfb8; /* stone, light */
+	--ring: #d4956a;
+	--primary: #d4956a; /* copper */
+	--primary-foreground: #1a1917;
+	--accent: #f6ece4; /* copper, washed: hover and the row in hand */
+	--accent-foreground: #1a1917;
+	--destructive: #b4443c;
+	--destructive-foreground: #faf6f0;
+	--card: #ffffff;
+	--card-foreground: #1a1917;
+}
+
+.dark {
+	--background: #1c1a17;
+	--foreground: #e8e4de;
+	--muted: #252320;
+	--muted-foreground: #8a8580;
+	--border: #38342f;
+	--input: #4a4540;
+	--ring: #d4956a;
+	--primary: #d4956a;
+	--primary-foreground: #1a1917;
+	--accent: #352a22;
+	--accent-foreground: #e8e4de;
+	--destructive: #e0716a;
+	--destructive-foreground: #1c1a17;
+	--card: #252320;
+	--card-foreground: #e8e4de;
+}
+
+@theme inline {
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+
+	--font-heading: 'Libre Baskerville', Georgia, serif;
+	--font-sans: 'Inter', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	html {
+		scrollbar-gutter: stable;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+		line-height: 1.6;
+	}
+	h1,
+	h2,
+	h3 {
+		@apply font-heading text-foreground;
+		line-height: 1.2;
+	}
+	::selection {
+		@apply bg-accent text-foreground;
+	}
+}

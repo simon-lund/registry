@@ -1,0 +1,11 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "registry",
+			"runtimeExecutable": "/home/simon/.local/share/asdf/installs/pnpm/11.0.5/bin/pnpm",
+			"runtimeArgs": ["--dir", "/home/simon/workspaces/simon-lund/registry", "dev", "--port", "5174", "--strictPort"],
+			"port": 5174
+		}
+	]
+}

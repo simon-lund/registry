@@ -1,0 +1,8 @@
+export { default as Plate } from './plate.svelte';
+export { default as PlateStage } from './plate-stage.svelte';
+export { default as PlateNotes } from './plate-notes.svelte';
+export { default as PlateSection } from './plate-section.svelte';
+export { default as PlateStates } from './plate-states.svelte';
+export { default as PlateState } from './plate-state.svelte';
+export { default as PlateMeasures } from './plate-measures.svelte';
+export { default as PlateMeasure } from './plate-measure.svelte';

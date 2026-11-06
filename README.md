@@ -1,32 +1,72 @@
 # ui.simon-lund.com
 
-A private showcase in Storybook: Klementine as screens from the app's tests, and the LMU Room Finder
-running live. Only people with the link get in.
+My component registry: components I designed and use, as a [shadcn-svelte
+registry](https://shadcn-svelte.com/docs/registry). An app copies a component into its own source
+with the CLI; the site is the book, one page (a plate) per component: large and working, its
+intention, what was left out, its states, its measurements.
 
-- `stories/`: one file per project; `showcase.ts` lays out a story (copy, then a phone, a window or
-  still screens). Names are written out in each story, because Storybook reads them from the source.
-- `scripts/build.sh`: builds the room finder under `/roomfinder` (its `vite.config.ts` reads
-  `BASE_PATH`), converts Klementine's renders to WebP (from the `ui-fix` worktree until that branch
-  is merged), then Storybook into `storybook-static/`.
-- `worker/index.ts`: the gate. `/k/<key>` sets a cookie (an HMAC of the key) and opens the start
-  page; everything else needs that cookie, or gets a short "private" page. Nothing is indexed. Without
-  `SHOWCASE_KEY` nobody gets in.
-
-## Deploy (Simon)
-
-The key in `.dev.vars` (not committed) is the one to share; put it into the Worker once:
-
-```bash
-cd ~/workspaces/simon-lund/registry && sed -n 's/SHOWCASE_KEY=//p' .dev.vars | pnpm exec wrangler secret put SHOWCASE_KEY
+```sh
+pnpm dlx shadcn-svelte@latest add https://ui.simon-lund.com/r/number-input.json
 ```
 
-```bash
-cd ~/workspaces/simon-lund/registry && pnpm run deploy
+Stack: SvelteKit 3 (`#lib` imports) + Svelte 5 runes, TypeScript, Tailwind v4, on a Cloudflare
+Worker (`wrangler.jsonc`). Package manager: pnpm, standalone.
+
+## Foundations
+
+The organising idea: **one plate per component, the component large and working, the words beside
+it.** Everything on the site sits on:
+
+- **Grid and rhythm:** 8px. The page is one column up to 64rem, the plate's stage above its notes;
+  from 64rem the notes sit beside the stage. 16px gutters on the phone, 32px from tablet.
+- **Type:** Libre Baskerville for titles (two sizes: the plate title and a section title), Inter for
+  text in two weights (400, 500), JetBrains Mono for measurements and code. These are
+  simon-lund.com's faces, so the three sites read as one; PLAN.md still lists "a typeface that isn't
+  Inter" as open, and when that is decided it changes here too.
+- **Colour:** cream, ink and stone from the website, as shadcn's token names (`background`,
+  `foreground`, `muted-foreground`, …) so an item installs into any shadcn-svelte app unchanged.
+  The one colour with one meaning is **copper** (`primary`): the value in your hand, what you act on
+  right now. It sits nowhere else.
+- **Surfaces:** flat. A set sits flat (the stage is the muted surface, no border); only what floats
+  gets a shadow.
+- **Motion:** meaning only (where a value came from, what just landed), strong ease-out, short.
+  Keyboard moves are instant; reduced motion turns the rest off.
+
+## Layout
+
+| Path | What |
+| --- | --- |
+| `src/lib/registry/ui/<name>/` | one item: one file per part, `index.ts`, and its `meta.json` (title, description, npm and registry dependencies) |
+| `src/lib/utils.ts` | `cn` and the type helpers; the item `utils`, which every item depends on |
+| `src/app.css` | the theme: the tokens, the fonts, the base |
+| `src/lib/book/` | the book's own parts (the plate) and its catalogue (`catalogue.ts`); never shipped |
+| `src/routes/components/<name>/` | the plate of one component |
+| `scripts/build-registry-json.js` | walks the items into `registry.json`; `shadcn-svelte registry build` turns that into `static/r/<item>.json` |
+| `static/agents-*.webp` | the concept drawings the plates compare against |
+
+## Run it
+
+asdf shims fail in non-interactive shells on this machine, so use absolute paths:
+
+```sh
+cd ~/workspaces/simon-lund/registry
+export PATH=/home/simon/.local/share/asdf/installs/nodejs/24.13.0/bin:/home/simon/.local/share/asdf/installs/pnpm/11.0.5/bin:$PATH
+
+pnpm install
+pnpm dev                 # http://localhost:5174 (.claude/launch.json)
+pnpm registry            # registry.json and static/r/*.json (both generated; static/r is not committed)
+pnpm check               # svelte-check
+pnpm build               # registry, then the site into .svelte-kit/cloudflare
+pnpm deploy              # … and wrangler deploy to ui.simon-lund.com
 ```
 
-The route `ui.simon-lund.com` (custom domain) needs simon-lund.com in the same Cloudflare account.
-The link to share:
+`REGISTRY_HOMEPAGE=<origin> pnpm registry` builds for another origin; every registryDependency URL
+is made from it.
 
-```bash
-cd ~/workspaces/simon-lund/registry && echo "https://ui.simon-lund.com/k/$(sed -n 's/SHOWCASE_KEY=//p' .dev.vars)"
-```
+## Adding a component
+
+1. `src/lib/registry/ui/<name>/`: the parts, `index.ts`, `meta.json`. Imports between items go
+   through `#lib/registry/ui/<other>/index.js`; the CLI rewrites them for the consumer.
+2. `src/routes/components/<name>/+page.svelte`: its plate, built from `#lib/book/plate`.
+3. An entry in `src/lib/book/catalogue.ts`.
+4. `pnpm registry && pnpm check`.
