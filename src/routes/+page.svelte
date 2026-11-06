@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { components, concepts } from '#lib/book/catalogue.js';
+	import { components } from '#lib/book/catalogue.js';
 </script>
 
 <svelte:head>
@@ -30,19 +30,5 @@
 				</li>
 			{/each}
 		</ul>
-	</section>
-
-	<section class="flex flex-col gap-4">
-		<h2 class="text-xl">Concepts</h2>
-		{#each concepts as k (k.title)}
-			<div class="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
-				<div class="flex flex-col gap-2">
-					<h3 class="text-lg">{k.title}</h3>
-					<p class="text-muted-foreground text-sm">{k.tagline}</p>
-					{#each k.text as t (t)}<p class="max-w-prose">{t}</p>{/each}
-				</div>
-				<img src={k.image.src} alt={k.image.alt} class="bg-muted w-full rounded-xl" loading="lazy" />
-			</div>
-		{/each}
 	</section>
 </div>
