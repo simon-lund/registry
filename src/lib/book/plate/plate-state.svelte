@@ -7,4 +7,4 @@
 </script>
 
 {#snippet name()}{label}{/snippet}
-<PlatePreview {example} label={name} class="min-h-28 rounded-lg p-4" />
+<PlatePreview {example} label={name} class="min-h-28 p-4" />

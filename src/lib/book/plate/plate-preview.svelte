@@ -10,9 +10,11 @@
 		label?: Snippet;
 		/** The preview's surface: the stage is large, a state is small. */
 		class?: string;
+		/** The corner both panels share, so the code sits in the same shape as the preview. */
+		rounded?: string;
 	}
 
-	let { example, label, class: className }: Props = $props();
+	let { example, label, class: className, rounded = 'rounded-lg' }: Props = $props();
 
 	const id = $props.id();
 	const views = ['preview', 'code'] as const;
@@ -59,7 +61,7 @@
 			role="tabpanel"
 			id="{id}-preview"
 			aria-labelledby="{id}-preview-tab"
-			class={cn('bg-muted flex items-center justify-center [grid-area:1/1]', view !== 'preview' && 'invisible', className)}
+			class={cn('bg-muted flex items-center justify-center [grid-area:1/1]', rounded, view !== 'preview' && 'invisible', className)}
 		>
 			<example.component />
 		</div>
@@ -69,7 +71,7 @@
 			aria-labelledby="{id}-code-tab"
 			class={cn('[grid-area:1/1]', view !== 'code' && 'invisible')}
 		>
-			<PlateCode code={example.code} label="code" class="h-full" />
+			<PlateCode code={example.code} label="code" class={cn("h-full", rounded)} />
 		</div>
 	</div>
 </div>

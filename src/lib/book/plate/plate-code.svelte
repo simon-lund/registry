@@ -43,15 +43,16 @@
 	}
 </script>
 
-<!-- the text scrolls sideways under its own padding; the button stands beside it, never over it -->
-<div class={cn('bg-muted flex items-start rounded-md', className)}>
-	<pre bind:this={pre} class="text-muted-foreground m-0 min-w-0 flex-1 overflow-x-auto px-3 py-2 font-mono text-xs [tab-size:2] select-all"><code>{code}</code></pre>
+<!-- the code fills the whole box, scrollbar along the bottom edge; Copy sits in the top corner on
+     the box's own surface, and the first lines leave room for it -->
+<div class={cn('bg-muted relative flex rounded-md', className)}>
+	<pre bind:this={pre} class="text-muted-foreground m-0 min-w-0 flex-1 overflow-auto py-3 pr-16 pl-4 [scrollbar-width:thin] font-mono text-xs [tab-size:2] select-all"><code>{code}</code></pre>
 	<button
 		type="button"
 		onclick={copy}
 		aria-live="polite"
 		aria-label={copied ? `Copied the ${label}` : `Copy the ${label}`}
-		class="text-muted-foreground hover:text-foreground focus-visible:ring-ring m-1 shrink-0 rounded px-2 py-1 text-xs focus-visible:ring-2 focus-visible:outline-none"
+		class="text-muted-foreground hover:text-foreground focus-visible:ring-ring bg-muted absolute top-1.5 right-1.5 rounded px-2 py-1 text-xs focus-visible:ring-2 focus-visible:outline-none"
 	>
 		{copied ? 'Copied' : 'Copy'}
 	</button>

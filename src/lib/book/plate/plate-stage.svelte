@@ -6,4 +6,4 @@
 	let { example }: { example: Example } = $props();
 </script>
 
-<PlatePreview {example} class="min-h-80 rounded-xl p-6 sm:p-12" />
+<PlatePreview {example} rounded="rounded-xl" class="min-h-80 p-6 sm:p-12" />
