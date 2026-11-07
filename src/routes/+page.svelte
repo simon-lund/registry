@@ -17,7 +17,7 @@
 
 	<section class="flex flex-col gap-4">
 		<h2 class="text-xl">Components</h2>
-		<ul class="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+		<ul class="m-0 flex max-w-prose list-none flex-col gap-4 p-0">
 			{#each components as c (c.name)}
 				<li>
 					<a

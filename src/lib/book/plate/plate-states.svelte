@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	/** Every state, each small and working, side by side. */
+	/** Every state, each working, one under the other. */
 	let { children }: { children: Snippet } = $props();
 </script>
 
-<div class="grid gap-4 sm:grid-cols-2">
+<div class="flex flex-col gap-4">
 	{@render children()}
 </div>
