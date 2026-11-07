@@ -16,9 +16,11 @@
 	const pad = (n: number) => n.toString().padStart(2, '0');
 	const time = $derived(`${pad(date.getHours())}:${pad(date.getMinutes())}`);
 
-	const usage = `import { TimeWheel } from '#lib/registry/ui/time-wheel';
+	const usage = `<script lang="ts">
+	import { TimeWheel } from '#lib/components/ui/time-wheel/index.js';
 
-let date = $state(new Date());
+	let date = $state(new Date());
+<\/script>
 
 <TimeWheel bind:date format="24" variant="flat" />`;
 </script>

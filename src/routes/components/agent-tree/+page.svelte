@@ -37,13 +37,19 @@
 	const buttonClass =
 		'border-border hover:bg-accent rounded-md border px-2 py-0.5 text-xs text-foreground';
 
-	const usage = `import { AgentTree } from '#lib/registry/ui/agent-tree';
+	const usage = `<script lang="ts">
+	import { AgentTree, type Agent } from '#lib/components/ui/agent-tree/index.js';
 
-let selected = $state<number | undefined>();
+	let selected = $state<number | undefined>();
+	const agents: Agent[] = [
+		{ pid: 1, ppid: 0, name: 'lead', state: 'working' },
+		{ pid: 2, ppid: 1, name: 'tests', state: 'waiting' }
+	];
+<\/script>
 
 <AgentTree {agents} bind:selected>
 	{#snippet actions(agent)}
-		<button onclick={() => stop(agent.pid)}>Stop</button>
+		<button onclick={() => console.log('stop', agent.pid)}>Stop</button>
 	{/snippet}
 </AgentTree>`;
 </script>

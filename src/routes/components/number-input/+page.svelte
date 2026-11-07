@@ -19,11 +19,13 @@
 	let typing = $state(42);
 	let locked = $state(3);
 
-	const usage = `import { NumberInput } from '#lib/registry/ui/number-input';
+	const usage = `<script lang="ts">
+	import { NumberInput } from '#lib/components/ui/number-input/index.js';
 
-let quantity = $state(1);
+	let quantity = $state(1);
+<\/script>
 
-<NumberInput bind:value={quantity} min={0} max={99} step={1} aria-label="Quantity" />`;
+<NumberInput bind:value={quantity} min={0} max={99} aria-label="Quantity" />`;
 </script>
 
 <Plate name="number-input" title="Number input" kind="Input · Svelte">

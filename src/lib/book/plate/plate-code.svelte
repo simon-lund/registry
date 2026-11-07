@@ -45,7 +45,7 @@
 
 <!-- the text scrolls sideways under its own padding; the button stands beside it, never over it -->
 <div class={cn('bg-muted flex items-start rounded-md', className)}>
-	<pre bind:this={pre} class="text-muted-foreground m-0 min-w-0 flex-1 overflow-x-auto px-3 py-2 font-mono text-xs select-all"><code>{code}</code></pre>
+	<pre bind:this={pre} class="text-muted-foreground m-0 min-w-0 flex-1 overflow-x-auto px-3 py-2 font-mono text-xs [tab-size:2] select-all"><code>{code}</code></pre>
 	<button
 		type="button"
 		onclick={copy}
