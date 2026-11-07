@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { TimeWheel } from '#lib/registry/ui/time-wheel/index.js';
 	import {
 		Plate,
 		PlateStage,
@@ -7,31 +6,24 @@
 		PlateSection,
 		PlateStates,
 		PlateState,
+		PlateApi,
+		PlatePart,
+		PlateProps,
+		PlateProp,
 		PlateMeasures,
-		PlateMeasure,
-		PlateCode
+		PlateMeasure
 	} from '#lib/book/plate/index.js';
+	import { examples } from '#lib/book/examples.js';
+	import type { Component } from 'svelte';
 
-	let date = $state(new Date(2026, 10, 6, 9, 41));
-	const pad = (n: number) => n.toString().padStart(2, '0');
-	const time = $derived(`${pad(date.getHours())}:${pad(date.getMinutes())}`);
-
-	const usage = `<script lang="ts">
-	import { TimeWheel } from '#lib/components/ui/time-wheel/index.js';
-
-	let date = $state(new Date());
-<\/script>
-
-<TimeWheel bind:date format="24" variant="flat" />`;
+	const example = examples(
+		import.meta.glob<Component>('./_examples/*.svelte', { eager: true, import: 'default' }),
+		import.meta.glob<string>('./_examples/*.svelte', { eager: true, import: 'default', query: '?raw' })
+	);
 </script>
 
 <Plate name="time-wheel" title="Time wheel" kind="Picker · Svelte">
-	<PlateStage class="flex-col gap-4">
-		<TimeWheel bind:date />
-		<p class="text-muted-foreground m-0 font-mono text-sm">selected {time}</p>
-	</PlateStage>
-
-	<PlateCode code={usage} label="usage" />
+	<PlateStage example={example('demo')} />
 
 	<PlateNotes>
 		<PlateSection title="Intention">
@@ -59,19 +51,39 @@
 
 		<PlateSection title="States">
 			<PlateStates>
-				<PlateState label="24 hours, flat">
-					<TimeWheel date={new Date(2026, 10, 6, 9, 41)} class="px-4 py-2" />
-				</PlateState>
-				<PlateState label="12 hours, flat, with am and pm">
-					<TimeWheel date={new Date(2026, 10, 6, 9, 41)} format="12" class="px-4 py-2" />
-				</PlateState>
-				<PlateState label="Drum">
-					<TimeWheel date={new Date(2026, 10, 6, 9, 41)} variant="drum" class="px-4 py-2" />
-				</PlateState>
-				<PlateState label="Keyboard: a focused column shows its ring; the arrows step a row at once">
-					<TimeWheel date={new Date(2026, 10, 6, 9, 41)} class="px-4 py-2" />
-				</PlateState>
+				<PlateState label="24 hours, flat" example={example('flat-24')} />
+				<PlateState label="12 hours, flat, with am and pm" example={example('flat-12')} />
+				<PlateState label="Drum" example={example('drum')} />
+				<PlateState label="Keyboard: a focused column shows its ring; the arrows step a row at once" example={example('flat-24')} />
+				<PlateState label="Wheel alone: one column, any list" example={example('wheel')} />
 			</PlateStates>
+		</PlateSection>
+
+		<PlateSection title="API">
+			<PlateApi>
+				<PlatePart name="TimeWheel">
+					<p>The picker: hours and minutes, and am/pm in 12 hours, under one highlight bar.</p>
+					<PlateProps>
+						<PlateProp name="date" type="Date" default="new Date()" bindable>Only its hours and minutes are read and written; the day stays.</PlateProp>
+						<PlateProp name="format" type="'24' | '12'" default="'24'">12 adds the am/pm column.</PlateProp>
+						<PlateProp name="variant" type="'flat' | 'drum'" default="'flat'">Flat: the neighbours shrink and fade. Drum: the rows sit on a cylinder.</PlateProp>
+						<PlateProp name="onDateChange" type="(date: Date) => void">Called with each new time, as a new Date.</PlateProp>
+						<PlateProp name="class" type="string">Merged onto the root.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="Wheel">
+					<p>One column. TimeWheel is three of them; on its own it turns through any short list.</p>
+					<PlateProps>
+						<PlateProp name="items" type="(number | string)[]" required>The rows, top to bottom.</PlateProp>
+						<PlateProp name="value" type="number | string" bindable>The selected item.</PlateProp>
+						<PlateProp name="loop" type="boolean" default="true">Wrap around at the ends.</PlateProp>
+						<PlateProp name="variant" type="'flat' | 'drum'" default="'flat'">As on TimeWheel.</PlateProp>
+						<PlateProp name="label" type="string">The column's name, read out, e.g. "Hour".</PlateProp>
+						<PlateProp name="onValueChange" type="(value: number | string) => void">Called with each new item.</PlateProp>
+						<PlateProp name="class" type="string">Merged onto the root; set the column's width here.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+			</PlateApi>
 		</PlateSection>
 
 		<PlateSection title="Measurements">

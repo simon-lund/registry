@@ -1,16 +1,9 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import { cn } from '#lib/utils.js';
+	import type { Example } from '../examples.js';
+	import PlatePreview from './plate-preview.svelte';
 
-	/** The component, large and working. Flat: the muted surface, no border. */
-	let { class: className, children }: { class?: string; children: Snippet } = $props();
+	/** The component, large and working, with its code one switch away. Flat: the muted surface, no border. */
+	let { example }: { example: Example } = $props();
 </script>
 
-<div
-	class={cn(
-		'bg-muted flex min-h-80 items-center justify-center rounded-xl p-6 sm:p-12',
-		className
-	)}
->
-	{@render children()}
-</div>
+<PlatePreview {example} class="min-h-80 rounded-xl p-6 sm:p-12" />

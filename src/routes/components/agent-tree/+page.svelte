@@ -6,76 +6,25 @@
 		PlateSection,
 		PlateStates,
 		PlateState,
+		PlateApi,
+		PlatePart,
+		PlateProps,
+		PlateProp,
 		PlateMeasures,
-		PlateMeasure,
-		PlateCode
+		PlateMeasure
 	} from '#lib/book/plate/index.js';
-	import {
-		AgentTree,
-		AgentTreeState,
-		type Agent,
-		type Collision,
-		type Socket
-	} from '#lib/registry/ui/agent-tree/index.js';
+	import { examples } from '#lib/book/examples.js';
+	import type { Component } from 'svelte';
 
-	// The blueprint's example (manifest, sheet B-001): names and states are an example.
-	const agents: Agent[] = [
-		{ pid: 1, ppid: 0, name: 'You', task: 'process 1', state: 'waiting' },
-		{ pid: 101, ppid: 1, name: 'Lead', task: 'the agent you asked', state: 'waiting' },
-		{ pid: 214, ppid: 101, name: 'Web app', task: 'builds the pages', state: 'working' },
-		{ pid: 215, ppid: 101, name: 'API', task: 'builds the routes', state: 'needs-you' },
-		{ pid: 216, ppid: 101, name: 'Review', task: 'checked the work', state: 'done', exit: 0 },
-		{ pid: 260, ppid: 1, name: 'Security', task: 'looks for holes', state: 'working' },
-		{ pid: 261, ppid: 1, name: 'Patterns', task: 'checks conventions', state: 'paused' }
-	];
-	const sockets: Socket[] = [{ a: 214, b: 215, name: 'web.sock', by: 101 }];
-	const collisions: Collision[] = [{ pids: [215, 260], file: 'auth.ts' }];
-
-	let selected: number | null = $state(216);
-
-	const one = (agent: Agent): Agent[] => [agent];
-	const buttonClass =
-		'border-border hover:bg-accent rounded-md border px-2 py-0.5 text-xs text-foreground';
-
-	const usage = `<script lang="ts">
-	import { AgentTree, type Agent } from '#lib/components/ui/agent-tree/index.js';
-
-	let selected = $state<number | undefined>();
-	const agents: Agent[] = [
-		{ pid: 1, ppid: 0, name: 'lead', state: 'working' },
-		{ pid: 2, ppid: 1, name: 'tests', state: 'waiting' }
-	];
-<\/script>
-
-<AgentTree {agents} bind:selected>
-	{#snippet actions(agent)}
-		<button onclick={() => console.log('stop', agent.pid)}>Stop</button>
-	{/snippet}
-</AgentTree>`;
+	const example = examples(
+		import.meta.glob<Component>('./_examples/*.svelte', { eager: true, import: 'default' }),
+		import.meta.glob<string>('./_examples/*.svelte', { eager: true, import: 'default', query: '?raw' })
+	);
 </script>
 
-{#snippet actions(agent: Agent)}
-	<button type="button" class={buttonClass} aria-label="Pause {agent.name}">Pause</button>
-	<button type="button" class={buttonClass} aria-label="Stop {agent.name}">Stop</button>
-	<button type="button" class={buttonClass} aria-label="Message {agent.name}">Message</button>
-{/snippet}
 
 <Plate name="agent-tree" title="Agent tree" kind="Tree · Svelte">
-	<PlateStage class="items-start justify-stretch">
-		<div class="flex w-full flex-col gap-6 lg:flex-row lg:gap-10">
-			<AgentTree {agents} {sockets} {collisions} bind:selected {actions} class="min-w-0 flex-1" />
-			<ul class="m-0 flex shrink-0 list-none flex-col gap-2 p-0 text-sm lg:w-44" aria-label="States">
-				<li><AgentTreeState state="working" /></li>
-				<li><AgentTreeState state="waiting" /></li>
-				<li><AgentTreeState state="needs-you" /></li>
-				<li><AgentTreeState state="paused" /></li>
-				<li><AgentTreeState state="done" exit={0} /></li>
-				<li><AgentTreeState state="failed" exit={1} /></li>
-			</ul>
-		</div>
-	</PlateStage>
-
-	<PlateCode code={usage} label="usage" />
+	<PlateStage example={example('demo')} />
 
 	<PlateNotes>
 		<PlateSection title="Intention">
@@ -124,65 +73,88 @@
 
 		<PlateSection title="States">
 			<PlateStates>
-				<PlateState label="Working: R running">
-					<AgentTree agents={one({ pid: 214, ppid: 0, name: 'Web app', task: 'builds the pages', state: 'working' })} />
-				</PlateState>
-				<PlateState label="Waiting: S sleeping">
-					<AgentTree agents={one({ pid: 101, ppid: 0, name: 'Lead', task: 'waits for its team', state: 'waiting' })} />
-				</PlateState>
-				<PlateState label="Needs you: S, with weight">
-					<AgentTree agents={one({ pid: 215, ppid: 0, name: 'API', task: 'asks: push to origin?', state: 'needs-you' })} />
-				</PlateState>
-				<PlateState label="Paused: T stopped">
-					<AgentTree agents={one({ pid: 261, ppid: 0, name: 'Patterns', task: 'checks conventions', state: 'paused' })} />
-				</PlateState>
-				<PlateState label="Done: exit 0, dashed">
-					<AgentTree agents={one({ pid: 216, ppid: 0, name: 'Review', task: 'checked the work', state: 'done', exit: 0 })} />
-				</PlateState>
-				<PlateState label="Failed: exit 1, dashed">
-					<AgentTree agents={one({ pid: 262, ppid: 0, name: 'Lint', task: '3 errors in apps/ops', state: 'failed', exit: 1 })} />
-				</PlateState>
-				<PlateState label="Selected: steers down, reports up">
-					<AgentTree
-						agents={[
-							{ pid: 1, ppid: 0, name: 'You', state: 'waiting' },
-							{ pid: 101, ppid: 1, name: 'Lead', state: 'waiting' },
-							{ pid: 216, ppid: 101, name: 'Review', state: 'working' },
-							{ pid: 260, ppid: 216, name: 'Security', state: 'working' },
-							{ pid: 261, ppid: 216, name: 'Patterns', state: 'paused' }
-						]}
-						selected={216}
-					/>
-				</PlateState>
-				<PlateState label="A socket, opened by a shared ancestor">
-					<AgentTree
-						agents={[
-							{ pid: 214, ppid: 0, name: 'Web app', state: 'working' },
-							{ pid: 215, ppid: 0, name: 'API', state: 'working' }
-						]}
-						sockets={[{ a: 214, b: 215, name: 'web.sock', by: 101 }]}
-					/>
-				</PlateState>
-				<PlateState label="A collision: both edit one file">
-					<AgentTree
-						agents={[
-							{ pid: 215, ppid: 0, name: 'API', state: 'working' },
-							{ pid: 260, ppid: 0, name: 'Security', state: 'working' }
-						]}
-						collisions={[{ pids: [215, 260], file: 'auth.ts' }]}
-					/>
-				</PlateState>
-				<PlateState label="Orphans: re-parented to 1">
-					<AgentTree
-						agents={[
-							{ pid: 1, ppid: 0, name: 'You', state: 'waiting' },
-							{ pid: 216, ppid: 1, name: 'Review', state: 'done', exit: 0 },
-							{ pid: 260, ppid: 1, name: 'Security', state: 'working' },
-							{ pid: 261, ppid: 1, name: 'Patterns', state: 'paused' }
-						]}
-					/>
-				</PlateState>
+				<PlateState label="Working: R running" example={example('working')} />
+				<PlateState label="Waiting: S sleeping" example={example('waiting')} />
+				<PlateState label="Needs you: S, with weight" example={example('needs-you')} />
+				<PlateState label="Paused: T stopped" example={example('paused')} />
+				<PlateState label="Done: exit 0, dashed" example={example('done')} />
+				<PlateState label="Failed: exit 1, dashed" example={example('failed')} />
+				<PlateState label="Selected: steers down, reports up" example={example('selected')} />
+				<PlateState label="A socket, opened by a shared ancestor" example={example('socket')} />
+				<PlateState label="A collision: both edit one file" example={example('collision')} />
+				<PlateState label="Orphans: re-parented to 1" example={example('orphans')} />
+				<PlateState label="AgentTreeState alone: the marks, with the word or without" example={example('state-marks')} />
 			</PlateStates>
+		</PlateSection>
+
+		<PlateSection title="API">
+			<PlateApi>
+				<PlatePart name="AgentTree">
+					<p>The tree: a list with the tree role, one row per agent, children under their parent.</p>
+					<PlateProps>
+						<PlateProp name="agents" type="Agent[]" required>Every agent. An agent whose parent is not in the list is a root.</PlateProp>
+						<PlateProp name="sockets" type="Socket[]" default="[]">Named lines between siblings.</PlateProp>
+						<PlateProp name="collisions" type="Collision[]" default="[]">Agents that have the same file open.</PlateProp>
+						<PlateProp name="selected" type="number | null" default="null" bindable>The selected agent's pid. Its reach is drawn in copper.</PlateProp>
+						<PlateProp name="onSelect" type="(pid: number | null) => void">Called when the selection changes.</PlateProp>
+						<PlateProp name="actions" type="Snippet<[Agent]>">Rendered inside the selected row: the app's own Pause, Stop, Message.</PlateProp>
+						<PlateProp name="class" type="string">Merged onto the list. Any other attribute of a ul is passed on.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="AgentTreeState">
+					<p>A state's mark, with its word. The tree uses it in every row; on its own it makes a legend.</p>
+					<PlateProps>
+						<PlateProp name="state" type="AgentState" required>Which mark.</PlateProp>
+						<PlateProp name="exit" type="number">The exit code, shown for done and failed.</PlateProp>
+						<PlateProp name="markOnly" type="boolean" default="false">The mark without the word. Give it an aria-label.</PlateProp>
+						<PlateProp name="class" type="string">Merged onto the root. Any other attribute of a span is passed on.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="AgentTreeNode">
+					<p>One row and the group under it. AgentTree renders these; it works only inside one.</p>
+					<PlateProps>
+						<PlateProp name="agent" type="Agent" required>The row's agent.</PlateProp>
+						<PlateProp name="level" type="number" default="0">How deep the row sits.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="Agent" kind="type">
+					<p>One agent, as a process.</p>
+					<PlateProps>
+						<PlateProp name="pid" type="number" required>Its id.</PlateProp>
+						<PlateProp name="ppid" type="number" required>Its parent's id.</PlateProp>
+						<PlateProp name="name" type="string" required>What the row says.</PlateProp>
+						<PlateProp name="task" type="string">One line under the name.</PlateProp>
+						<PlateProp name="state" type="AgentState" required>Exactly one state.</PlateProp>
+						<PlateProp name="exit" type="number">The exit code once done (0) or failed (not 0).</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="AgentState" kind="type">
+					<PlateProps>
+						<PlateProp name="AgentState" type="'working' | 'waiting' | 'needs-you' | 'paused' | 'done' | 'failed'">R, S, S with weight, T, then an exit code.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="Socket" kind="type">
+					<p>A line between two siblings, opened by an ancestor of both.</p>
+					<PlateProps>
+						<PlateProp name="a" type="number" required>One end's pid.</PlateProp>
+						<PlateProp name="b" type="number" required>The other end's pid.</PlateProp>
+						<PlateProp name="name" type="string" required>Shown on both rows, e.g. "web.sock".</PlateProp>
+						<PlateProp name="by" type="number" required>The pid of the ancestor that opened it.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="Collision" kind="type">
+					<p>Two or more agents in one file: a conflict waiting to happen.</p>
+					<PlateProps>
+						<PlateProp name="pids" type="number[]" required>The agents that have it open.</PlateProp>
+						<PlateProp name="file" type="string" required>The file, as the rows show it.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="letter" kind="function">
+					<PlateProps>
+						<PlateProp name="letter(agent)" type="(agent: Pick<Agent, 'state' | 'exit'>) => string">Linux's letter for a state: R, S or T, or "exit n".</PlateProp>
+					</PlateProps>
+				</PlatePart>
+			</PlateApi>
 		</PlateSection>
 
 		<PlateSection title="Measurements">
@@ -198,5 +170,5 @@
 				<PlateMeasure label="Working mark" value="one turn in 3s, linear; still under reduced motion" />
 			</PlateMeasures>
 		</PlateSection>
-</PlateNotes>
+	</PlateNotes>
 </Plate>

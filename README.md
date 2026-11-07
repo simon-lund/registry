@@ -40,7 +40,7 @@ it.** Everything on the site sits on:
 | `src/lib/utils.ts` | `cn` and the type helpers; the item `utils`, which every item depends on |
 | `src/app.css` | the theme: the tokens, the fonts, the base |
 | `src/lib/book/` | the book's own parts (the plate with its copyable code block, the sidebar, the theme toggle) and its catalogue (`catalogue.ts`, which the index and the sidebar read); never shipped |
-| `src/routes/components/<name>/` | the plate of one component |
+| `src/routes/components/<name>/` | the plate of one component; `_examples/` holds one file per example, rendered as the preview and shown as the code |
 | `scripts/build-registry-json.js` | walks the items into `registry.json`; `shadcn-svelte registry build` turns that into `static/r/<item>.json` |
 
 ## Run it
@@ -66,6 +66,9 @@ is made from it.
 
 1. `src/lib/registry/ui/<name>/`: the parts, `index.ts`, `meta.json`. Imports between items go
    through `#lib/registry/ui/<other>/index.js`; the CLI rewrites them for the consumer.
-2. `src/routes/components/<name>/+page.svelte`: its plate, built from `#lib/book/plate`.
-3. An entry in `src/lib/book/catalogue.ts`.
-4. `pnpm registry && pnpm check`.
+2. `src/routes/components/<name>/_examples/`: one Svelte file for the stage (`demo.svelte`) and one per
+   state. Each imports from `#lib/registry/ui/…`; the Code view shows the path an app installs to.
+3. `src/routes/components/<name>/+page.svelte`: its plate, built from `#lib/book/plate`: the stage and
+   states by example name, then an API section with a part per export and a prop per prop.
+4. An entry in `src/lib/book/catalogue.ts`.
+5. `pnpm registry && pnpm check`. The check type-checks every example too.

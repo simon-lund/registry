@@ -1,13 +1,10 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import type { Example } from '../examples.js';
+	import PlatePreview from './plate-preview.svelte';
 
-	/** One state: its name, then the component in it. */
-	let { label, children }: { label: string; children: Snippet } = $props();
+	/** One state: its name, the component in it, and the code that makes it. */
+	let { label, example }: { label: string; example: Example } = $props();
 </script>
 
-<figure class="m-0 flex flex-col gap-2">
-	<div class="bg-muted flex min-h-28 items-center justify-center rounded-lg p-4">
-		{@render children()}
-	</div>
-	<figcaption class="text-muted-foreground text-sm">{label}</figcaption>
-</figure>
+{#snippet name()}{label}{/snippet}
+<PlatePreview {example} label={name} class="min-h-28 rounded-lg p-4" />

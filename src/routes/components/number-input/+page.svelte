@@ -6,38 +6,24 @@
 		PlateSection,
 		PlateStates,
 		PlateState,
+		PlateApi,
+		PlatePart,
+		PlateProps,
+		PlateProp,
 		PlateMeasures,
-		PlateMeasure,
-		PlateCode
+		PlateMeasure
 	} from '#lib/book/plate/index.js';
-	import { NumberInput, AnimatedNumber } from '#lib/registry/ui/number-input/index.js';
+	import { examples } from '#lib/book/examples.js';
+	import type { Component } from 'svelte';
 
-	let quantity = $state(1240);
-	let seats = $state(8);
-	let price = $state(49.9);
-	let views = $state(12808);
-	let typing = $state(42);
-	let locked = $state(3);
-
-	const usage = `<script lang="ts">
-	import { NumberInput } from '#lib/components/ui/number-input/index.js';
-
-	let quantity = $state(1);
-<\/script>
-
-<NumberInput bind:value={quantity} min={0} max={99} aria-label="Quantity" />`;
+	const example = examples(
+		import.meta.glob<Component>('./_examples/*.svelte', { eager: true, import: 'default' }),
+		import.meta.glob<string>('./_examples/*.svelte', { eager: true, import: 'default', query: '?raw' })
+	);
 </script>
 
 <Plate name="number-input" title="Number input" kind="Input · Svelte">
-	<PlateStage class="flex-col gap-6">
-		<div class="flex flex-col items-center gap-3">
-			<label for="qty" class="text-muted-foreground text-sm">Quantity</label>
-			<NumberInput id="qty" bind:value={quantity} min={0} max={99999} step={10} size="lg" class="w-56" />
-		</div>
-		<p class="text-muted-foreground font-mono text-xs">value: {quantity}</p>
-	</PlateStage>
-
-	<PlateCode code={usage} label="usage" />
+	<PlateStage example={example('demo')} />
 
 	<PlateNotes>
 		<PlateSection title="Intention">
@@ -68,36 +54,46 @@
 
 		<PlateSection title="States">
 			<PlateStates>
-				<PlateState label="Default">
-					<NumberInput bind:value={typing} aria-label="Default" class="w-36" />
-				</PlateState>
-				<PlateState label="At the upper bound: Increase is off">
-					<NumberInput bind:value={seats} min={1} max={8} aria-label="Seats" class="w-36" />
-				</PlateState>
-				<PlateState label="A price, two decimals, euro">
-					<NumberInput
-						bind:value={price}
-						min={0}
-						step={0.1}
-						format={{ style: 'currency', currency: 'EUR' }}
-						aria-label="Price"
-						class="w-40"
-					/>
-				</PlateState>
-				<PlateState label="Disabled">
-					<NumberInput bind:value={locked} disabled aria-label="Disabled" class="w-36" />
-				</PlateState>
-				<PlateState label="AnimatedNumber alone: a count that only shows">
-					<button
-						type="button"
-						class="hover:bg-accent focus-visible:ring-ring rounded-md px-3 py-2 text-2xl focus-visible:ring-2 focus-visible:outline-none"
-						onclick={() => (views += Math.floor(Math.random() * 900) + 1)}
-					>
-						<AnimatedNumber value={views} />
-						<span class="text-muted-foreground ml-2 text-sm">views · tap</span>
-					</button>
-				</PlateState>
+				<PlateState label="Default" example={example('default')} />
+				<PlateState label="At the upper bound: Increase is off" example={example('upper-bound')} />
+				<PlateState label="A price, two decimals, euro" example={example('price')} />
+				<PlateState label="Disabled" example={example('disabled')} />
+				<PlateState label="AnimatedNumber alone: a count that only shows" example={example('animated-number')} />
 			</PlateStates>
+		</PlateSection>
+
+		<PlateSection title="API">
+			<PlateApi>
+				<PlatePart name="NumberInput">
+					<p>The field: the rolling number under a text input, and the two chevrons.</p>
+					<PlateProps>
+						<PlateProp name="value" type="number" default="0" bindable>The number. Always within min and max, rounded to the step.</PlateProp>
+						<PlateProp name="min" type="number" default="-Infinity">The lower bound. Decrease turns off at it.</PlateProp>
+						<PlateProp name="max" type="number" default="Infinity">The upper bound. Increase turns off at it.</PlateProp>
+						<PlateProp name="step" type="number" default="1">One chevron press or arrow key. Shift steps ten. Its decimals set the rounding.</PlateProp>
+						<PlateProp name="disabled" type="boolean" default="false">No typing, no stepping, faded.</PlateProp>
+						<PlateProp name="locale" type="string">A BCP 47 tag for grouping and the decimal mark. The browser's language when left out.</PlateProp>
+						<PlateProp name="format" type="Intl.NumberFormatOptions">How the value is shown, e.g. a currency or a percent.</PlateProp>
+						<PlateProp name="size" type="'default' | 'lg'" default="'default'">40px or 56px high.</PlateProp>
+						<PlateProp name="name" type="string">The form field's name.</PlateProp>
+						<PlateProp name="id" type="string">The input's id, for a label's for.</PlateProp>
+						<PlateProp name="aria-label" type="string">The name read out, when no label points at the field.</PlateProp>
+						<PlateProp name="aria-labelledby" type="string">The id of the element that names the field.</PlateProp>
+						<PlateProp name="onValueChange" type="(value: number) => void">Called with each new value.</PlateProp>
+						<PlateProp name="ref" type="HTMLInputElement | null" default="null" bindable>The input element.</PlateProp>
+						<PlateProp name="class" type="string">Merged onto the root.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+				<PlatePart name="AnimatedNumber">
+					<p>The rolling digits alone, for a count that only shows. NumberInput uses it inside.</p>
+					<PlateProps>
+						<PlateProp name="value" type="number" required>The number to show. A change rolls the digits.</PlateProp>
+						<PlateProp name="locale" type="string">A BCP 47 tag. The browser's language when left out.</PlateProp>
+						<PlateProp name="format" type="Intl.NumberFormatOptions">How the value is shown.</PlateProp>
+						<PlateProp name="class" type="string">Merged onto the root.</PlateProp>
+					</PlateProps>
+				</PlatePart>
+			</PlateApi>
 		</PlateSection>
 
 		<PlateSection title="Measurements">
