@@ -56,7 +56,8 @@
 
 	<PlateExample title="Animated number" example={example('animated-number')}>
 		<code>AnimatedNumber</code> is the rolling digits on their own, for a count that only shows.
-		It follows NumberFlow by Maxwell Barvian, written again in Svelte with CSS only.
+		The motion is <a href="https://number-flow.barvian.me">NumberFlow</a> by Maxwell Barvian; the
+		wrapper takes this registry's props, and the type and colour of wherever it sits.
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
@@ -92,11 +93,12 @@
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="AnimatedNumber">
-				<p>The rolling digits alone. <code>NumberInput</code> uses it inside.</p>
+				<p>The rolling digits alone, on NumberFlow. <code>NumberInput</code> uses it inside.</p>
 				<PlateProps>
 					<PlateProp name="value" type="number" required />
 					<PlateProp name="locale" type="string" />
 					<PlateProp name="format" type="Intl.NumberFormatOptions" />
+					<PlateProp name="trend" type="-1 | 0 | 1">Which way the digits spin; by default, the way the value moved.</PlateProp>
 					<PlateProp name="class" type="string" />
 				</PlateProps>
 			</PlatePart>
@@ -111,8 +113,8 @@
 			<PlateMeasure label="Chevron column" value="32px, two halves" />
 			<PlateMeasure label="Radius" value="8px (--radius)" />
 			<PlateMeasure label="Focus ring" value="2px ring at 40 %, border to ring" />
-			<PlateMeasure label="Roll" value="600ms cubic-bezier(.22, 1, .36, 1)" />
-			<PlateMeasure label="Digit mask" value="fades over the top and bottom 25 %" />
+			<PlateMeasure label="Roll" value="NumberFlow: a 900ms spring; digits fade in 450ms" />
+			<PlateMeasure label="Digit mask" value="0.25em fade at the top and bottom" />
 			<PlateMeasure label="Hold to repeat" value="after 400ms, every 60ms" />
 		</PlateMeasures>
 	</PlateSection>

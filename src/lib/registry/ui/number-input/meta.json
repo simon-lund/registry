@@ -1,6 +1,9 @@
 {
 	"title": "Number input",
-	"description": "A number you step with two chevrons or type; the digits roll to the new value, as an odometer does, so you see what changed and which way. Arrow keys step (Shift: ten steps; Home and End: the bounds), a chevron held keeps stepping, and the field never holds an invalid value: typed text is taken as soon as it reads as a number and clamped when you leave. Formats through Intl.NumberFormat (locale, currency, decimals). AnimatedNumber, the rolling digits, is exported on its own for a counter that only shows.",
-	"dependencies": ["tailwind-variants"],
+	"description": "A number you step with two chevrons or type; the digits roll to the new value with NumberFlow, as an odometer does, so you see what changed and which way. Arrow keys step (Shift: ten steps; Home and End: the bounds), a chevron held keeps stepping, and the field never holds an invalid value: typed text is taken as soon as it reads as a number and clamped when you leave. Formats through Intl.NumberFormat (locale, currency, decimals). AnimatedNumber, the rolling digits, is exported on its own for a counter that only shows.",
+	"dependencies": [
+		"tailwind-variants",
+		"@number-flow/svelte"
+	],
 	"registryDependencies": []
 }
