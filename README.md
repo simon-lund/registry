@@ -66,9 +66,12 @@ is made from it.
 
 1. `src/lib/registry/ui/<name>/`: the parts, `index.ts`, `meta.json`. Imports between items go
    through `#lib/registry/ui/<other>/index.js`; the CLI rewrites them for the consumer.
-2. `src/routes/components/<name>/_examples/`: one Svelte file for the stage (`demo.svelte`) and one per
-   state. Each imports from `#lib/registry/ui/…`; the Code view shows the path an app installs to.
-3. `src/routes/components/<name>/+page.svelte`: its plate, built from `#lib/book/plate`: the stage and
-   states by example name, then an API section with a part per export and a prop per prop.
-4. An entry in `src/lib/book/catalogue.ts`.
+2. `src/routes/components/<name>/_examples/`: `demo.svelte` for the preview under the title,
+   `usage.svelte` for Usage, and one file per example section. Each imports from
+   `#lib/registry/ui/…`; the Code view shows the path an app installs to, highlighted at build time.
+3. `src/routes/components/<name>/+page.svelte`, shaped like a shadcn docs page: the demo,
+   Installation (command, or the files by hand), Usage, one `PlateExample` per example with a
+   sentence on what to set, Keyboard, API Reference (a `PlatePart` per export, a table of props),
+   Measurements.
+4. An entry in `src/lib/book/catalogue.ts`: its tagline is the page's description.
 5. `pnpm registry && pnpm check`. The check type-checks every example too.

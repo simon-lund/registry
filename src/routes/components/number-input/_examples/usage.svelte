@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { NumberInput } from '#lib/registry/ui/number-input/index.js';
 
-	let value = $state(42);
+	let value = $state(1);
 </script>
 
-<NumberInput bind:value aria-label="Amount" class="w-36" />
+<NumberInput bind:value min={0} max={99} aria-label="Quantity" />

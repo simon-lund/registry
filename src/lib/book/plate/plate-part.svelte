@@ -4,21 +4,19 @@
 	interface Props {
 		/** The export's name, e.g. "NumberInput". */
 		name: string;
-		/** What kind of export: component, type, function. */
+		/** Shown beside a name that is not a component: "type", "function". */
 		kind?: string;
-		/** One or two sentences: what the part is for; then its props, if it has any. */
+		/** A sentence on what the part is for; then its props table, if it has props. */
 		children: Snippet;
 	}
 
-	let { name, kind = 'component', children }: Props = $props();
+	let { name, kind, children }: Props = $props();
 </script>
 
 <section class="flex flex-col gap-3" aria-labelledby="part-{name}">
 	<h3 id="part-{name}" class="flex items-baseline gap-2 text-lg">
-		<code class="font-mono text-base">{name}</code>
-		<span class="text-muted-foreground font-sans text-xs">{kind}</span>
+		{name}
+		{#if kind}<span class="text-muted-foreground font-sans text-xs">{kind}</span>{/if}
 	</h3>
-	<div class="flex flex-col gap-4">
-		{@render children()}
-	</div>
+	{@render children()}
 </section>

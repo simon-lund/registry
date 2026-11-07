@@ -1,29 +1,28 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { install } from '../catalogue.js';
-	import PlateCode from './plate-code.svelte';
+	import { components } from '../catalogue.js';
 
 	interface Props {
-		/** The registry item's name: the install command is built from it. */
+		/** The registry item's name: the description comes from the catalogue. */
 		name: string;
 		title: string;
-		/** One line above the title: the kind and the stack, e.g. "Input · Svelte". */
-		kind: string;
 		children: Snippet;
 	}
 
-	let { name, title, kind, children }: Props = $props();
+	let { name, title, children }: Props = $props();
+
+	const description = $derived(components.find((c) => c.name === name)?.tagline);
 </script>
 
 <svelte:head>
 	<title>{title} · ui.simon-lund.com</title>
+	{#if description}<meta name="description" content={description} />{/if}
 </svelte:head>
 
-<article class="flex flex-col gap-10">
+<article class="flex flex-col gap-12">
 	<header class="flex flex-col gap-2">
-		<p class="text-muted-foreground text-sm">{kind}</p>
 		<h1 class="text-4xl">{title}</h1>
-		<PlateCode code={install(name)} label="install command" class="mt-2" />
+		{#if description}<p class="text-muted-foreground m-0 max-w-prose text-lg">{description}</p>{/if}
 	</header>
 	{@render children()}
 </article>

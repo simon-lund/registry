@@ -1,9 +1,8 @@
 export { default as Plate } from './plate.svelte';
 export { default as PlateStage } from './plate-stage.svelte';
-export { default as PlateNotes } from './plate-notes.svelte';
 export { default as PlateSection } from './plate-section.svelte';
-export { default as PlateStates } from './plate-states.svelte';
-export { default as PlateState } from './plate-state.svelte';
+export { default as PlateInstall } from './plate-install.svelte';
+export { default as PlateExample } from './plate-example.svelte';
 export { default as PlateApi } from './plate-api.svelte';
 export { default as PlatePart } from './plate-part.svelte';
 export { default as PlateProps } from './plate-props.svelte';
@@ -12,3 +11,4 @@ export { default as PlateMeasures } from './plate-measures.svelte';
 export { default as PlateMeasure } from './plate-measure.svelte';
 export { default as PlateCode } from './plate-code.svelte';
 export { default as PlatePreview } from './plate-preview.svelte';
+export { default as PlateTablist } from './plate-tablist.svelte';

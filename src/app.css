@@ -28,6 +28,22 @@
 	--card-foreground: #1a1917;
 }
 
+/* Code: tonal, from ink and stone only. Copper keeps its one meaning, so highlighting is
+   structure in ink and the rest in stone. Shiki writes these as var(--code-*) (vite.config.ts);
+   set on :root, they follow .dark through --foreground and --muted-foreground. */
+:root {
+	--code-foreground: var(--muted-foreground);
+	--code-token-keyword: var(--foreground);
+	--code-token-constant: var(--foreground);
+	--code-token-parameter: var(--foreground);
+	--code-token-function: color-mix(in oklab, var(--foreground) 80%, var(--muted-foreground));
+	--code-token-string: color-mix(in oklab, var(--foreground) 50%, var(--muted-foreground));
+	--code-token-string-expression: var(--code-token-string);
+	--code-token-punctuation: var(--muted-foreground);
+	--code-token-link: var(--foreground);
+	--code-token-comment: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
+}
+
 .dark {
 	--background: #1c1a17;
 	--foreground: #e8e4de;

@@ -2,8 +2,8 @@
 	import type { Example } from '../examples.js';
 	import PlatePreview from './plate-preview.svelte';
 
-	/** The component, large and working, with its code one switch away. Flat: the muted surface, no border. */
+	/** The component, large and working, under the title, with its code one switch away. */
 	let { example }: { example: Example } = $props();
 </script>
 
-<PlatePreview {example} rounded="rounded-xl" class="min-h-80 p-6 sm:p-12" />
+<PlatePreview {example} class="min-h-80 sm:p-12" />
