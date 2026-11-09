@@ -1,0 +1,6 @@
+{
+	"title": "Form reset",
+	"description": "restoreOnReset(el, restore, setDefault?) and hiddenInputOf(el): form reset for controls drawn by bits-ui. bits-ui does not put the drawn control back on form.reset(); restoreOnReset listens for the owning form's reset (the hidden input's form, else the closest form) and calls restore() inside the event, flushed, so the form reads as reset as soon as reset() returns, as with native controls; a cancelled reset is left alone. setDefault puts the mount state on the hidden input (defaultChecked or defaultValue). The component keeps its own mount snapshot. hiddenInputOf finds bits-ui's hidden input (the aria-hidden input right after the root). Switch and Dial use it; no copy, no markup.",
+	"dependencies": [],
+	"registryDependencies": []
+}

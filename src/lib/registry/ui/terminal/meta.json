@@ -1,0 +1,11 @@
+{
+	"title": "Terminal",
+	"description": "Command output on the muted surface, flat, in both themes. Parts: Terminal (owns `output`, a string with ANSI escapes or an array of lines, and `streaming`), TerminalHeader, TerminalTitle (names the log), TerminalStatus (role=status), TerminalActions, TerminalButton (a ghost icon Button), TerminalCopyButton (copies the text without escapes; `copiedLabel` required), TerminalClearButton (the consumer empties `output`), TerminalContent (a native scrolling box with a role=log inside, aria-busy while streaming; sticks to the bottom while output arrives, lets go when the reader scrolls up; `wrap` or sideways scroll; a block cursor while streaming) and TerminalEmpty. Long logs stay cheap: only the new tail is parsed (parseAnsiIncremental, exported). ansi.ts parses SGR styles and colours (16, 256, truecolour) and strips other escapes; output is spans, never HTML. The 16 colours are the component's own --terminal-* variables, for light and .dark, each at least 4.5:1 on muted.",
+	"dependencies": [
+		"@lucide/svelte"
+	],
+	"registryDependencies": [
+		"button",
+		"swap"
+	]
+}

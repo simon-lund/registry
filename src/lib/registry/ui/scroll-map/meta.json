@@ -1,0 +1,11 @@
+{
+	"title": "Scroll map",
+	"description": "A slim map beside a long scroll (a conversation or a long document): one tick per turn or section, the ticks in view lifted as a band. Parts: ScrollMap (a <nav>; `target` is the scrolling element, followed so the band tracks the real scroll position; while the map shows it is the only indicator, so the target's scrollbar is hidden and comes back where the map hides; `side` right | left; `scrollMargin`), ScrollMapTicks (the column with the band; one tab stop with ArrowUp / ArrowDown / Home / End), ScrollMapTick (size default or sm, `dot` for a section with attachments; hover or focus shows a Tooltip with ScrollMapTickTitle and ScrollMapTickDescription; press or Enter jumps there; `value` is an element id), ScrollMapPrevious / ScrollMapNext (ghost icon buttons). For a pointer and room: it hides itself at a coarse primary pointer (phones, touch tablets); leave it out in a narrow column. No copy inside; the nav, ticks and buttons require aria-labels.",
+	"dependencies": [
+		"@lucide/svelte"
+	],
+	"registryDependencies": [
+		"motion",
+		"tooltip"
+	]
+}

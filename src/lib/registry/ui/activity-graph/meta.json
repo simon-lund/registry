@@ -1,0 +1,6 @@
+{
+	"title": "Activity graph",
+	"description": "A contribution graph for habits and routines, GitHub's grid of small rounded squares: one per day, week, month or year, tinted by level. Parts: ActivityGraph (root: `data` keyed YYYY-MM-DD and summed into coarser cells, `granularity` day | week | month | year, optional `range`, required `locale` and `weekStartsOn`, `thresholds` for levels 1-4, bindable `selected`), ActivityGraphRowLabels, ActivityGraphViewport (a sideways scroller, opens at the newest), ActivityGraphColumnLabels, ActivityGraphGrid (ARIA grid with one roving tab stop; renders each cell through a `cell` snippet so the consumer gives words and a Tooltip), ActivityGraphCell (aria-label required), ActivityGraphCaption (optional; turns selection on and shows the selected cell's words, so touch gets the value), ActivityGraphLegend and ActivityGraphLegendScale. Levels: five tonal steps of foreground mixed into muted, distinct in both themes; forced colours keep the fills. No copy, no default locale or week start.",
+	"dependencies": ["tailwind-variants"],
+	"registryDependencies": ["motion"]
+}

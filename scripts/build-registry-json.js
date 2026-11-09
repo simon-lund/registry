@@ -16,6 +16,10 @@
  * A folder without a meta.json is an error (it would silently never ship), and so is a
  * registryDependency that names no item.
  *
+ * Folders named in STOCK hold shadcn-svelte's own components, installed here with its CLI so the
+ * items and the book can import them. They do not ship: an item that uses one lists it by its bare
+ * name, and the consumer's CLI takes it from their own registry, in their own style.
+ *
  * Env / flags:
  *   REGISTRY_HOMEPAGE   the registry's public origin (default https://ui.simon-lund.com); every
  *                       registryDependency URL is built from it
@@ -34,7 +38,10 @@ const OUT = outFlag > -1 ? resolve(process.argv[outFlag + 1]) : join(ROOT, 'regi
 
 const url = (/** @type {string} */ name) => `${HOMEPAGE}/r/${name}.json`;
 
-/** The base every item stands on: `cn` and the type helpers. */
+/** shadcn-svelte's own components: items depend on them by bare name, and they never ship from here. */
+const STOCK = new Set(['button', 'input', 'spinner', 'tooltip']);
+
+/** What items stand on: `cn` and the type helpers for all of them, `motion` for the ones that move. */
 const BASE = [
 	{
 		name: 'utils',
@@ -45,9 +52,40 @@ const BASE = [
 		dependencies: ['clsx', 'tailwind-merge'],
 		registryDependencies: [],
 		files: [{ path: 'src/lib/utils.ts', type: 'registry:lib', target: 'utils.ts' }]
+	},
+	{
+		name: 'motion',
+		type: 'registry:theme',
+		title: 'Motion',
+		description:
+			'The durations and curves the moving items share, as CSS variables: a strong ease-out to land on, and short times. Reduced motion shortens them. The same values as src/app.css.',
+		dependencies: [],
+		registryDependencies: [],
+		cssVars: {
+			light: {
+				'dur-press': '80ms',
+				'dur-quick': '140ms',
+				'dur-base': '220ms',
+				'dur-calm': '320ms',
+				'ease-settle': 'cubic-bezier(0.22, 1, 0.36, 1)',
+				'ease-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+				'blur-swap': '4px'
+			}
+		},
+		css: {
+			'@media (prefers-reduced-motion: reduce)': {
+				':root': {
+					'--dur-press': '0ms',
+					'--dur-quick': '120ms',
+					'--dur-base': '120ms',
+					'--dur-calm': '120ms'
+				}
+			}
+		},
+		files: []
 	}
 ];
-const BASE_DEPS = BASE.map((b) => url(b.name));
+const BASE_DEPS = [url('utils')];
 
 const META_KEYS = new Set(['title', 'description', 'dependencies', 'registryDependencies']);
 
@@ -86,9 +124,9 @@ function readMeta(name) {
 }
 
 const names = (statSync(UI, { throwIfNoEntry: false })?.isDirectory() ? readdirSync(UI) : [])
-	.filter((d) => !d.startsWith('.') && statSync(join(UI, d)).isDirectory())
+	.filter((d) => !d.startsWith('.') && !STOCK.has(d) && statSync(join(UI, d)).isDirectory())
 	.sort();
-const known = new Set([...BASE.map((b) => b.name), ...names]);
+const known = new Set([...BASE.map((b) => b.name), ...names, ...STOCK]);
 
 const components = names.map((name) => {
 	const dir = join(UI, name);
@@ -108,7 +146,7 @@ const components = names.map((name) => {
 		dependencies: meta.dependencies,
 		registryDependencies: [
 			...BASE_DEPS,
-			...meta.registryDependencies.map((d) => (/^https?:\/\//.test(d) ? d : url(d)))
+			...meta.registryDependencies.map((d) => (/^https?:\/\//.test(d) || STOCK.has(d) ? d : url(d)))
 		],
 		files: readdirSync(dir)
 			// meta.json and notes describe the folder; they do not ship.

@@ -1,0 +1,12 @@
+{
+	"title": "Switch",
+	"description": "A switch on bits-ui Switch, with the part name of the stock shadcn-svelte Switch, for settings that apply at once. The knob is the one moving piece: it slides on settle while the copper fill follows it as a clip-path, and holding stretches the knob toward its destination. Sizes default (52 × 32) and sm (40 × 24), both 44px to touch. In a form it submits with a name, and form.reset() puts it back to its mount state, drawn and submitted alike. bind:checked may point at an undefined value (a missing record key): it reads as off.",
+	"dependencies": [
+		"bits-ui",
+		"tailwind-variants"
+	],
+	"registryDependencies": [
+		"motion",
+		"form-reset"
+	]
+}

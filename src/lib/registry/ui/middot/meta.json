@@ -1,0 +1,6 @@
+{
+	"title": "Middot",
+	"description": "The separator between two pieces of meta (\"Tomorrow · 09:00\"). A drawn dot with exactly the same space on both sides (0.4em), sitting on the middle of the lowercase letters, instead of the \"·\" character between two narrow font spaces. Carries \" · \" as visually hidden text so screen readers and copy-paste keep the separation.",
+	"dependencies": [],
+	"registryDependencies": []
+}

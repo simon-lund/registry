@@ -12,16 +12,27 @@
 	let { variant = 'column', class: className }: Props = $props();
 
 	const current = (name: string) => page.url.pathname === `/components/${name}`;
+
+	// On a phone the links are one scrolling row: keep the page you are on in view. No smooth scroll,
+	// this is not a move you made.
+	let list = $state<HTMLUListElement>();
+	$effect(() => {
+		page.url.pathname;
+		if (variant !== 'row' || !list) return;
+		const link = list.querySelector<HTMLElement>('[aria-current=page]');
+		if (link) list.scrollLeft = link.offsetLeft - list.offsetLeft - 16;
+	});
 </script>
 
-<nav aria-label="Components" class={cn(variant === 'column' ? 'flex flex-col gap-2' : 'flex flex-col gap-1', className)}>
+<nav aria-label="Components" class={cn(variant === 'column' ? 'flex max-h-[calc(100dvh-3rem)] flex-col gap-2' : 'flex flex-col gap-1', className)}>
 	<p class={cn('text-muted-foreground text-xs tracking-wide uppercase', variant === 'column' ? 'px-2' : 'sr-only')}>
 		Components
 	</p>
 	<ul
+		bind:this={list}
 		class={cn(
 			'm-0 list-none p-0',
-			variant === 'column' ? 'flex flex-col' : 'flex gap-1 overflow-x-auto [scrollbar-width:none]'
+			variant === 'column' ? 'flex min-h-0 flex-col overflow-y-auto [scrollbar-width:thin]' : 'flex gap-1 overflow-x-auto [scrollbar-width:none]'
 		)}
 	>
 		{#each components as c (c.name)}

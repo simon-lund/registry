@@ -1,0 +1,8 @@
+{
+	"title": "View change",
+	"description": "ViewChange: a view arriving from the side its entry sits on. Wrap what changes with its key (a route, a section); on a change the content is re-created and comes in 8px from `from` while it fades in (base 220ms on settle), so the eye reads where it came from: the next section from the right, an earlier one from the left, a page from the sidebar's side. sideOf(order, prev, next) gives the side from the entries' order. Without `from` the content is simply replaced (the first render, a keyboard shortcut: never animated). Reduced motion: a fade. The same motion is built into TabsContent, where the side follows the key.",
+	"dependencies": [],
+	"registryDependencies": [
+		"motion"
+	]
+}

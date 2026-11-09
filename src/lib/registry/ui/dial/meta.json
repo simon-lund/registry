@@ -1,0 +1,11 @@
+{
+	"title": "Dial",
+	"description": "A rotary knob that picks one of a few stops (role=slider). Parts: Dial (the root and the slider element: step as a list of values at equal angles or a number, sweep and start angle, bind:value, wrap, disabled, sizes default and sm), DialKnob (the key with a copper pointer line; it turns, gives a little while held and carries the focus ring), DialStop (one per stop, like a clock face: major a long mark with the consumer's label outside, minor a short mark between; the selected mark is copper) and DialUnit (the unit in the sweep's open gap). Keyboard: arrows a stop, Page Up/Down a tenth, Home/End. Pointer: the stop at the pointer's angle, snapping live, with a light haptic per stop on touch. Only the ring around the knob captures the finger; a vertical swipe on the knob scrolls the page. In a form, name submits the stop it is on and form.reset() puts it back to the mount value. No copy inside: aria-label and aria-valuetext come from the consumer.",
+	"dependencies": [
+		"tailwind-variants"
+	],
+	"registryDependencies": [
+		"motion",
+		"form-reset"
+	]
+}

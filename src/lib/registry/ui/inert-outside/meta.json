@@ -1,0 +1,6 @@
+{
+	"title": "Inert outside",
+	"description": "inertOutside({ keep }): an attachment for a modal layer's surface. While it is open (data-state=\"open\", or none) every element outside it is inert (not focusable, not clickable, hidden from assistive tech that ignores aria-modal): it walks from the surface up to body and makes each sibling on the way inert, so a surface rendered in place works like one in a portal. What keep matches (default [data-slot=toaster]) and the way up to it stay usable. The page comes back the moment data-state leaves open, before the exit motion, so focus can return. Nested layers make their parent inert and give back only what they took; an element the author made inert is never touched. modalLayers.open counts the open layers (reactive). No copy, no markup.",
+	"dependencies": [],
+	"registryDependencies": []
+}

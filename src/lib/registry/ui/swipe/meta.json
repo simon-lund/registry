@@ -1,0 +1,6 @@
+{
+	"title": "Swipe",
+	"description": "The physics of a swipe, shared by SwipeDeck and the Toaster; the caller passes every number. rubber(d, max): the asymptotic give of a side that cannot be pulled. VelocityTracker(window): push(t, x, y) per move, velocity(at, stale) on release in px/ms, zero after a rest of `stale` ms. exitDuration(dist, speed, quick, base): an ease-out that leaves at the finger's speed, bounded quick to base. SwipeMotion: one rAF motion at a time, tween(duration, ease, frame, done) and spring(read, write, v0, { stiffness, dampingRatio, timeScale }, done) home to 0 on any number of axes. ClickSwallow: arm() after a drag, swallow(event) in onclickcapture, armed until the end of the task. CARD_SWIPE_GESTURE is a swiped card's tuning (slop 8, hysteresis 6, flick 0.5px/ms from 16px, rubber 32, stale 60ms, window 100ms, spring 400 / 0.78), a named preset, never a default. Pointer handling, axes, zones and layout stay in each component. No markup, no copy.",
+	"dependencies": [],
+	"registryDependencies": []
+}

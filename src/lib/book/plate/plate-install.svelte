@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Source } from '../examples.js';
-	import { install } from '../catalogue.js';
+	import { install, installNeed } from '../catalogue.js';
 	import PlateCode from './plate-code.svelte';
 	import PlateTablist from './plate-tablist.svelte';
 
@@ -9,11 +9,13 @@
 		name: string;
 		/** Its npm dependencies, from meta.json. */
 		dependencies?: string[];
+		/** What it stands on, from meta.json: this registry's items and stock shadcn-svelte ones. */
+		needs?: string[];
 		/** Its files, highlighted: the path under components/ui, then the source. */
 		files: (Source & { path: string })[];
 	}
 
-	let { name, dependencies = [], files }: Props = $props();
+	let { name, dependencies = [], needs = [], files }: Props = $props();
 
 	const id = $props.id();
 	const tabs = [
@@ -38,6 +40,7 @@
 
 	const command = $derived(install(name));
 	const add = $derived(`pnpm add ${dependencies.join(' ')}`);
+	const stands = $derived(needs.map(installNeed));
 </script>
 
 <div class="flex flex-col gap-3">
@@ -53,6 +56,12 @@
 				<li class="step flex flex-col gap-3">
 					<p>Install the dependencies:</p>
 					<PlateCode code={add} html={shell(add)} label="dependencies" />
+				</li>
+			{/if}
+			{#if stands.length}
+				<li class="step flex flex-col gap-3">
+					<p>Add what it stands on:</p>
+					<PlateCode code={stands.join('\n')} html={stands.map(shell).join('\n')} label="commands" />
 				</li>
 			{/if}
 			<li class="step flex flex-col gap-3">

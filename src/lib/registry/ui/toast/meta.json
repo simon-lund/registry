@@ -1,0 +1,6 @@
+{
+	"title": "Toast",
+	"description": "What just happened, with its undo: a floating popover block with one line (Archived · Q3 report), the verb in bold, a ghost action and a tonal wash that drains over the 5s window. Variants set the action's ink and the wash on the same surface: default, notice, news. A failure is a toast with a leading icon in text-destructive. Parts: Toast (owns the clock), ToastMessage, ToastVerb, ToastAction, ToastProgress, and Toaster, which renders a queue as one stack; toast({ verb, title, variant, action, duration, onDismiss }) adds to it from anywhere. Newest in front, older ones stepped back, spread on hover, focus or tap. Swipe down or sideways to dismiss. Windows hold on hover, focus, a held finger or a hidden tab. One polite live region; Alt+T moves focus to the front toast and back. While a modal is open the Toaster stands in the top layer. onDismiss says why: timeout, swipe, action, overflow or dismiss.",
+	"dependencies": ["tailwind-variants"],
+	"registryDependencies": ["motion", "button", "middot", "inert-outside", "swipe"]
+}

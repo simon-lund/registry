@@ -1,0 +1,8 @@
+{
+	"title": "Textarea",
+	"description": "The multi-line field, with the part name of the stock shadcn-svelte Textarea and the look of the stock Input: 96px tall at least, destructive ring when aria-invalid. The fixed one has its own grip in the bottom-right corner, inside the rounding (the native resizer is hidden): a drag changes the height between the field's min-h and max-h; with resizeLabel it is a focusable separator (arrows a line, Home/End the limits); resizable={false} leaves it out. `autogrow` grows it with its text instead (CSS field-sizing: content, a script fallback elsewhere) up to a max-h you set, without a grip. Native validation rings it once it was left wrong or a submit was tried, and aria-invalid follows.",
+	"dependencies": [],
+	"registryDependencies": [
+		"motion"
+	]
+}

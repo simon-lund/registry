@@ -1,0 +1,6 @@
+{
+	"title": "Focus return",
+	"description": "Where focus goes when a layer closes or the focused control goes away, so it never drops to <body>. returnFocus(layer, ...targets) for a layer's onCloseAutoFocus: once bits-ui has returned focus, it checks that focus landed somewhere useful (not body, not inside the closing layer or another dialog on its way out, not inert) and otherwise focuses the first target that can take it (typically triggerOf(layer), the control whose aria-controls names the layer). focusFirst(...targets) focuses the first target that can take focus. tabStops(root), nextTabStop(from, direction, skip) and canFocus(el) find Tab stops in document order. focusLost(layer) is the check. No markup, no copy.",
+	"dependencies": [],
+	"registryDependencies": []
+}

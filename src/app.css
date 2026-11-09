@@ -26,6 +26,28 @@
 	--destructive-foreground: #faf6f0;
 	--card: #ffffff;
 	--card-foreground: #1a1917;
+	--popover: #ffffff;
+	--popover-foreground: #1a1917;
+	--secondary: #f0ebe4;
+	--secondary-foreground: #1a1917;
+
+	/* Motion: what the moving items share; the registry item `motion` ships the same values. */
+	--dur-press: 80ms;
+	--dur-quick: 140ms;
+	--dur-base: 220ms;
+	--dur-calm: 320ms;
+	--ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-exit: cubic-bezier(0.4, 0, 1, 1);
+	--blur-swap: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--dur-press: 0ms;
+		--dur-quick: 120ms;
+		--dur-base: 120ms;
+		--dur-calm: 120ms;
+	}
 }
 
 /* Code: tonal, from ink and stone only. Copper keeps its one meaning, so highlighting is
@@ -60,6 +82,10 @@
 	--destructive-foreground: #1c1a17;
 	--card: #252320;
 	--card-foreground: #e8e4de;
+	--popover: #252320;
+	--popover-foreground: #e8e4de;
+	--secondary: #252320;
+	--secondary-foreground: #e8e4de;
 }
 
 @theme inline {
@@ -83,6 +109,10 @@
 	--color-destructive-foreground: var(--destructive-foreground);
 	--color-card: var(--card);
 	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
 
 	--font-heading: 'Libre Baskerville', Georgia, serif;
 	--font-sans: 'Inter', system-ui, sans-serif;

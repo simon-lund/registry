@@ -1,0 +1,6 @@
+{
+	"title": "Close watcher",
+	"description": "watchClose(onClose) and the closeWatcher(onClose) attachment: while a layer is open, the platform's close request closes it (Android's back button or gesture instead of leaving the page; Escape where nothing else handled it). One CloseWatcher per open layer, last opened closes first (a nested layer before its parent); a layer opened without a gesture (on load, from a timer) joins the watcher before it, so one back closes both. onClose runs at most once and must be harmless when the layer is already closing. Feature-detected: without CloseWatcher it does nothing and back behaves as before. No copy, no markup.",
+	"dependencies": [],
+	"registryDependencies": []
+}

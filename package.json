@@ -34,7 +34,9 @@
 		"wrangler": "^4.151.0"
 	},
 	"dependencies": {
+		"@lucide/svelte": "^1.70.0",
 		"@number-flow/svelte": "^0.4.2",
+		"bits-ui": "^2.20.6",
 		"clsx": "^2.1.1",
 		"embla-carousel": "^8.6.0",
 		"embla-carousel-svelte": "^8.6.0",

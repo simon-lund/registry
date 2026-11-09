@@ -1,0 +1,13 @@
+{
+	"title": "Color Picker",
+	"description": "Picks a colour from its own maths, with no colour library (color.ts: parse, convert between sRGB, HSV, HSL and OKLCH with gamut mapping, format). You compose the parts: ColorPicker (renders nothing; bind:value a CSS colour string, format hex, rgb, hsl or oklch for what it writes, alpha, space hsv or oklch for the area and hue, disabled, onValueCommit at the end of a gesture), ColorPickerArea (the 2D field), ColorPickerHue and ColorPickerAlpha (sliders with gradient tracks), ColorPickerSwatches and ColorPickerSwatch (a radio-group palette), ColorPickerInput (hex in a stock Input with a leading swatch), ColorPickerEyeDropper (hidden where the browser has none) and ColorPickerTrigger (a button showing the colour, for an overlay). No copy inside: you pass every label.",
+	"dependencies": [
+		"bits-ui",
+		"@lucide/svelte"
+	],
+	"registryDependencies": [
+		"motion",
+		"button",
+		"input"
+	]
+}

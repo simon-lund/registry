@@ -1,0 +1,12 @@
+{
+	"title": "Tabs",
+	"description": "A segmented control on bits-ui Tabs, with the part names of stock shadcn-svelte Tabs. The selected segment carries one moving piece, a key on a pill track; the segments themselves are flat labels. The key and its foreground labels are one clip-path layer that slides between segments, so the label colour and the key move in step. The panel follows the key: TabsContent comes in 8px from the side the selection moved to, and a step by keyboard switches at once. An optional tabular count and leading or trailing icons; `mode=\"radio\"` for a single choice without panels (radiogroup / radio). With too many segments for the width, the track scrolls sideways without a scrollbar, the selected segment is scrolled into view, and the edge with more behind it fades where scroll-state container queries exist.",
+	"dependencies": [
+		"bits-ui",
+		"tailwind-variants"
+	],
+	"registryDependencies": [
+		"motion",
+		"view-change"
+	]
+}

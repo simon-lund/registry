@@ -1,0 +1,8 @@
+{
+	"title": "Swap",
+	"description": "Several things on one spot, one shown at a time (Swap + SwapItem active): an icon and its label turning into a check and \"Copied\", a play icon into pause. The items share one grid cell, so the box keeps the width of the widest and nothing moves. The change is Emil Kowalski's icon swap: both at once, a 4px blur cross-fade on base 220ms (ease-out), icons shrinking to and growing from 25%, words only blurring; reduced motion: a plain fade. Inactive items are hidden from screen readers; announce the change with a live region where it matters.",
+	"dependencies": [],
+	"registryDependencies": [
+		"motion"
+	]
+}

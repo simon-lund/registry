@@ -29,6 +29,121 @@
       ]
     },
     {
+      "name": "motion",
+      "type": "registry:theme",
+      "title": "Motion",
+      "description": "The durations and curves the moving items share, as CSS variables: a strong ease-out to land on, and short times. Reduced motion shortens them. The same values as src/app.css.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "cssVars": {
+        "light": {
+          "dur-press": "80ms",
+          "dur-quick": "140ms",
+          "dur-base": "220ms",
+          "dur-calm": "320ms",
+          "ease-settle": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "ease-exit": "cubic-bezier(0.4, 0, 1, 1)",
+          "blur-swap": "4px"
+        }
+      },
+      "css": {
+        "@media (prefers-reduced-motion: reduce)": {
+          ":root": {
+            "--dur-press": "0ms",
+            "--dur-quick": "120ms",
+            "--dur-base": "120ms",
+            "--dur-calm": "120ms"
+          }
+        }
+      },
+      "files": []
+    },
+    {
+      "name": "activity-graph",
+      "type": "registry:ui",
+      "title": "Activity graph",
+      "description": "A contribution graph for habits and routines, GitHub's grid of small rounded squares: one per day, week, month or year, tinted by level. Parts: ActivityGraph (root: `data` keyed YYYY-MM-DD and summed into coarser cells, `granularity` day | week | month | year, optional `range`, required `locale` and `weekStartsOn`, `thresholds` for levels 1-4, bindable `selected`), ActivityGraphRowLabels, ActivityGraphViewport (a sideways scroller, opens at the newest), ActivityGraphColumnLabels, ActivityGraphGrid (ARIA grid with one roving tab stop; renders each cell through a `cell` snippet so the consumer gives words and a Tooltip), ActivityGraphCell (aria-label required), ActivityGraphCaption (optional; turns selection on and shows the selected cell's words, so touch gets the value), ActivityGraphLegend and ActivityGraphLegendScale. Levels: five tonal steps of foreground mixed into muted, distinct in both themes; forced colours keep the fills. No copy, no default locale or week start.",
+      "dependencies": [
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-caption.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-caption.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-cell.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-cell.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-column-labels.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-column-labels.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-grid.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-grid.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-legend-scale.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-legend-scale.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-legend.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-legend.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-row-labels.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-row-labels.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph-viewport.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph-viewport.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/activity-graph.svelte",
+          "type": "registry:ui",
+          "target": "activity-graph/activity-graph.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/context.ts",
+          "type": "registry:ui",
+          "target": "activity-graph/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/format.ts",
+          "type": "registry:ui",
+          "target": "activity-graph/format.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/index.ts",
+          "type": "registry:ui",
+          "target": "activity-graph/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/levels.ts",
+          "type": "registry:ui",
+          "target": "activity-graph/levels.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/activity-graph/model.ts",
+          "type": "registry:ui",
+          "target": "activity-graph/model.ts"
+        }
+      ]
+    },
+    {
       "name": "agent-tree",
       "type": "registry:ui",
       "title": "Agent tree",
@@ -66,6 +181,277 @@
       ]
     },
     {
+      "name": "close-watcher",
+      "type": "registry:ui",
+      "title": "Close watcher",
+      "description": "watchClose(onClose) and the closeWatcher(onClose) attachment: while a layer is open, the platform's close request closes it (Android's back button or gesture instead of leaving the page; Escape where nothing else handled it). One CloseWatcher per open layer, last opened closes first (a nested layer before its parent); a layer opened without a gesture (on load, from a timer) joins the watcher before it, so one back closes both. onClose runs at most once and must be harmless when the layer is already closing. Feature-detected: without CloseWatcher it does nothing and back behaves as before. No copy, no markup.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/close-watcher/close-watcher.ts",
+          "type": "registry:ui",
+          "target": "close-watcher/close-watcher.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/close-watcher/index.ts",
+          "type": "registry:ui",
+          "target": "close-watcher/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "title": "Color Picker",
+      "description": "Picks a colour from its own maths, with no colour library (color.ts: parse, convert between sRGB, HSV, HSL and OKLCH with gamut mapping, format). You compose the parts: ColorPicker (renders nothing; bind:value a CSS colour string, format hex, rgb, hsl or oklch for what it writes, alpha, space hsv or oklch for the area and hue, disabled, onValueCommit at the end of a gesture), ColorPickerArea (the 2D field), ColorPickerHue and ColorPickerAlpha (sliders with gradient tracks), ColorPickerSwatches and ColorPickerSwatch (a radio-group palette), ColorPickerInput (hex in a stock Input with a leading swatch), ColorPickerEyeDropper (hidden where the browser has none) and ColorPickerTrigger (a button showing the colour, for an overlay). No copy inside: you pass every label.",
+      "dependencies": [
+        "bits-ui",
+        "@lucide/svelte"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "button",
+        "input"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-alpha.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-alpha.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-area.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-area.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-channel.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-channel.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-eye-dropper.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-eye-dropper.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-hue.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-hue.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-input.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-input.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-swatch.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-swatch.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-swatches.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-swatches.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker-trigger.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker-trigger.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color-picker.svelte",
+          "type": "registry:ui",
+          "target": "color-picker/color-picker.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/color.ts",
+          "type": "registry:ui",
+          "target": "color-picker/color.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/context.svelte.ts",
+          "type": "registry:ui",
+          "target": "color-picker/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/index.ts",
+          "type": "registry:ui",
+          "target": "color-picker/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/look.ts",
+          "type": "registry:ui",
+          "target": "color-picker/look.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/color-picker/paint.ts",
+          "type": "registry:ui",
+          "target": "color-picker/paint.ts"
+        }
+      ]
+    },
+    {
+      "name": "dial",
+      "type": "registry:ui",
+      "title": "Dial",
+      "description": "A rotary knob that picks one of a few stops (role=slider). Parts: Dial (the root and the slider element: step as a list of values at equal angles or a number, sweep and start angle, bind:value, wrap, disabled, sizes default and sm), DialKnob (the key with a copper pointer line; it turns, gives a little while held and carries the focus ring), DialStop (one per stop, like a clock face: major a long mark with the consumer's label outside, minor a short mark between; the selected mark is copper) and DialUnit (the unit in the sweep's open gap). Keyboard: arrows a stop, Page Up/Down a tenth, Home/End. Pointer: the stop at the pointer's angle, snapping live, with a light haptic per stop on touch. Only the ring around the knob captures the finger; a vertical swipe on the knob scrolls the page. In a form, name submits the stop it is on and form.reset() puts it back to the mount value. No copy inside: aria-label and aria-valuetext come from the consumer.",
+      "dependencies": [
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "https://ui.simon-lund.com/r/form-reset.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/dial/context.ts",
+          "type": "registry:ui",
+          "target": "dial/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/dial/dial-knob.svelte",
+          "type": "registry:ui",
+          "target": "dial/dial-knob.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/dial/dial-stop.svelte",
+          "type": "registry:ui",
+          "target": "dial/dial-stop.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/dial/dial-unit.svelte",
+          "type": "registry:ui",
+          "target": "dial/dial-unit.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/dial/dial.svelte",
+          "type": "registry:ui",
+          "target": "dial/dial.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/dial/index.ts",
+          "type": "registry:ui",
+          "target": "dial/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "focus-return",
+      "type": "registry:ui",
+      "title": "Focus return",
+      "description": "Where focus goes when a layer closes or the focused control goes away, so it never drops to <body>. returnFocus(layer, ...targets) for a layer's onCloseAutoFocus: once bits-ui has returned focus, it checks that focus landed somewhere useful (not body, not inside the closing layer or another dialog on its way out, not inert) and otherwise focuses the first target that can take it (typically triggerOf(layer), the control whose aria-controls names the layer). focusFirst(...targets) focuses the first target that can take focus. tabStops(root), nextTabStop(from, direction, skip) and canFocus(el) find Tab stops in document order. focusLost(layer) is the check. No markup, no copy.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/focus-return/focus-return.ts",
+          "type": "registry:ui",
+          "target": "focus-return/focus-return.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/focus-return/index.ts",
+          "type": "registry:ui",
+          "target": "focus-return/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "form-reset",
+      "type": "registry:ui",
+      "title": "Form reset",
+      "description": "restoreOnReset(el, restore, setDefault?) and hiddenInputOf(el): form reset for controls drawn by bits-ui. bits-ui does not put the drawn control back on form.reset(); restoreOnReset listens for the owning form's reset (the hidden input's form, else the closest form) and calls restore() inside the event, flushed, so the form reads as reset as soon as reset() returns, as with native controls; a cancelled reset is left alone. setDefault puts the mount state on the hidden input (defaultChecked or defaultValue). The component keeps its own mount snapshot. hiddenInputOf finds bits-ui's hidden input (the aria-hidden input right after the root). Switch and Dial use it; no copy, no markup.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/form-reset/form-reset.ts",
+          "type": "registry:ui",
+          "target": "form-reset/form-reset.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/form-reset/index.ts",
+          "type": "registry:ui",
+          "target": "form-reset/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "inert-outside",
+      "type": "registry:ui",
+      "title": "Inert outside",
+      "description": "inertOutside({ keep }): an attachment for a modal layer's surface. While it is open (data-state=\"open\", or none) every element outside it is inert (not focusable, not clickable, hidden from assistive tech that ignores aria-modal): it walks from the surface up to body and makes each sibling on the way inert, so a surface rendered in place works like one in a portal. What keep matches (default [data-slot=toaster]) and the way up to it stay usable. The page comes back the moment data-state leaves open, before the exit motion, so focus can return. Nested layers make their parent inert and give back only what they took; an element the author made inert is never touched. modalLayers.open counts the open layers (reactive). No copy, no markup.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/inert-outside/index.ts",
+          "type": "registry:ui",
+          "target": "inert-outside/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/inert-outside/inert-outside.svelte.ts",
+          "type": "registry:ui",
+          "target": "inert-outside/inert-outside.svelte.ts"
+        }
+      ]
+    },
+    {
+      "name": "long-press",
+      "type": "registry:ui",
+      "title": "Long press",
+      "description": "longPress(onLongPress, { delay, slop, vibrate }): a Svelte attachment, the touch counterpart of a right-click, for a touch screen that shows an element's actions in a sheet or a list. A finger or pen resting 500ms within 8px fires it once, with a short vibration where supported; drifting, lifting early or the browser scrolling cancels it, and a mouse's left button never long-presses. The platform's own context-menu gesture fires it too and never opens the browser's menu: a right-click, Shift+F10 or the Menu key, and Android's own long press, deduplicated so one press is one call. The click a lifted long press would deliver to the node is swallowed; text selection and the iOS callout are off on the node while attached. The detail says source (press or contextmenu), pointerType, x / y and target. No copy, no markup.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/long-press/index.ts",
+          "type": "registry:ui",
+          "target": "long-press/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/long-press/long-press.ts",
+          "type": "registry:ui",
+          "target": "long-press/long-press.ts"
+        }
+      ]
+    },
+    {
+      "name": "middot",
+      "type": "registry:ui",
+      "title": "Middot",
+      "description": "The separator between two pieces of meta (\"Tomorrow · 09:00\"). A drawn dot with exactly the same space on both sides (0.4em), sitting on the middle of the lowercase letters, instead of the \"·\" character between two narrow font spaces. Carries \" · \" as visually hidden text so screen readers and copy-paste keep the separation.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/middot/index.ts",
+          "type": "registry:ui",
+          "target": "middot/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/middot/middot.svelte",
+          "type": "registry:ui",
+          "target": "middot/middot.svelte"
+        }
+      ]
+    },
+    {
       "name": "number-input",
       "type": "registry:ui",
       "title": "Number input",
@@ -96,6 +482,469 @@
       ]
     },
     {
+      "name": "scroll-map",
+      "type": "registry:ui",
+      "title": "Scroll map",
+      "description": "A slim map beside a long scroll (a conversation or a long document): one tick per turn or section, the ticks in view lifted as a band. Parts: ScrollMap (a <nav>; `target` is the scrolling element, followed so the band tracks the real scroll position; while the map shows it is the only indicator, so the target's scrollbar is hidden and comes back where the map hides; `side` right | left; `scrollMargin`), ScrollMapTicks (the column with the band; one tab stop with ArrowUp / ArrowDown / Home / End), ScrollMapTick (size default or sm, `dot` for a section with attachments; hover or focus shows a Tooltip with ScrollMapTickTitle and ScrollMapTickDescription; press or Enter jumps there; `value` is an element id), ScrollMapPrevious / ScrollMapNext (ghost icon buttons). For a pointer and room: it hides itself at a coarse primary pointer (phones, touch tablets); leave it out in a narrow column. No copy inside; the nav, ticks and buttons require aria-labels.",
+      "dependencies": [
+        "@lucide/svelte"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "tooltip"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/scroll-map/context.svelte.ts",
+          "type": "registry:ui",
+          "target": "scroll-map/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/index.ts",
+          "type": "registry:ui",
+          "target": "scroll-map/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map-next.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map-next.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map-previous.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map-previous.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map-tick-description.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map-tick-description.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map-tick-title.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map-tick-title.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map-tick.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map-tick.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map-ticks.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map-ticks.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/scroll-map/scroll-map.svelte",
+          "type": "registry:ui",
+          "target": "scroll-map/scroll-map.svelte"
+        }
+      ]
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "A task in a few ordered steps (account setup, checkout). Parts: Stepper (bind:value = the current step from 1; horizontal | vertical; linear by default: back to any earlier step, ahead only past done steps; or free), StepperList (default, or the inline bars | dots), StepperItem (value, done (default: before the furthest step reached), disabled, loading, invalid), StepperTrigger, StepperIndicator (a ring, a copper disc when active, a tonal disc with a check when done; a Spinner while loading, a red dot when invalid), StepperTitle, StepperDescription, StepperSeparator (a foreground fill that scales in once the step is done), StepperContent and StepperPrevious / StepperNext (stock Buttons, dimmed but focusable at the ends). In a form, StepperNext checks the current panel's fields first, and a submit with an invalid hidden field goes to its step. Keyboard: the triggers share one tab stop, arrows move, Enter / Space go. Under 30rem only the current title stays in sight.",
+      "dependencies": [
+        "@lucide/svelte",
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "button",
+        "https://ui.simon-lund.com/r/swap.json",
+        "spinner"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/stepper/context.ts",
+          "type": "registry:ui",
+          "target": "stepper/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/index.ts",
+          "type": "registry:ui",
+          "target": "stepper/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-button.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-button.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-content.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-content.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-description.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-description.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-indicator.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-indicator.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-item.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-item.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-list.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-list.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-next.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-next.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-previous.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-previous.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-separator.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-separator.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-title.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-title.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper-trigger.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper-trigger.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/stepper/stepper.svelte",
+          "type": "registry:ui",
+          "target": "stepper/stepper.svelte"
+        }
+      ]
+    },
+    {
+      "name": "swap",
+      "type": "registry:ui",
+      "title": "Swap",
+      "description": "Several things on one spot, one shown at a time (Swap + SwapItem active): an icon and its label turning into a check and \"Copied\", a play icon into pause. The items share one grid cell, so the box keeps the width of the widest and nothing moves. The change is Emil Kowalski's icon swap: both at once, a 4px blur cross-fade on base 220ms (ease-out), icons shrinking to and growing from 25%, words only blurring; reduced motion: a plain fade. Inactive items are hidden from screen readers; announce the change with a live region where it matters.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/swap/index.ts",
+          "type": "registry:ui",
+          "target": "swap/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/swap/swap-item.svelte",
+          "type": "registry:ui",
+          "target": "swap/swap-item.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swap/swap.svelte",
+          "type": "registry:ui",
+          "target": "swap/swap.svelte"
+        }
+      ]
+    },
+    {
+      "name": "swipe",
+      "type": "registry:ui",
+      "title": "Swipe",
+      "description": "The physics of a swipe, shared by SwipeDeck and the Toaster; the caller passes every number. rubber(d, max): the asymptotic give of a side that cannot be pulled. VelocityTracker(window): push(t, x, y) per move, velocity(at, stale) on release in px/ms, zero after a rest of `stale` ms. exitDuration(dist, speed, quick, base): an ease-out that leaves at the finger's speed, bounded quick to base. SwipeMotion: one rAF motion at a time, tween(duration, ease, frame, done) and spring(read, write, v0, { stiffness, dampingRatio, timeScale }, done) home to 0 on any number of axes. ClickSwallow: arm() after a drag, swallow(event) in onclickcapture, armed until the end of the task. CARD_SWIPE_GESTURE is a swiped card's tuning (slop 8, hysteresis 6, flick 0.5px/ms from 16px, rubber 32, stale 60ms, window 100ms, spring 400 / 0.78), a named preset, never a default. Pointer handling, axes, zones and layout stay in each component. No markup, no copy.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/swipe/index.ts",
+          "type": "registry:ui",
+          "target": "swipe/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe/swipe.ts",
+          "type": "registry:ui",
+          "target": "swipe/swipe.ts"
+        }
+      ]
+    },
+    {
+      "name": "swipe-deck",
+      "type": "registry:ui",
+      "title": "Swipe deck",
+      "description": "A stack of cards you go through one at a time, swiping each away. Parts: SwipeDeck (root, one tab stop), SwipeDeckStack (the stage), SwipeDeckCard (any content as children, `value` is its identity), SwipeDeckLabel (turns `left`, `right` or `up` on for its card; the word that grows with the drag), SwipeDeckEmpty (shown once no card is left), SwipeDeckActions with SwipeDeckAction (a Button per direction) and SwipeDeckUndo. The drag locks to an axis, follows 1:1 toward a labelled direction, rubber-bands elsewhere, commits past a threshold or on a flick, else springs home. The deck owns the order and a 10-step history: onSwipe(card, direction, { via }) fires as a card leaves (return false to keep it); undo (button, Backspace, Cmd+Z / Ctrl+Z, undo()) brings it back and calls onUndo. Keyboard: Left, Right, Up; the label is announced. Only a dragged card has a shadow. Reduced motion cross-fades. No copy inside.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "button",
+        "https://ui.simon-lund.com/r/swipe.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/swipe-deck/context.svelte.ts",
+          "type": "registry:ui",
+          "target": "swipe-deck/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/index.ts",
+          "type": "registry:ui",
+          "target": "swipe-deck/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-action.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-action.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-actions.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-actions.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-card.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-card.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-empty.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-empty.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-label.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-label.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-stack.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-stack.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck-undo.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck-undo.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/swipe-deck/swipe-deck.svelte",
+          "type": "registry:ui",
+          "target": "swipe-deck/swipe-deck.svelte"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "A switch on bits-ui Switch, with the part name of the stock shadcn-svelte Switch, for settings that apply at once. The knob is the one moving piece: it slides on settle while the copper fill follows it as a clip-path, and holding stretches the knob toward its destination. Sizes default (52 × 32) and sm (40 × 24), both 44px to touch. In a form it submits with a name, and form.reset() puts it back to its mount state, drawn and submitted alike. bind:checked may point at an undefined value (a missing record key): it reads as off.",
+      "dependencies": [
+        "bits-ui",
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "https://ui.simon-lund.com/r/form-reset.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/switch/index.ts",
+          "type": "registry:ui",
+          "target": "switch/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/switch/switch.svelte",
+          "type": "registry:ui",
+          "target": "switch/switch.svelte"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "A segmented control on bits-ui Tabs, with the part names of stock shadcn-svelte Tabs. The selected segment carries one moving piece, a key on a pill track; the segments themselves are flat labels. The key and its foreground labels are one clip-path layer that slides between segments, so the label colour and the key move in step. The panel follows the key: TabsContent comes in 8px from the side the selection moved to, and a step by keyboard switches at once. An optional tabular count and leading or trailing icons; `mode=\"radio\"` for a single choice without panels (radiogroup / radio). With too many segments for the width, the track scrolls sideways without a scrollbar, the selected segment is scrolled into view, and the edge with more behind it fades where scroll-state container queries exist.",
+      "dependencies": [
+        "bits-ui",
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "https://ui.simon-lund.com/r/view-change.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/tabs/context.ts",
+          "type": "registry:ui",
+          "target": "tabs/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/index.ts",
+          "type": "registry:ui",
+          "target": "tabs/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs-content.svelte",
+          "type": "registry:ui",
+          "target": "tabs/tabs-content.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs-copy.svelte",
+          "type": "registry:ui",
+          "target": "tabs/tabs-copy.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs-count.svelte",
+          "type": "registry:ui",
+          "target": "tabs/tabs-count.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs-geometry.svelte.ts",
+          "type": "registry:ui",
+          "target": "tabs/tabs-geometry.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs-list.svelte",
+          "type": "registry:ui",
+          "target": "tabs/tabs-list.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs-trigger.svelte",
+          "type": "registry:ui",
+          "target": "tabs/tabs-trigger.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/tabs/tabs.svelte",
+          "type": "registry:ui",
+          "target": "tabs/tabs.svelte"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:ui",
+      "title": "Terminal",
+      "description": "Command output on the muted surface, flat, in both themes. Parts: Terminal (owns `output`, a string with ANSI escapes or an array of lines, and `streaming`), TerminalHeader, TerminalTitle (names the log), TerminalStatus (role=status), TerminalActions, TerminalButton (a ghost icon Button), TerminalCopyButton (copies the text without escapes; `copiedLabel` required), TerminalClearButton (the consumer empties `output`), TerminalContent (a native scrolling box with a role=log inside, aria-busy while streaming; sticks to the bottom while output arrives, lets go when the reader scrolls up; `wrap` or sideways scroll; a block cursor while streaming) and TerminalEmpty. Long logs stay cheap: only the new tail is parsed (parseAnsiIncremental, exported). ansi.ts parses SGR styles and colours (16, 256, truecolour) and strips other escapes; output is spans, never HTML. The 16 colours are the component's own --terminal-* variables, for light and .dark, each at least 4.5:1 on muted.",
+      "dependencies": [
+        "@lucide/svelte"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "button",
+        "https://ui.simon-lund.com/r/swap.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/terminal/ansi.ts",
+          "type": "registry:ui",
+          "target": "terminal/ansi.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/context.ts",
+          "type": "registry:ui",
+          "target": "terminal/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/index.ts",
+          "type": "registry:ui",
+          "target": "terminal/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-actions.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-actions.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-button.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-button.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-clear-button.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-clear-button.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-content.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-content.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-copy-button.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-copy-button.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-empty.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-empty.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-header.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-header.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-status.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-status.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal-title.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal-title.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/terminal/terminal.svelte",
+          "type": "registry:ui",
+          "target": "terminal/terminal.svelte"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "The multi-line field, with the part name of the stock shadcn-svelte Textarea and the look of the stock Input: 96px tall at least, destructive ring when aria-invalid. The fixed one has its own grip in the bottom-right corner, inside the rounding (the native resizer is hidden): a drag changes the height between the field's min-h and max-h; with resizeLabel it is a focusable separator (arrows a line, Home/End the limits); resizable={false} leaves it out. `autogrow` grows it with its text instead (CSS field-sizing: content, a script fallback elsewhere) up to a max-h you set, without a grip. Native validation rings it once it was left wrong or a submit was tried, and aria-invalid follows.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/textarea/index.ts",
+          "type": "registry:ui",
+          "target": "textarea/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/textarea/textarea.svelte",
+          "type": "registry:ui",
+          "target": "textarea/textarea.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/textarea/user-invalid.ts",
+          "type": "registry:ui",
+          "target": "textarea/user-invalid.ts"
+        }
+      ]
+    },
+    {
       "name": "time-wheel",
       "type": "registry:ui",
       "title": "Time wheel",
@@ -122,6 +971,130 @@
           "path": "src/lib/registry/ui/time-wheel/wheel.svelte",
           "type": "registry:ui",
           "target": "time-wheel/wheel.svelte"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "What just happened, with its undo: a floating popover block with one line (Archived · Q3 report), the verb in bold, a ghost action and a tonal wash that drains over the 5s window. Variants set the action's ink and the wash on the same surface: default, notice, news. A failure is a toast with a leading icon in text-destructive. Parts: Toast (owns the clock), ToastMessage, ToastVerb, ToastAction, ToastProgress, and Toaster, which renders a queue as one stack; toast({ verb, title, variant, action, duration, onDismiss }) adds to it from anywhere. Newest in front, older ones stepped back, spread on hover, focus or tap. Swipe down or sideways to dismiss. Windows hold on hover, focus, a held finger or a hidden tab. One polite live region; Alt+T moves focus to the front toast and back. While a modal is open the Toaster stands in the top layer. onDismiss says why: timeout, swipe, action, overflow or dismiss.",
+      "dependencies": [
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "button",
+        "https://ui.simon-lund.com/r/middot.json",
+        "https://ui.simon-lund.com/r/inert-outside.json",
+        "https://ui.simon-lund.com/r/swipe.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/toast/context.ts",
+          "type": "registry:ui",
+          "target": "toast/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/index.ts",
+          "type": "registry:ui",
+          "target": "toast/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toast-action.svelte",
+          "type": "registry:ui",
+          "target": "toast/toast-action.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toast-message.svelte",
+          "type": "registry:ui",
+          "target": "toast/toast-message.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toast-progress.svelte",
+          "type": "registry:ui",
+          "target": "toast/toast-progress.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toast-verb.svelte",
+          "type": "registry:ui",
+          "target": "toast/toast-verb.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toast.svelte",
+          "type": "registry:ui",
+          "target": "toast/toast.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toaster.svelte",
+          "type": "registry:ui",
+          "target": "toast/toaster.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/toaster.svelte.ts",
+          "type": "registry:ui",
+          "target": "toast/toaster.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/toast/top-layer.ts",
+          "type": "registry:ui",
+          "target": "toast/top-layer.ts"
+        }
+      ]
+    },
+    {
+      "name": "view-change",
+      "type": "registry:ui",
+      "title": "View change",
+      "description": "ViewChange: a view arriving from the side its entry sits on. Wrap what changes with its key (a route, a section); on a change the content is re-created and comes in 8px from `from` while it fades in (base 220ms on settle), so the eye reads where it came from: the next section from the right, an earlier one from the left, a page from the sidebar's side. sideOf(order, prev, next) gives the side from the entries' order. Without `from` the content is simply replaced (the first render, a keyboard shortcut: never animated). Reduced motion: a fade. The same motion is built into TabsContent, where the side follows the key.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/view-change/index.ts",
+          "type": "registry:ui",
+          "target": "view-change/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/view-change/view-change.svelte",
+          "type": "registry:ui",
+          "target": "view-change/view-change.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/view-change/view-change.ts",
+          "type": "registry:ui",
+          "target": "view-change/view-change.ts"
+        }
+      ]
+    },
+    {
+      "name": "voice-meter",
+      "type": "registry:ui",
+      "title": "Voice Meter",
+      "description": "A calm live level meter for a voice being recorded: one row of small round dots in currentColor, where the louder moments stretch single dots into short rounded bars, never taller than the meter (`count`, `h-*` and `--voice-meter-dot` / `--voice-meter-gap` size it). Levels are 0..1, newest last, from mutually exclusive sources: `levels` the consumer pushes, an `analyser` it owns, or a `stream` (getUserMedia, which the consumer calls). trackVoiceLevel reads an AnalyserNode or MediaStream with Web Audio and closes what it opened on cleanup; it never stops the stream's tracks. Motion is transform only: the row drifts left one slot per sample. Reduced motion: no growth, no drift; the dots fade in strength with the level. Always aria-hidden: the surrounding UI says what is happening in words.",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/voice-meter/index.ts",
+          "type": "registry:ui",
+          "target": "voice-meter/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/voice-meter/voice-level.ts",
+          "type": "registry:ui",
+          "target": "voice-meter/voice-level.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/voice-meter/voice-meter.svelte",
+          "type": "registry:ui",
+          "target": "voice-meter/voice-meter.svelte"
         }
       ]
     }

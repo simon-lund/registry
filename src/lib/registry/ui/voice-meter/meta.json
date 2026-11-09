@@ -1,0 +1,6 @@
+{
+	"title": "Voice Meter",
+	"description": "A calm live level meter for a voice being recorded: one row of small round dots in currentColor, where the louder moments stretch single dots into short rounded bars, never taller than the meter (`count`, `h-*` and `--voice-meter-dot` / `--voice-meter-gap` size it). Levels are 0..1, newest last, from mutually exclusive sources: `levels` the consumer pushes, an `analyser` it owns, or a `stream` (getUserMedia, which the consumer calls). trackVoiceLevel reads an AnalyserNode or MediaStream with Web Audio and closes what it opened on cleanup; it never stops the stream's tracks. Motion is transform only: the row drifts left one slot per sample. Reduced motion: no growth, no drift; the dots fade in strength with the level. Always aria-hidden: the surrounding UI says what is happening in words.",
+	"dependencies": [],
+	"registryDependencies": []
+}
