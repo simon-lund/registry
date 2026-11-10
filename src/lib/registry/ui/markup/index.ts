@@ -11,12 +11,14 @@ import Shapes from './markup-shapes.svelte';
 import Shape from './markup-shape.svelte';
 import Action from './markup-action.svelte';
 import Highlight from './markup-highlight.svelte';
+import Layer from './markup-layer.svelte';
 import Selection, { type MarkupHandle } from './markup-selection.svelte';
 import Comment from './markup-comment.svelte';
 import CommentPin from './markup-comment-pin.svelte';
 import CommentBox from './markup-comment-box.svelte';
 import CommentSend from './markup-comment-send.svelte';
-import type { MarkupShape, MarkupTool } from './context.svelte.js';
+import type { MarkupShape, MarkupSpot, MarkupTool } from './context.svelte.js';
+import type { MarkupBox } from './follow.js';
 
 export {
 	Root,
@@ -32,6 +34,7 @@ export {
 	Shape,
 	Action,
 	Highlight,
+	Layer,
 	Selection,
 	Comment,
 	CommentPin,
@@ -51,6 +54,7 @@ export {
 	Shape as MarkupShape,
 	Action as MarkupAction,
 	Highlight as MarkupHighlight,
+	Layer as MarkupLayer,
 	Selection as MarkupSelection,
 	Comment as MarkupComment,
 	CommentPin as MarkupCommentPin,
@@ -58,5 +62,7 @@ export {
 	CommentSend as MarkupCommentSend,
 	type MarkupTool as MarkupToolName,
 	type MarkupShape as MarkupShapeName,
-	type MarkupHandle
+	type MarkupHandle,
+	type MarkupSpot,
+	type MarkupBox
 };

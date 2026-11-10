@@ -6,6 +6,12 @@ import { getContext, hasContext, setContext } from 'svelte';
  */
 export type MarkupTool = 'select' | 'comment' | 'pen' | 'shape';
 
+/**
+ * Where a comment was placed: the element under the click and the point on it, as fractions of its
+ * box (0, 0 its top left, 1, 1 its bottom right). Keep both and the pin finds the place again.
+ */
+export type MarkupSpot = { element: Element; at: { x: number; y: number } };
+
 /** The kind the shape tool draws; a step is a numbered circle. */
 export type MarkupShape = 'line' | 'arrow' | 'rectangle' | 'ellipse' | 'step';
 

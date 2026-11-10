@@ -26,7 +26,7 @@
 		MarkupWidth,
 		MarkupAction,
 		MarkupClose,
-		MarkupHighlight,
+		MarkupLayer,
 		MarkupSelection,
 		MarkupComment,
 		MarkupCommentPin,
@@ -34,11 +34,12 @@
 		MarkupCommentSend,
 		type MarkupHandle,
 		type MarkupShapeName,
+		type MarkupSpot,
 		type MarkupToolName
 	} from '#lib/registry/ui/markup/index.js';
 
-	// Everything below the bar's state is the app's: which element is under the pointer, what the
-	// tools draw, the history behind undo and redo, and where comments are kept.
+	// The app's part: what the pen and shapes draw, the history behind undo and redo, and where
+	// picked elements and comments are kept.
 
 	const colours = [
 		{ name: 'Red', value: '#e5484d' },
@@ -51,9 +52,7 @@
 	type Point = [number, number];
 	// pen: every point; line, arrow, rectangle, ellipse: start and end; step: where
 	type Mark = { id: number; kind: 'pen' | MarkupShapeName; colour: string; width: number; points: Point[]; n?: number };
-	// on an element (select): the element and where on it, as fractions of its box; anywhere
-	// (the comment tool): x and y on the stage
-	type Comment = { id: number; anchor?: Element; at?: { x: number; y: number }; x: number; y: number; text: string; open: boolean; done: boolean };
+	type Comment = MarkupSpot & { id: number; text: string; open: boolean; done: boolean };
 	type Box = { x: number; y: number; width: number; height: number };
 
 	let tool = $state<MarkupToolName | null>('select');
@@ -68,10 +67,15 @@
 	let past = $state<Mark[][]>([]);
 	let future = $state<Mark[][]>([]);
 	let selected = $state<number | null>(null);
-	let hover = $state<{ box: Box; label: string } | null>(null);
-	// One comment from earlier, already done.
-	let comments = $state<Comment[]>([{ id: 0, x: 40, y: 32, text: 'A shorter title', open: false, done: true }]);
+	let picked = $state<Element[]>([]);
+	let comments = $state<Comment[]>([]);
 	let next = 1;
+
+	// One comment from earlier, already done: just left of the title.
+	let title = $state<HTMLElement | null>(null);
+	$effect(() => {
+		if (title && next === 1) comments.push({ id: next++, element: title, at: { x: -0.06, y: 0.5 }, text: 'A shorter title', open: false, done: true });
+	});
 
 	const drawing = $derived(tool === 'pen' || tool === 'shape');
 
@@ -109,36 +113,11 @@
 		commit(before);
 	}
 
-	// Select: the element under the pointer, outlined and named as its tag and first class.
-	const under = (e: { clientX: number; clientY: number }) =>
-		document.elementsFromPoint(e.clientX, e.clientY).find((n) => page?.contains(n) && n !== page);
-	function outline(el: Element) {
-		const r = el.getBoundingClientRect();
-		const s = stage!.getBoundingClientRect();
-		const cls = el.classList[0];
-		return { box: { x: r.left - s.left, y: r.top - s.top, width: r.width, height: r.height }, label: el.tagName.toLowerCase() + (cls ? `.${cls}` : '') };
-	}
-	function point(e: PointerEvent) {
-		const el = under(e);
-		hover = el && stage ? outline(el) : null;
-	}
-	// A click on an element comments on it: the pin stays on that element, where it was clicked.
-	function anchor(e: MouseEvent) {
-		const el = under(e);
-		if (!el) return;
-		const r = el.getBoundingClientRect();
-		const [x, y] = local(e);
+	// The comment tool: a comment where it clicked.
+	function place(spot: MarkupSpot) {
 		selected = null;
-		comments.push({ id: next++, anchor: el, at: { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }, x, y, text: '', open: true, done: false });
+		comments.push({ ...spot, id: next++, text: '', open: true, done: false });
 	}
-	// The comment tool: a chat bubble anywhere.
-	function place(e: MouseEvent) {
-		const [x, y] = local(e);
-		selected = null;
-		comments.push({ id: next++, x, y, text: '', open: true, done: false });
-	}
-	// The element an open comment is on stays outlined.
-	const onto = $derived(comments.find((c) => c.open && c.anchor)?.anchor);
 	// Closed with nothing written, a comment is dropped.
 	function closed(c: Comment, isOpen: boolean) {
 		if (!isOpen && !c.text.trim()) comments = comments.filter((o) => o.id !== c.id);
@@ -242,9 +221,43 @@
 	{:else}<SquareIcon />{/if}
 {/snippet}
 
+{#snippet drawn()}
+	<svg class="pointer-events-none absolute inset-0 size-full overflow-visible" aria-hidden="true">
+		{#each marks as m (m.id)}
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<g
+				fill="none"
+				stroke={m.colour}
+				stroke-width={m.width}
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				pointer-events={tool === 'select' ? 'visiblePainted' : 'none'}
+				class="cursor-pointer"
+				onpointerdown={() => (selected = m.id)}
+			>
+				{#if m.kind === 'pen'}
+					<polyline points={m.points.map((p) => p.join(',')).join(' ')} />
+				{:else if m.kind === 'line' || m.kind === 'arrow'}
+					<line x1={m.points[0][0]} y1={m.points[0][1]} x2={m.points[1][0]} y2={m.points[1][1]} />
+					{#if m.kind === 'arrow'}<polyline points={head(m)} />{/if}
+				{:else if m.kind === 'rectangle'}
+					{@const b = boxOf(m)}
+					<rect x={b.x} y={b.y} width={b.width} height={b.height} rx="2" />
+				{:else if m.kind === 'ellipse'}
+					{@const b = boxOf(m)}
+					<ellipse cx={b.x + b.width / 2} cy={b.y + b.height / 2} rx={b.width / 2} ry={b.height / 2} />
+				{:else if m.kind === 'step'}
+					<circle cx={m.points[0][0]} cy={m.points[0][1]} r="12" fill={m.colour} stroke="none" />
+					<text x={m.points[0][0]} y={m.points[0][1]} fill="white" stroke="none" text-anchor="middle" dominant-baseline="central" class="text-xs font-semibold">{m.n}</text>
+				{/if}
+			</g>
+		{/each}
+	</svg>
+{/snippet}
+
 <div bind:this={stage} class="relative h-96 w-full overflow-hidden select-none">
 	<div bind:this={page} class="page mx-auto flex max-w-sm flex-col gap-3 px-6 pt-10">
-		<h3 class="title m-0 text-lg font-semibold">Quarterly review</h3>
+		<h3 bind:this={title} class="title m-0 text-lg font-semibold">Quarterly review</h3>
 		<p class="lead text-muted-foreground m-0 text-sm">Revenue grew in every region but one.</p>
 		<div class="figures flex items-baseline gap-4">
 			<span class="figure text-4xl font-light tabular-nums">+12%</span>
@@ -252,79 +265,29 @@
 		</div>
 	</div>
 
-	{#if open && tool === 'select'}
-		<!-- select: point at an element, click to comment on it -->
-		<button
-			type="button"
-			class="absolute inset-0 cursor-default"
-			aria-label="Comment on what is here"
-			onpointermove={point}
-			onpointerleave={() => (hover = null)}
-			onclick={anchor}
-		></button>
-	{:else if open && tool === 'comment'}
-		<!-- comment: a chat bubble anywhere -->
-		<button type="button" class="absolute inset-0 cursor-crosshair" aria-label="Leave a comment here" onclick={place}></button>
-	{:else if open && drawing}
-		<!-- pen, shapes, steps -->
-		<div
-			class="absolute inset-0 touch-none cursor-crosshair"
-			role="presentation"
-			onpointerdown={down}
-			onpointermove={move}
-			onpointerup={up}
-			onpointercancel={up}
-		></div>
-	{/if}
-
-	<svg class="pointer-events-none absolute inset-0 size-full overflow-visible" aria-hidden="true">
-		{#each marks as m (m.id)}
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<g
-					fill="none"
-					stroke={m.colour}
-					stroke-width={m.width}
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					pointer-events={open && tool === 'select' ? 'visiblePainted' : 'none'}
-					class="cursor-pointer"
-					onpointerdown={() => ((selected = m.id), (hover = null))}
-				>
-					{#if m.kind === 'pen'}
-						<polyline points={m.points.map((p) => p.join(',')).join(' ')} />
-					{:else if m.kind === 'line' || m.kind === 'arrow'}
-						<line x1={m.points[0][0]} y1={m.points[0][1]} x2={m.points[1][0]} y2={m.points[1][1]} />
-						{#if m.kind === 'arrow'}<polyline points={head(m)} />{/if}
-					{:else if m.kind === 'rectangle'}
-						{@const b = boxOf(m)}
-						<rect x={b.x} y={b.y} width={b.width} height={b.height} rx="2" />
-					{:else if m.kind === 'ellipse'}
-						{@const b = boxOf(m)}
-						<ellipse cx={b.x + b.width / 2} cy={b.y + b.height / 2} rx={b.width / 2} ry={b.height / 2} />
-					{:else if m.kind === 'step'}
-						<circle cx={m.points[0][0]} cy={m.points[0][1]} r="12" fill={m.colour} stroke="none" />
-						<text x={m.points[0][0]} y={m.points[0][1]} fill="white" stroke="none" text-anchor="middle" dominant-baseline="central" class="text-xs font-semibold">{m.n}</text>
-					{/if}
-				</g>
-		{/each}
-	</svg>
-
-
 	{#if open}
 		<Markup bind:tool bind:shape bind:colour bind:width>
-			{#if tool === 'select' && hover}
-				<MarkupHighlight class="absolute" rect={hover.box}>{hover.label}</MarkupHighlight>
-			{:else if onto}
-				{@const o = outline(onto)}
-				<MarkupHighlight class="absolute" rect={o.box}>{o.label}</MarkupHighlight>
+			<!-- select picks elements of the page; comment places a comment -->
+			<MarkupLayer class="absolute inset-0" root={page} bind:selected={picked} onPlace={place} />
+			{#if drawing}
+				<!-- pen, shapes, steps -->
+				<div
+					class="absolute inset-0 touch-none cursor-crosshair"
+					role="presentation"
+					onpointerdown={down}
+					onpointermove={move}
+					onpointerup={up}
+					onpointercancel={up}
+				></div>
 			{/if}
+			{@render drawn()}
 			{#if chosen}
 				<MarkupSelection class="absolute" rect={boxOf(chosen)} onHold={hold} />
 			{/if}
 
 			{#each comments as c, i (c.id)}
 				<MarkupComment bind:open={c.open} bind:value={c.text} onOpenChange={(o) => closed(c, o)}>
-					<MarkupCommentPin variant={c.done ? 'done' : 'default'} anchor={c.anchor} at={c.at} class="absolute" style="left: {c.x}px; top: {c.y}px" aria-label="Comment {i + 1}">
+					<MarkupCommentPin variant={c.done ? 'done' : 'default'} anchor={c.element} at={c.at} aria-label="Comment {i + 1}">
 						{#if c.done}<CheckIcon />{:else}{i + 1}{/if}
 					</MarkupCommentPin>
 					<MarkupCommentBox placeholder="Add a comment" aria-label="Comment {i + 1}">
@@ -373,6 +336,7 @@
 			</MarkupBar>
 		</Markup>
 	{:else}
+		{@render drawn()}
 		<button type="button" class="text-muted-foreground absolute bottom-6 left-1/2 -translate-x-1/2 text-sm underline" onclick={() => (open = true)}>Open the bar again</button>
 	{/if}
 </div>

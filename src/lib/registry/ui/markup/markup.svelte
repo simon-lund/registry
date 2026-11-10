@@ -4,13 +4,11 @@
 	import { MarkupState, setMarkup, type MarkupShape, type MarkupTool } from './context.svelte.js';
 
 	/**
-	 * Markup: the UI of a mark-up tool, as Claude Code's browser pane has it: a bar to pick a tool,
-	 * a colour and a width, and comments (a numbered pin, a box to write in) for the places you
-	 * click. It catches no clicks, draws nothing and keeps nothing by itself: what a tool does, where
-	 * a pin goes and where marks and comments are saved are the app's. Read `tool`, `colour` and
-	 * `width`; anchor a MarkupComment to the element the select tool clicked, or place one where the
-	 * comment tool did; save a comment in its `onSend`
-	 * and a drawing when its stroke ends, so nothing waits for a send.
+	 * Markup: a mark-up tool's UI, as Claude Code's browser pane has it: a bar to pick a tool, a
+	 * colour and a width; a layer where select picks elements of the page and comment places a
+	 * comment (a numbered pin, a box to write in). It hands you what they give and keeps nothing: what
+	 * a picked element means, what the pen and shapes draw and where comments are saved are the
+	 * app's. Save a comment in its `onSend` and a drawing when its stroke ends: there is no send-all.
 	 *
 	 * The root holds the shared state and renders nothing of its own: compose MarkupBar and the
 	 * comments inside it.

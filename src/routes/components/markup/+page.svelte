@@ -33,13 +33,13 @@
 	<PlateSection title="Installation">
 		<p>
 			After the markup bar in Claude Code's browser pane: the bar (select, comment, pen, shapes;
-			colour, width; undo, redo, delete), the outline around the element the select tool points at,
-			the handles around a selected mark, and comments, a numbered pin and a box to write in. A
-			comment made with select stays on its element and follows it; one made with the comment tool,
-			a chat bubble, sits wherever you clicked. It is the
-			UI only: it catches no clicks, draws nothing and keeps nothing. What the tools draw, the history
-			behind undo and redo, and saving each mark and comment as it is made are your app's; the demo
-			shows one way. The comment box is placed with Floating UI.
+			colour, width; undo, redo, delete), a layer for the two tools that work on the page itself, the
+			handles around a selected mark, and comments, a numbered pin and a box to write in. Select picks
+			elements: each stays outlined with its tag, and you get the elements. Comment places a comment
+			anywhere: you get the element under the click and the point on it, then the text when it is sent,
+			and the pin follows that element. What a picked element means, what the pen and shapes draw, the
+			history behind undo and redo, and saving are your app's; the demo shows one way. Outlines, pins
+			and the comment box follow the page with Floating UI.
 		</p>
 		<PlateInstall name="markup" dependencies={meta.dependencies} needs={meta.registryDependencies} files={source} />
 	</PlateSection>
@@ -69,7 +69,7 @@
 			<PlatePart name="Markup">
 				<p>The state, shared with the parts. Renders nothing of its own. Also exported as <code>Root</code>.</p>
 				<PlateProps>
-					<PlateProp name="tool" type={`"select" | "comment" | "pen" | "shape" | null`} default="null" bindable>The tool in hand; null: none, the page works as usual. Select comments on an element; comment leaves one anywhere.</PlateProp>
+					<PlateProp name="tool" type={`"select" | "comment" | "pen" | "shape" | null`} default="null" bindable>The tool in hand; null: none, the page works as usual. Select picks elements; comment places a comment.</PlateProp>
 					<PlateProp name="shape" type={`"line" | "arrow" | "rectangle" | "ellipse" | "step"`} default={`"rectangle"`} bindable>The kind the shape tool draws; a step is a numbered circle.</PlateProp>
 					<PlateProp name="colour" type="string" default={`"var(--foreground)"`} bindable>Any CSS colour: the picked swatch's value.</PlateProp>
 					<PlateProp name="width" type="number" default="3" bindable>In px.</PlateProp>
@@ -150,10 +150,22 @@
 			<PlatePart name="MarkupSeparator">
 				<p>A fine vertical line between groups.</p>
 			</PlatePart>
-			<PlatePart name="MarkupHighlight">
-				<p>The outline around the element the select tool points at, its tag above it as children. Draws only; clicks pass through.</p>
+			<PlatePart name="MarkupLayer">
+				<p>The layer select and comment work on, over the page; it takes the pointer only while one of them is in hand. Select outlines the element under the pointer in grey with its tag, and a click adds it to <code>selected</code>, copper, or takes it out; picked elements stay outlined, following the page. Comment calls <code>onPlace</code> with where a click landed. Render it before the comments and the bar. Picking is by pointer only.</p>
 				<PlateProps>
-					<PlateProp name="rect" type={`{ x, y, width, height }`} required>The element's box, where you place it.</PlateProp>
+					<PlateProp name="selected" type="Element[]" default="[]" bindable>The picked elements, in the order picked.</PlateProp>
+					<PlateProp name="onPlace" type={`(spot: { element: Element; at: { x: number; y: number } }) => void`}>The element under the comment tool's click and the point on it, as fractions of its box: give both to the pin.</PlateProp>
+					<PlateProp name="root" type="Element | null">Only its descendants can be picked; the whole document by default.</PlateProp>
+					<PlateProp name="label" type="(element: Element) => string">The tag on an outline; tag name and first class by default.</PlateProp>
+					<PlateProp name="class" type="string">Covers the viewport (<code>fixed inset-0</code>); <code>absolute inset-0</code> covers a container.</PlateProp>
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupHighlight">
+				<p>The outline around an element, its tag above it as children; MarkupLayer draws these, this is for one of your own. Draws only; clicks pass through.</p>
+				<PlateProps>
+					<PlateProp name="variant" type={`"default" | "muted"`} default={`"default"`}>Copper for picked; grey for only pointed at.</PlateProp>
+					<PlateProp name="anchor" type="Element | null">The element; the outline follows it.</PlateProp>
+					<PlateProp name="rect" type={`{ x, y, width, height }`}>Or a box, where you place it.</PlateProp>
 					<PlateProp name="class" type="string">Position it: <code>fixed</code> or <code>absolute</code>.</PlateProp>
 				</PlateProps>
 			</PlatePart>
@@ -175,7 +187,7 @@
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="MarkupCommentPin">
-				<p>The circle that opens the box; the number, or a check, goes inside. On an element, give it as <code>anchor</code> with the point clicked as <code>at</code>: the pin places itself there and follows the element as the page scrolls, resizes or reflows. Anywhere else its centre sits on <code>left</code> and <code>top</code>; position it yourself. Either way, above your click layer. Other props go to its <code>button</code>.</p>
+				<p>The circle that opens the box; the number, or a check, goes inside. Give it the spot from <code>onPlace</code>, the element as <code>anchor</code> and the point as <code>at</code>: the pin places itself there and follows the element as the page scrolls, resizes or reflows. Anywhere else its centre sits on <code>left</code> and <code>top</code>; position it yourself. Either way, above your click layer. Other props go to its <code>button</code>.</p>
 				<PlateProps>
 					<PlateProp name="anchor" type="Element | null">The element the comment is on.</PlateProp>
 					<PlateProp name="at" type={`{ x: number; y: number }`} default={`{ x: 0.5, y: 0.5 }`}>Where on the anchor, as fractions of its box.</PlateProp>

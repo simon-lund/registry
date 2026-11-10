@@ -336,7 +336,7 @@
       "name": "markup",
       "type": "registry:ui",
       "title": "Markup",
-      "description": "The UI of a mark-up tool, after Claude Code's browser-pane markup bar. It catches no clicks, draws nothing and keeps nothing by itself: what the tools draw, the undo history, and saving each mark and comment as it is made (there is no send-all) are the app's. Parts: Markup (the state: bind:tool select | comment | pen | shape | null, bind:shape line | arrow | rectangle | ellipse | step, bind:colour, bind:width), MarkupBar (the floating surface; no key in it or its menus reaches the page; Escape is a ladder: an open menu closes, else the newest open comment, else the tool is put down), MarkupTools (bits-ui Toolbar: one tab stop, arrows move), MarkupTool (a toggle; the tool in hand is the copper key; aria-label shown as a tooltip), MarkupShapes and MarkupShape (the shape tool with a chevron menu of kinds, icon and name), MarkupSeparator, MarkupColors (a menu of your ColorPickerSwatch), MarkupWidths and MarkupWidth (a menu of lines), MarkupAction (undo, redo, delete: a ghost icon Button with a tooltip), MarkupClose, MarkupHighlight (the outline and tag on the element the select tool points at), MarkupSelection (eight handles on a selected mark's box; onHold(handle, event)), MarkupComment (bind:open, bind:value, onSend(text), onOpenChange), MarkupCommentPin (a 24px numbered circle; on an element with anchor and at, following it, or placed by you; variant done for a check), MarkupCommentBox (a growing field with its send button inside, floating from the pin's corner with Floating UI; the corner it grew from is pointed; Enter sends) and MarkupCommentSend. No copy inside: every label is yours.",
+      "description": "The UI of a mark-up tool, after Claude Code's browser-pane markup bar. It catches clicks for the two tools that work on the page (select picks elements, comment places a comment) and hands you what they give; what a picked element means, what the pen and shapes draw, the undo history, and saving each mark and comment as it is made (there is no send-all) are the app's. Parts: Markup (the state: bind:tool select | comment | pen | shape | null, bind:shape line | arrow | rectangle | ellipse | step, bind:colour, bind:width), MarkupBar (the floating surface; no key in it or its menus reaches the page; Escape is a ladder: an open menu closes, else the newest open comment, else the tool is put down), MarkupTools (bits-ui Toolbar: one tab stop, arrows move), MarkupTool (a toggle; the tool in hand is the copper key; aria-label shown as a tooltip), MarkupShapes and MarkupShape (the shape tool with a chevron menu of kinds, icon and name), MarkupSeparator, MarkupColors (a menu of your ColorPickerSwatch), MarkupWidths and MarkupWidth (a menu of lines), MarkupAction (undo, redo, delete: a ghost icon Button with a tooltip), MarkupClose, MarkupLayer (the layer select and comment work on: bind:selected elements, each kept outlined with its tag; onPlace({ element, at }) for a comment; root, label), MarkupHighlight (an element's outline and tag, following it by anchor, or at a rect), MarkupSelection (eight handles on a selected mark's box; onHold(handle, event)), MarkupComment (bind:open, bind:value, onSend(text), onOpenChange), MarkupCommentPin (a 24px numbered circle at a spot, anchor and at, following its element; variant done for a check), MarkupCommentBox (a growing field with its send button inside, floating from the pin's corner with Floating UI; the corner it grew from is pointed; Enter sends) and MarkupCommentSend. No copy inside: every label is yours.",
       "dependencies": [
         "bits-ui",
         "@lucide/svelte",
@@ -362,6 +362,11 @@
           "path": "src/lib/registry/ui/markup/context.svelte.ts",
           "type": "registry:ui",
           "target": "markup/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/follow.ts",
+          "type": "registry:ui",
+          "target": "markup/follow.ts"
         },
         {
           "path": "src/lib/registry/ui/markup/index.ts",
@@ -412,6 +417,11 @@
           "path": "src/lib/registry/ui/markup/markup-highlight.svelte",
           "type": "registry:ui",
           "target": "markup/markup-highlight.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-layer.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-layer.svelte"
         },
         {
           "path": "src/lib/registry/ui/markup/markup-selection.svelte",

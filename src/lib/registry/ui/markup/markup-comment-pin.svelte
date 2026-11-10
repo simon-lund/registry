@@ -21,10 +21,10 @@
 
 <script lang="ts">
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { autoUpdate } from '@floating-ui/dom';
 	import { cn } from '#lib/utils.js';
 	import { getMarkup } from './context.svelte.js';
 	import { getComment } from './comment.svelte.js';
+	import { follow } from './follow.js';
 
 	/**
 	 * MarkupCommentPin: the comment's pin, a 24px circle that opens and closes its box. Put the
@@ -71,16 +71,7 @@
 		const el = anchor;
 		const { x, y } = at;
 		if (!pin || !el) return;
-		const stop = autoUpdate(el, pin, () => {
-			const r = el.getBoundingClientRect();
-			const parent = pin.offsetParent;
-			// no positioned ancestor: the document is the containing block
-			const o = parent && parent !== document.body ? parent.getBoundingClientRect() : { left: -scrollX, top: -scrollY };
-			pos = {
-				left: r.left + x * r.width - o.left - (parent?.clientLeft ?? 0) + (parent?.scrollLeft ?? 0),
-				top: r.top + y * r.height - o.top - (parent?.clientTop ?? 0) + (parent?.scrollTop ?? 0)
-			};
-		});
+		const stop = follow(el, pin, (b) => (pos = { left: b.x + x * b.width, top: b.y + y * b.height }));
 		return () => {
 			stop();
 			pos = null;
