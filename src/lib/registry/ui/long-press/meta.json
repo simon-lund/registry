@@ -1,6 +1,0 @@
-{
-	"title": "Long press",
-	"description": "longPress(onLongPress, { delay, slop, vibrate }): a Svelte attachment, the touch counterpart of a right-click, for a touch screen that shows an element's actions in a sheet or a list. A finger or pen resting 500ms within 8px fires it once, with a short vibration where supported; drifting, lifting early or the browser scrolling cancels it, and a mouse's left button never long-presses. The platform's own context-menu gesture fires it too and never opens the browser's menu: a right-click, Shift+F10 or the Menu key, and Android's own long press, deduplicated so one press is one call. The click a lifted long press would deliver to the node is swallowed; text selection and the iOS callout are off on the node while attached. The detail says source (press or contextmenu), pointerType, x / y and target. No copy, no markup.",
-	"dependencies": [],
-	"registryDependencies": []
-}

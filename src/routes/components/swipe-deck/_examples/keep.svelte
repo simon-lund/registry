@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ArchiveIcon from '@lucide/svelte/icons/archive';
+	import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
 	import {
 		SwipeDeck,
 		SwipeDeckStack,
@@ -31,8 +33,8 @@
 		<SwipeDeckStack>
 			{#each notes as note (note.id)}
 				<SwipeDeckCard value={note.id}>
-					<SwipeDeckLabel direction="left">Archive</SwipeDeckLabel>
-					<SwipeDeckLabel direction="right">Next</SwipeDeckLabel>
+					<SwipeDeckLabel direction="left"><ArchiveIcon aria-hidden="true" />Archive</SwipeDeckLabel>
+					<SwipeDeckLabel direction="right" variant="default"><ArrowRightIcon aria-hidden="true" />Next</SwipeDeckLabel>
 					<div class="bg-card flex h-full min-h-40 flex-col gap-1 rounded-lg border p-5">
 						{#if note.pinned}<p class="text-muted-foreground m-0 text-sm">Pinned</p>{/if}
 						<p class="m-0">{note.title}</p>

@@ -7,11 +7,12 @@
 	/**
 	 * ViewChange: a view arriving from the side its entry sits on. Wrap what changes with its
 	 * `key` (a route, a section): when the key changes the content is re-created and comes in
-	 * 8px from `from` while it fades in (base 220ms on settle), so the eye reads where it came from:
-	 * the next section from the right, an earlier one from the left, a page from the sidebar's side.
-	 * The old content is gone at once; nothing overlaps, nothing shifts. Without `from` the content
-	 * is simply replaced: the first render, and a keyboard shortcut, which is never animated.
-	 * Reduced motion: a fade.
+	 * 8px from `from` while it fades in and sharpens from the swap blur (base 220ms on settle), so
+	 * the eye reads where it came from: the next section from the right, an earlier one from the
+	 * left, a page from the sidebar's side. The old content is gone at once; nothing overlaps,
+	 * nothing shifts, and the blur hides the frame where old and new would read as a flicker.
+	 * Without `from` the content is simply replaced: the first render, and a keyboard shortcut,
+	 * which is never animated. Reduced motion: a fade.
 	 *
 	 * `from` is read when the key changes, not before: set it as the navigation starts (SvelteKit's
 	 * `beforeNavigate`, `sideOf` over the sections' order) and the content that is still showing
@@ -67,12 +68,14 @@
 		from {
 			opacity: 0;
 			translate: var(--view-shift, 0) 0;
+			filter: blur(var(--view-blur, var(--blur-swap, 4px)));
 		}
 	}
-	/* Reduced motion: the fade stays (the token shortens it), the travel goes. */
+	/* Reduced motion: the fade stays (the token shortens it), the travel and the blur go. */
 	@media (prefers-reduced-motion: reduce) {
 		.view[data-from] {
 			--view-shift: 0px;
+			--view-blur: 0px;
 		}
 	}
 </style>

@@ -11,7 +11,7 @@
 	 */
 	export const tabsListVariants = tv({
 		base: [
-			'bg-muted ring-border relative isolate flex w-full items-center gap-0.5 rounded-full p-1 ring-1 ring-inset [--tabs-track:var(--muted)]',
+			'bg-muted relative isolate flex w-full items-center gap-0.5 rounded-full p-1 ring-1 ring-(--tabs-line) ring-inset [--tabs-line:var(--border)] [--tabs-track:var(--muted)]',
 			'overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
 			'supports-[container-type:scroll-state]:[container-type:scroll-state]',
 			'data-disabled:opacity-45'
@@ -43,7 +43,7 @@
 	 * track's scroll coordinates, scrolls with its segment. The selected segment is scrolled into
 	 * view (16px clear of the edge) when it is chosen and when the track first lays out, never
 	 * scrolling the page. Where the browser has scroll-state container queries, the edge with more
-	 * segments behind it fades into the track (16px); elsewhere there is no hint.
+	 * segments behind it fades into the track (44px); elsewhere there is no hint.
 	 *
 	 * @example
 	 * <TabsList aria-label="Tasks">…</TabsList>
@@ -137,7 +137,7 @@
 		data-ready={active ? '' : undefined}
 		aria-hidden="true"
 		inert
-		class="indicator pointer-events-none absolute inset-y-0 left-0 z-[1]"
+		class="indicator pointer-events-none absolute inset-y-0 left-0 z-[3]"
 		style={insets}
 	>
 		<!-- The key's fine line, then the face: a sheet with every label in foreground, clipped to the selected segment. -->
@@ -151,7 +151,8 @@
 <style>
 	/*
 	 * Two stacked sheets, each clipped to the selected trigger's box (--t/--r/--b/--l) and
-	 * transitioned together, so they are one rigid key in motion:
+	 * transitioned together, so they are one rigid key in motion. The key lies above the scroll
+	 * hints: they fade the labels behind them, never the selection:
 	 *   edge: the box grown by 1px → the fine line around the face
 	 *   face: the box itself       → the key, labels in foreground
 	 */
@@ -187,7 +188,7 @@
 
 	/*
 	 * Scroll hints. Zero-width flex items (their gap taken back) stuck to the scrollport's edges,
-	 * each drawing a 16px fade into the track colour inward. Only where `scroll-state` queries
+	 * each covering the track's round end and fading into the track colour inward. Only where `scroll-state` queries
 	 * exist (the list is then a scroll-state container), and only while that way can scroll.
 	 */
 	.hint {
@@ -197,7 +198,7 @@
 		.hint {
 			display: block;
 			position: sticky;
-			z-index: 3;
+			z-index: 2;
 			align-self: stretch;
 			flex: none;
 			width: 0;
@@ -213,19 +214,42 @@
 			right: 0;
 			margin-inline-start: calc(var(--spacing, 4px) * -0.5);
 		}
+		/*
+		 * A sticky item stops at the track's padding, not its edge, so the fade reaches back across
+		 * the padding to the track's edge and takes the end's shape: round, wider than the end's
+		 * 22px radius (narrower, the rounding would be squashed and leave slivers at the curve).
+		 * It covers the whole end, so it draws that stretch of the fine line itself (the track's line
+		 * is a shadow under the labels, which would paint over it). Solid across the curve, then
+		 * 22px of fade: no letter shows inside the round end.
+		 */
 		.hint::before {
+			--reach: var(--spacing, 4px);
 			content: '';
 			position: absolute;
-			inset-block: calc(var(--spacing, 4px) * -1.5);
-			width: calc(var(--spacing, 4px) * 4);
+			box-sizing: border-box;
+			inset-block: calc(-1 * var(--reach));
+			width: calc(var(--spacing, 4px) * 10 + var(--reach));
+			border: 1px solid var(--tabs-line);
 		}
 		.hint-start::before {
-			left: 0;
-			background: linear-gradient(to right, var(--tabs-track) 25%, transparent);
+			left: calc(-1 * var(--reach));
+			border-inline-end-width: 0;
+			border-radius: 9999px 0 0 9999px;
+			background: linear-gradient(
+				to right,
+				var(--tabs-track) calc(var(--spacing, 4px) * 5.5),
+				transparent
+			);
 		}
 		.hint-end::before {
-			right: 0;
-			background: linear-gradient(to left, var(--tabs-track) 25%, transparent);
+			right: calc(-1 * var(--reach));
+			border-inline-start-width: 0;
+			border-radius: 0 9999px 9999px 0;
+			background: linear-gradient(
+				to left,
+				var(--tabs-track) calc(var(--spacing, 4px) * 5.5),
+				transparent
+			);
 		}
 		@container scroll-state(scrollable: inline-start) {
 			.hint-start {

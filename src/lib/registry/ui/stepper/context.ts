@@ -23,7 +23,7 @@ export type StepperListVariant = 'default' | 'bars' | 'dots';
 export type StepperItemState = 'active' | 'done' | 'pending';
 
 /** What the indicator shows, exactly one: loading > done > the number (or children). */
-export type StepperGlyph = 'spinner' | 'check' | 'content';
+export type StepperGlyph = 'spinner' | 'invalid' | 'check' | 'content';
 
 export type StepperStep = {
 	readonly done: boolean;
@@ -39,6 +39,8 @@ export type StepperRootContext = {
 	readonly focused: number | null;
 	/** The furthest step reached so far (never below the current one). */
 	readonly reached: number;
+	/** The step the last move left (the current one before any move). */
+	readonly from: number;
 	register(value: number, step: StepperStep): () => void;
 	reachable(value: number): boolean;
 	/** The id of a step's title, once it has one. */
@@ -53,7 +55,28 @@ export type StepperRootContext = {
 	registerPanel(value: number, element: HTMLElement): () => void;
 	/** The panel element of a step, once it has rendered. */
 	panel(value: number): HTMLElement | undefined;
+	/**
+	 * Where the segment from step `b` to `b + 1` falls in the last move: its place `k` counted from
+	 * the step left, out of the `n` segments the move crossed; null when the move did not cross it.
+	 */
+	sweep(b: number): StepperSweep | null;
 };
+
+export type StepperSweep = { readonly k: number; readonly n: number };
+
+/**
+ * A move across several segments draws them as one line, one after the other from the step left:
+ * each segment but the last runs in quick, linear, after the ones before it; the last lands on an
+ * ease-out over 280ms, its start about as fast as the linear ones, so the line never jerks. As
+ * style variables for a part's transition; none for a move of one segment, which keeps its own.
+ */
+export function sweepStyle(sweep: StepperSweep | null): string | undefined {
+	if (!sweep || sweep.n < 2) return undefined;
+	const delay = `--sweep-delay:calc(var(--dur-quick) * ${sweep.k});`;
+	return sweep.k === sweep.n - 1
+		? `${delay}--sweep-dur:280ms;--sweep-ease:cubic-bezier(0.33, 1, 0.68, 1);`
+		: `${delay}--sweep-dur:var(--dur-quick);--sweep-ease:linear;`;
+}
 
 export type StepperListContext = { readonly variant: StepperListVariant };
 

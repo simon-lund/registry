@@ -13,8 +13,7 @@
 	let step = $state(3);
 </script>
 
-<!-- The dot is cut out of the surface: --stepper-cutout is that surface's colour. -->
-<Stepper bind:value={step} class="w-full max-w-lg [--stepper-cutout:var(--muted)]">
+<Stepper bind:value={step} class="w-full max-w-lg">
 	<StepperList aria-label="Checkout">
 		<StepperItem value={1}>
 			<StepperTrigger>

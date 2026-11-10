@@ -1,15 +1,7 @@
 <script lang="ts">
-	import {
-		ColorPicker,
-		ColorPickerArea,
-		ColorPickerHue,
-		ColorPickerInput,
-		ColorPickerEyeDropper,
-		ColorPickerSwatches,
-		ColorPickerSwatch
-	} from '#lib/registry/ui/color-picker/index.js';
+	import { ColorPicker, ColorPickerSwatch } from '#lib/registry/ui/color-picker/index.js';
 
-	const presets = [
+	const colours = [
 		{ name: 'Lake', value: '#2f6f8f' },
 		{ name: 'Rust', value: '#c2552d' },
 		{ name: 'Moss', value: '#5f7a3a' },
@@ -19,25 +11,15 @@
 	];
 
 	let value = $state('#2f6f8f');
+	const name = $derived(colours.find((colour) => colour.value === value)?.name);
 </script>
 
-<div class="flex w-full max-w-72 flex-col gap-2">
-	<ColorPicker bind:value>
-		<ColorPickerArea
-			aria-label="Colour"
-			channelLabels={['Saturation', 'Brightness']}
-			getValueText={({ x, y }) => `Saturation ${x} %, brightness ${y} %`}
-		/>
-		<ColorPickerHue aria-label="Hue" getValueText={(h) => `${h} degrees`} />
-		<div class="flex items-center gap-2">
-			<ColorPickerInput aria-label="Hex value" class="flex-1" />
-			<ColorPickerEyeDropper aria-label="Pick a colour from the screen" />
-		</div>
-		<ColorPickerSwatches aria-label="Presets" class="mt-2">
-			{#each presets as preset (preset.value)}
-				<ColorPickerSwatch value={preset.value} aria-label={preset.name} />
-			{/each}
-		</ColorPickerSwatches>
+<div class="flex flex-col items-center gap-3">
+	<p id="label-colour" class="text-muted-foreground m-0 text-sm">Label colour</p>
+	<ColorPicker bind:value aria-labelledby="label-colour">
+		{#each colours as colour (colour.value)}
+			<ColorPickerSwatch value={colour.value} aria-label={colour.name} />
+		{/each}
 	</ColorPicker>
-	<p class="text-muted-foreground mt-2 font-mono text-xs">value: {value}</p>
+	<p class="text-muted-foreground m-0 font-mono text-xs">value: {value} ({name})</p>
 </div>

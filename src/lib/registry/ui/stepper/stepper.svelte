@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { cn } from '#lib/utils.js';
@@ -76,6 +76,17 @@
 		if (value > reached) reached = value;
 	});
 
+	// The step the last move left, so a move across several segments can draw them in order.
+	// svelte-ignore state_referenced_locally
+	let from = $state(value);
+	let shown = untrack(() => value);
+	$effect.pre(() => {
+		const v = value;
+		if (v === shown) return;
+		from = shown;
+		shown = v;
+	});
+
 	const sorted = $derived([...steps.keys()].sort((a, b) => a - b));
 	const panels = new Map<number, HTMLElement>();
 
@@ -126,6 +137,9 @@
 		get reached() {
 			return Math.max(reached, value);
 		},
+		get from() {
+			return from;
+		},
 		register(v, step) {
 			steps.set(v, step);
 			return () => {
@@ -159,7 +173,13 @@
 				if (panels.get(v) === element) panels.delete(v);
 			};
 		},
-		panel: (v) => panels.get(v)
+		panel: (v) => panels.get(v),
+		sweep(b) {
+			const lo = Math.min(from, value);
+			const hi = Math.max(from, value);
+			if (b < lo || b >= hi) return null;
+			return { k: value > from ? b - from : from - 1 - b, n: hi - lo };
+		}
 	});
 </script>
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import BookmarkIcon from '@lucide/svelte/icons/bookmark';
+	import XIcon from '@lucide/svelte/icons/x';
 	import { onMount } from 'svelte';
 	import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import {
@@ -21,8 +23,8 @@
 <SwipeDeck bind:this={deck} aria-label="Reading list" class="w-full max-w-xs">
 	<SwipeDeckStack>
 		<SwipeDeckCard value="tides">
-			<SwipeDeckLabel direction="left">Skip</SwipeDeckLabel>
-			<SwipeDeckLabel direction="right">Save</SwipeDeckLabel>
+			<SwipeDeckLabel direction="left"><XIcon aria-hidden="true" />Skip</SwipeDeckLabel>
+			<SwipeDeckLabel direction="right" variant="default"><BookmarkIcon aria-hidden="true" />Save</SwipeDeckLabel>
 			<div class="bg-card h-full min-h-40 rounded-lg border p-5">How tides are measured</div>
 		</SwipeDeckCard>
 		<SwipeDeckEmpty class="gap-1 text-center">

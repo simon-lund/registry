@@ -28,16 +28,16 @@
 	 * StepperItem: one step. `value` is its place, from 1. Its look is one of three:
 	 *   active   the step you are on (`aria-current="step"` on its trigger);
 	 *   done     by default every step before the furthest one reached (going back keeps them
-	 *            done); pass `done` to say it yourself (a step left with something missing, a
-	 *            later one already filled in, a flow started over);
+	 *            done); pass `done` to control it (a step left with something missing, a later
+	 *            one already filled in, a flow started over);
 	 *   pending  everything else.
 	 * Active wins over done (a done step you went back to keeps its check, in the active look).
 	 * The look is the item's `data-state` (and its trigger's, indicator's and title's); `data-done`
 	 * marks a done step whether or not it is the active one.
 	 *
 	 * On top of the look, independently: `loading` (the indicator turns into a spinner, the trigger
-	 * reports `aria-busy`: saving the step), `invalid` (a small red dot on the indicator; say what
-	 * is wrong in a StepperDescription) and `disabled` (dimmed, never a button, skipped by
+	 * reports `aria-busy`: saving the step), `invalid` (a red ring with an X on the indicator;
+	 * say what is wrong in a StepperDescription) and `disabled` (dimmed, never a button, skipped by
 	 * StepperPrevious / StepperNext).
 	 *
 	 * The check is only drawn: to say "done" to a screen reader, put it in the title
@@ -68,7 +68,7 @@
 		disabled?: boolean;
 		/** Under way (saving, checking): the indicator shows a spinner. */
 		loading?: boolean;
-		/** Something in this step needs attention: a small red dot on the indicator. */
+		/** Something in this step needs attention: a red ring with an X on the indicator. */
 		invalid?: boolean;
 	} = $props();
 

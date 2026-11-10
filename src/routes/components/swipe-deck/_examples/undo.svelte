@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BookmarkIcon from '@lucide/svelte/icons/bookmark';
 	import { onMount } from 'svelte';
 	import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import {
@@ -45,7 +46,7 @@
 		<SwipeDeckStack>
 			{#each cards as card (card.id)}
 				<SwipeDeckCard value={card.id}>
-					<SwipeDeckLabel direction="right">Save</SwipeDeckLabel>
+					<SwipeDeckLabel direction="right" variant="default"><BookmarkIcon aria-hidden="true" />Save</SwipeDeckLabel>
 					<div class="bg-card h-full min-h-40 rounded-lg border p-5">{card.title}</div>
 				</SwipeDeckCard>
 			{/each}

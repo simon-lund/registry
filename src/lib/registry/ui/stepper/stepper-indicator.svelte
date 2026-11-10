@@ -1,24 +1,32 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import XIcon from '@lucide/svelte/icons/x';
 	import { Swap, SwapItem } from '#lib/registry/ui/swap/index.js';
 	import { Spinner } from '#lib/registry/ui/spinner/index.js';
 	import { cn } from '#lib/utils.js';
-	import { getStepperItem, getStepperList, type StepperGlyph } from './context.js';
+	import {
+		getStepperItem,
+		getStepperList,
+		getStepperRoot,
+		sweepStyle,
+		type StepperGlyph
+	} from './context.js';
 
 	/**
 	 * StepperIndicator: the step's circle (32px). Its look follows the step, one of three:
 	 *   pending  a flat ring, the number in muted-foreground;
 	 *   active   the copper disc with the number on it: the one step that stands out;
 	 *   done     a tonal disc with a check in foreground: it grows from the centre.
-	 * What it shows, one of three: a spinner while the step is `loading`, a check once it is
-	 * done, otherwise its number, or the children in place of the number (an icon).
-	 * The change is Swap's blurred cross-fade (base 220ms). An `invalid` step gets a small red dot
-	 * whose centre sits on the circle's edge at the top right (45°), cut out of the surface by a ring
-	 * in `--stepper-cutout` (default `--background`; set it where the stepper sits on another surface).
+	 * An `invalid` step overrides the look: a red ring with a red X, whatever else it is.
+	 * What it shows, one of four, first match: a spinner while the step is `loading`, an X while it
+	 * is `invalid`, a check once it is done, otherwise its number, or the children in place of the
+	 * number (an icon). The change is Swap's blurred cross-fade (base 220ms).
 	 *
 	 * In the inline lists (`bars`, `dots`) it is drawn as a short bar or a dot instead, filled from
-	 * the start up to the current step, the current one copper. All of it is decoration
+	 * the start up to the current step, the current one copper: they show where you are, so going
+	 * back empties the ones after it. A jump across several steps fills or empties them in order,
+	 * from the step left, as one line. All of it is decoration
 	 * (`aria-hidden`): the title names the step, the list's order counts it.
 	 *
 	 * @example
@@ -32,14 +40,22 @@
 		...restProps
 	}: HTMLAttributes<HTMLSpanElement> & { ref?: HTMLSpanElement | null } = $props();
 
+	const root = getStepperRoot('StepperIndicator');
 	const item = getStepperItem('StepperIndicator');
 	const list = getStepperList();
 
 	const glyph: StepperGlyph = $derived(
-		item.loading ? 'spinner' : item.done ? 'check' : 'content'
+		item.loading ? 'spinner' : item.invalid ? 'invalid' : item.done ? 'check' : 'content'
 	);
-	// Inline marks fill up to and including the current step.
-	const filled = $derived(item.state !== 'pending');
+	// Inline marks fill up to and including the current step, done or not.
+	const filled = $derived(item.value <= root.value);
+	// A mark's colour belongs to its fill: one that empties keeps the colour it had until it is
+	// gone, one that fills starts in its final colour, and only one that stays filled while it
+	// changes role (the current step moving on or back to it) cross-fades.
+	const wasFilled = $derived(item.value <= root.from);
+	const tone = $derived(
+		(filled ? item.value === root.value : item.value === root.from) ? 'current' : 'tonal'
+	);
 </script>
 
 {#if list.variant === 'default'}
@@ -48,6 +64,7 @@
 		data-slot="stepper-indicator"
 		data-state={item.state}
 		data-glyph={glyph}
+		data-invalid={item.invalid || undefined}
 		aria-hidden="true"
 		class={cn(
 			'indicator relative grid size-8 shrink-0 place-items-center rounded-full text-sm font-semibold tabular-nums',
@@ -62,11 +79,9 @@
 				{#if children}{@render children()}{:else}{item.value}{/if}
 			</SwapItem>
 			<SwapItem active={glyph === 'check'}><CheckIcon class="size-4" strokeWidth={2.5} /></SwapItem>
+			<SwapItem active={glyph === 'invalid'}><XIcon class="size-4" strokeWidth={2.5} /></SwapItem>
 			<SwapItem active={glyph === 'spinner'}><Spinner aria-hidden="true" class="size-4" /></SwapItem>
 		</Swap>
-		{#if item.invalid}
-			<span data-slot="stepper-indicator-dot" class="dot"></span>
-		{/if}
 	</span>
 {:else}
 	<span
@@ -75,6 +90,9 @@
 		data-state={item.state}
 		data-variant={list.variant}
 		data-filled={filled || undefined}
+		data-tone={tone}
+		data-recolor={(filled && wasFilled) || undefined}
+		style={sweepStyle(root.sweep(item.value - 1))}
 		aria-hidden="true"
 		class={cn('mark relative block shrink-0 overflow-hidden rounded-full bg-border', className)}
 		{...restProps}
@@ -140,20 +158,15 @@
 		}
 	}
 
-	/*
-	 * invalid: a red dot on the circle's shoulder, cut out of the surface by a ring of its colour.
-	 * Its centre sits on the circle's edge at 45°: r·(1 − cos 45°) in from the box's corner
-	 * (r = 4 steps), less the dot's own radius (1.25 steps).
-	 */
-	.dot {
-		position: absolute;
-		top: calc(var(--spacing, 4px) * (4 * 0.29289 - 1.25));
-		right: calc(var(--spacing, 4px) * (4 * 0.29289 - 1.25));
-		width: calc(var(--spacing, 4px) * 2.5);
-		height: calc(var(--spacing, 4px) * 2.5);
-		border-radius: 9999px;
-		background: var(--destructive);
-		box-shadow: 0 0 0 2px var(--stepper-cutout, var(--background));
+	/* invalid, over any look: the ring and the X in destructive, no disc. After the looks, so it wins. */
+	.indicator[data-invalid] {
+		color: var(--destructive);
+		background: transparent;
+		box-shadow: inset 0 0 0 1.5px var(--destructive);
+	}
+	.indicator[data-invalid] .fill {
+		clip-path: circle(0px at 50% 50%);
+		transition: clip-path var(--dur-quick) var(--ease-exit);
 	}
 
 	/* Reduced motion: the disc cross-fades instead of growing. */
@@ -166,6 +179,9 @@
 		}
 		.indicator[data-state='done'] .fill {
 			opacity: 1;
+		}
+		.indicator[data-invalid] .fill {
+			opacity: 0;
 		}
 	}
 
@@ -185,21 +201,31 @@
 	.mark[data-variant='dots'][data-state='active'] {
 		scale: 1.25;
 	}
+	/*
+	 * The step you are on is copper; those behind it stay tonal (data-tone, see the script: the
+	 * colour follows the fill). The colour only animates on a mark that stays filled (data-recolor),
+	 * in the base duration, beside the fill's own motion.
+	 */
 	.mark-fill {
+		--recolor: 0s;
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
 		background: var(--foreground);
-		transition: background-color var(--dur-quick) var(--ease-settle);
 	}
-	/* The step you are on is copper; those behind it stay tonal. */
-	.mark[data-state='active'] .mark-fill {
+	.mark[data-recolor] .mark-fill {
+		--recolor: var(--dur-base);
+	}
+	.mark[data-tone='current'] .mark-fill {
 		background: var(--primary);
 	}
 	.mark[data-variant='bars'] .mark-fill {
 		transform-origin: left center;
 		scale: 0 1;
-		transition: scale var(--dur-base) var(--ease-settle);
+		transition:
+			scale var(--sweep-dur, var(--dur-base)) var(--sweep-ease, var(--ease-settle))
+				var(--sweep-delay, 0s),
+			background-color var(--recolor) var(--ease-settle);
 	}
 	:global([dir='rtl']) .mark[data-variant='bars'] .mark-fill {
 		transform-origin: right center;
@@ -211,8 +237,9 @@
 		opacity: 0;
 		scale: 0.5;
 		transition:
-			opacity var(--dur-quick) var(--ease-settle),
-			scale var(--dur-quick) var(--ease-settle);
+			opacity var(--dur-quick) var(--ease-settle) var(--sweep-delay, 0s),
+			scale var(--dur-quick) var(--ease-settle) var(--sweep-delay, 0s),
+			background-color var(--recolor) var(--ease-settle);
 	}
 	.mark[data-variant='dots'][data-filled] .mark-fill {
 		opacity: 1;

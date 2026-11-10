@@ -91,8 +91,12 @@
 
 		<div class="flex flex-wrap items-center gap-2">
 			<StepperPrevious>Back</StepperPrevious>
-			<StepperNext validate={passwordsMatch}>Continue</StepperNext>
-			<Button type="submit" class="ml-auto">Create account</Button>
+			<!-- One way forward: Continue until the last step, which submits. -->
+			{#if step < steps.length}
+				<StepperNext variant="default" validate={passwordsMatch}>Continue</StepperNext>
+			{:else}
+				<Button type="submit">Create account</Button>
+			{/if}
 		</div>
 		<p class="text-muted-foreground min-h-5 text-sm" role="status">
 			{created ? 'Account created.' : ''}

@@ -6,9 +6,10 @@
 	/**
 	 * TabsContent: the panel for one value, hidden while its tab is not selected. When the
 	 * selection moves, the new panel follows the key: it comes in 8px from the side the key went
-	 * to while it fades in (base 220ms on settle, the motion of ViewChange), so the panels read as
-	 * a row behind the segments. A step by arrow key, Home or End switches at once, like the
-	 * key jumps; the first paint shows its panel without motion. Reduced motion: a fade.
+	 * to while it fades in and sharpens from the swap blur (base 220ms on settle, the motion of
+	 * ViewChange), so the panels read as a row behind the segments. A step by arrow key, Home or
+	 * End switches at once, like the key jumps; the first paint shows its panel without motion.
+	 * Reduced motion: a fade.
 	 *
 	 * @example
 	 * <TabsContent value="open">…</TabsContent>
@@ -58,12 +59,14 @@
 		from {
 			opacity: 0;
 			translate: var(--view-shift, 0) 0;
+			filter: blur(var(--view-blur, var(--blur-swap, 4px)));
 		}
 	}
-	/* Reduced motion: the fade stays (the token shortens it), the travel goes. */
+	/* Reduced motion: the fade stays (the token shortens it), the travel and the blur go. */
 	@media (prefers-reduced-motion: reduce) {
 		.panel[data-from] {
 			--view-shift: 0px;
+			--view-blur: 0px;
 		}
 	}
 </style>

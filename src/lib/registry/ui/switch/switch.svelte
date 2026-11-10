@@ -13,7 +13,7 @@
 	 */
 	export const switchVariants = tv({
 		base: [
-			'relative inline-block shrink-0 cursor-pointer select-none rounded-full align-middle',
+			'relative isolate inline-block shrink-0 cursor-pointer select-none rounded-full align-middle',
 			'h-(--switch-h) w-(--switch-w) bg-(--switch-track)',
 			'[--switch-track:var(--background)] [--switch-fill:var(--primary)]',
 			'[--switch-knob:var(--muted-foreground)] [--switch-knob-on:var(--primary-foreground)]',
@@ -22,7 +22,7 @@
 			 * The track's line lies above the fill (::after), so it reads the same off and on: only the
 			 * track inside fills. Hover strengthens the line in quick.
 			 */
-			"after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:content-[''] after:shadow-[inset_0_0_0_1px_var(--switch-line)]",
+			"after:pointer-events-none after:absolute after:inset-0 after:z-[3] after:rounded-full after:content-[''] after:shadow-[inset_0_0_0_1px_var(--switch-line)]",
 			'after:transition-[box-shadow] after:duration-(--dur-quick) after:ease-(--ease-settle)',
 			'[--switch-line:var(--border)] not-data-disabled:hover:[--switch-line:var(--input)]',
 			/* Hit area: the ::before grows the drawn track to at least 44 × 44 without moving layout. */
@@ -56,15 +56,19 @@
 	/**
 	 * Switch (bits-ui Switch), for settings that take effect at once.
 	 *
-	 * Motion: the knob slides base 220ms on settle, and the copper fill is a clip-path that follows
-	 * behind it, so the track fills from where the knob left, never fades. Holding the switch
+	 * Motion: the knob slides base 220ms on settle, and the colour of the state it goes to is wiped
+	 * in behind it: turning on, the copper from the start side; turning off, the track colour from
+	 * the end side. Mirror images, never a fade. Holding the switch
 	 * stretches the knob toward where it is about to go; on release it travels and draws back into a
 	 * circle in the same 220ms. No overshoot. Reduced motion: the knob jumps and the fill cross-fades.
 	 *
 	 * Sizes `default` (52 × 32) and `sm` (40 × 24), both with a 44px hit area. It has no label of its
 	 * own: use `<label for>` with an `id`, or `aria-labelledby`.
 	 *
-	 * In a form: with a `name` it submits (bits-ui's hidden input). `form.reset()` or a reset button
+	 * In a form: with a `name` it always submits, `value` (default "on") while on and `uncheckedValue`
+	 * (default "off") while off, so off is said, not left out. A disabled switch submits nothing,
+	 * like any disabled control: the field is missing, which a server can read as "no change".
+	 * `form.reset()` or a reset button
 	 * puts it back to the state it mounted with, drawn and submitted alike (the bound `checked`
 	 * follows; `onCheckedChange` is not called). `bind:checked` may point at a value that is still
 	 * `undefined` (a missing key in a record): it reads as off.
@@ -80,9 +84,12 @@
 		checked = $bindable(),
 		class: className,
 		size = 'default',
+		uncheckedValue = 'off',
 		...restProps
 	}: Omit<SwitchPrimitive.RootProps, 'children' | 'child'> & {
 		size?: SwitchSize;
+		/** What a named switch submits while off. */
+		uncheckedValue?: string;
 	} = $props();
 
 	// form.reset() resets bits-ui's hidden input (to its defaultChecked, set here to the mount
@@ -111,12 +118,22 @@
 >
 	{#snippet children({ checked })}
 		{@const state = checked ? 'checked' : 'unchecked'}
-		<span data-slot="switch-fill" data-state={state} class="fill" aria-hidden="true"></span>
+		<span data-slot="switch-fill" data-state={state} class="fill fill-on" aria-hidden="true"></span>
+		<span data-slot="switch-fill-off" data-state={state} class="fill fill-off" aria-hidden="true"></span>
 		<span data-slot="switch-thumb" data-state={state} class="thumb" aria-hidden="true">
 			<span data-slot="switch-face" class="face"></span>
 		</span>
 	{/snippet}
 </SwitchPrimitive.Root>
+<!-- Off is submitted too: bits-ui's checkbox only sends while on, this only while off. -->
+{#if restProps.name !== undefined}
+	<input
+		type="hidden"
+		name={restProps.name}
+		value={uncheckedValue}
+		disabled={!!checked || !!restProps.disabled}
+	/>
+{/if}
 
 <style>
 	/*
@@ -125,26 +142,44 @@
 	 */
 
 	/*
-	 * The on-colour: the track in --switch-fill, revealed from the start side behind the knob. It
-	 * starts 1px in, under the line (which lies above it), so its round edge never shows past the
-	 * line and the line stays exactly the same on and off.
+	 * The two colours, each a layer 1px in, under the line (which lies above them), so their round
+	 * edges never show past it and the line stays exactly the same on and off: --switch-fill on,
+	 * --switch-track off.
+	 *
+	 * The state you go to is wiped in on top, behind the knob, on the knob's clock, so its leading
+	 * edge stays hidden under the knob: on, the copper from the start side; off, the track colour
+	 * from the end side. The state you leave lies fully drawn underneath while that runs, then its
+	 * clip snaps back to where its own wipe starts, ready for the next change.
 	 */
 	.fill {
 		--inset: 1px;
+		--round: calc(var(--switch-h) / 2 - var(--inset));
 		position: absolute;
 		inset: var(--inset);
 		border-radius: 9999px;
+		z-index: 0;
+		transition: clip-path 0s linear var(--dur-base);
+	}
+	.fill-on {
 		background: var(--switch-fill);
-		clip-path: inset(0 100% 0 0 round calc(var(--switch-h) / 2 - var(--inset)));
-		/* Same duration and curve as the knob, so its leading edge stays hidden under the knob. */
+		clip-path: inset(0 100% 0 0 round var(--round));
+	}
+	.fill-off {
+		background: var(--switch-track);
+		clip-path: inset(0 0 0 100% round var(--round));
+	}
+	.fill-on[data-state='checked'],
+	.fill-off[data-state='unchecked'] {
+		z-index: 1;
+		clip-path: inset(0 0 0 0 round var(--round));
 		transition: clip-path var(--dur-base) var(--ease-settle);
 	}
-	.fill[data-state='checked'] {
-		clip-path: inset(0 0 0 0 round calc(var(--switch-h) / 2 - var(--inset)));
+	/* Right to left, mirrored: the copper comes from the right, the track colour from the left. */
+	.fill-on:dir(rtl):not([data-state='checked']) {
+		clip-path: inset(0 0 0 100% round var(--round));
 	}
-	/* Right to left: revealed from the right. */
-	.fill:dir(rtl):not([data-state='checked']) {
-		clip-path: inset(0 0 0 100% round calc(var(--switch-h) / 2 - var(--inset)));
+	.fill-off:dir(rtl):not([data-state='unchecked']) {
+		clip-path: inset(0 100% 0 0 round var(--round));
 	}
 
 	/*
@@ -159,6 +194,8 @@
 		--l: 0px;
 		--r: calc(var(--s) * (1 - var(--switch-pressed)));
 		position: absolute;
+		/* above both colour layers, under the line */
+		z-index: 2;
 		top: var(--switch-pad);
 		inset-inline-start: var(--switch-pad);
 		width: calc(var(--switch-d) + var(--s));
@@ -214,13 +251,19 @@
 			transition: background-color var(--dur-quick) var(--ease-settle);
 		}
 		.fill,
-		.fill[data-state='checked'] {
+		.fill-on[data-state='checked'],
+		.fill-off[data-state='unchecked'] {
 			clip-path: none;
-			opacity: 0;
 			transition: opacity var(--dur-quick) var(--ease-settle);
 		}
-		.fill[data-state='checked'] {
+		.fill-on {
+			opacity: 0;
+		}
+		.fill-on[data-state='checked'] {
 			opacity: 1;
+		}
+		.fill-off {
+			display: none;
 		}
 	}
 </style>

@@ -23,7 +23,7 @@
 			'before:absolute before:inset-x-0 before:-inset-y-1',
 			/*
 			 * Focus is drawn by ::after above the key (the key is a layer over the triggers, so a
-			 * plain outline would sit under it) and above the scroll hints (z 3). The track clips its
+			 * plain outline would sit under it) and above the scroll hints (z 2). The track clips its
 			 * overflow at its padding (one spacing step), so the 2px ring sits 2px out, never clipped.
 			 */
 			'focus-visible:outline-none after:pointer-events-none after:absolute after:inset-0 after:z-[4] after:rounded-full focus-visible:after:outline-2 focus-visible:after:outline-offset-[calc(var(--spacing)-2px)] focus-visible:after:outline-ring',

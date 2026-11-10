@@ -181,87 +181,22 @@
       ]
     },
     {
-      "name": "close-watcher",
-      "type": "registry:ui",
-      "title": "Close watcher",
-      "description": "watchClose(onClose) and the closeWatcher(onClose) attachment: while a layer is open, the platform's close request closes it (Android's back button or gesture instead of leaving the page; Escape where nothing else handled it). One CloseWatcher per open layer, last opened closes first (a nested layer before its parent); a layer opened without a gesture (on load, from a timer) joins the watcher before it, so one back closes both. onClose runs at most once and must be harmless when the layer is already closing. Feature-detected: without CloseWatcher it does nothing and back behaves as before. No copy, no markup.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://ui.simon-lund.com/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "src/lib/registry/ui/close-watcher/close-watcher.ts",
-          "type": "registry:ui",
-          "target": "close-watcher/close-watcher.ts"
-        },
-        {
-          "path": "src/lib/registry/ui/close-watcher/index.ts",
-          "type": "registry:ui",
-          "target": "close-watcher/index.ts"
-        }
-      ]
-    },
-    {
       "name": "color-picker",
       "type": "registry:ui",
       "title": "Color Picker",
-      "description": "Picks a colour from its own maths, with no colour library (color.ts: parse, convert between sRGB, HSV, HSL and OKLCH with gamut mapping, format). You compose the parts: ColorPicker (renders nothing; bind:value a CSS colour string, format hex, rgb, hsl or oklch for what it writes, alpha, space hsv or oklch for the area and hue, disabled, onValueCommit at the end of a gesture), ColorPickerArea (the 2D field), ColorPickerHue and ColorPickerAlpha (sliders with gradient tracks), ColorPickerSwatches and ColorPickerSwatch (a radio-group palette), ColorPickerInput (hex in a stock Input with a leading swatch), ColorPickerEyeDropper (hidden where the browser has none) and ColorPickerTrigger (a button showing the colour, for an overlay). No copy inside: you pass every label.",
+      "description": "One colour out of a few, as a row of swatches: ColorPicker (bits-ui RadioGroup; bind:value is the picked swatch's value as written, name and required for forms, disabled) and ColorPickerSwatch (a 32px disc of any CSS colour with a hairline, drawn in with a primary ring when picked, 44px to touch, aria-label required). Tab enters at the picked one, the arrows move and pick. No copy inside: you name every colour.",
       "dependencies": [
-        "bits-ui",
-        "@lucide/svelte"
+        "bits-ui"
       ],
       "registryDependencies": [
         "https://ui.simon-lund.com/r/utils.json",
-        "https://ui.simon-lund.com/r/motion.json",
-        "button",
-        "input"
+        "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-alpha.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-alpha.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-area.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-area.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-channel.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-channel.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-eye-dropper.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-eye-dropper.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-hue.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-hue.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-input.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-input.svelte"
-        },
         {
           "path": "src/lib/registry/ui/color-picker/color-picker-swatch.svelte",
           "type": "registry:ui",
           "target": "color-picker/color-picker-swatch.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-swatches.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-swatches.svelte"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/color-picker-trigger.svelte",
-          "type": "registry:ui",
-          "target": "color-picker/color-picker-trigger.svelte"
         },
         {
           "path": "src/lib/registry/ui/color-picker/color-picker.svelte",
@@ -269,29 +204,9 @@
           "target": "color-picker/color-picker.svelte"
         },
         {
-          "path": "src/lib/registry/ui/color-picker/color.ts",
-          "type": "registry:ui",
-          "target": "color-picker/color.ts"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/context.svelte.ts",
-          "type": "registry:ui",
-          "target": "color-picker/context.svelte.ts"
-        },
-        {
           "path": "src/lib/registry/ui/color-picker/index.ts",
           "type": "registry:ui",
           "target": "color-picker/index.ts"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/look.ts",
-          "type": "registry:ui",
-          "target": "color-picker/look.ts"
-        },
-        {
-          "path": "src/lib/registry/ui/color-picker/paint.ts",
-          "type": "registry:ui",
-          "target": "color-picker/paint.ts"
         }
       ]
     },
@@ -342,28 +257,6 @@
       ]
     },
     {
-      "name": "focus-return",
-      "type": "registry:ui",
-      "title": "Focus return",
-      "description": "Where focus goes when a layer closes or the focused control goes away, so it never drops to <body>. returnFocus(layer, ...targets) for a layer's onCloseAutoFocus: once bits-ui has returned focus, it checks that focus landed somewhere useful (not body, not inside the closing layer or another dialog on its way out, not inert) and otherwise focuses the first target that can take it (typically triggerOf(layer), the control whose aria-controls names the layer). focusFirst(...targets) focuses the first target that can take focus. tabStops(root), nextTabStop(from, direction, skip) and canFocus(el) find Tab stops in document order. focusLost(layer) is the check. No markup, no copy.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://ui.simon-lund.com/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "src/lib/registry/ui/focus-return/focus-return.ts",
-          "type": "registry:ui",
-          "target": "focus-return/focus-return.ts"
-        },
-        {
-          "path": "src/lib/registry/ui/focus-return/index.ts",
-          "type": "registry:ui",
-          "target": "focus-return/index.ts"
-        }
-      ]
-    },
-    {
       "name": "form-reset",
       "type": "registry:ui",
       "title": "Form reset",
@@ -404,28 +297,6 @@
           "path": "src/lib/registry/ui/inert-outside/inert-outside.svelte.ts",
           "type": "registry:ui",
           "target": "inert-outside/inert-outside.svelte.ts"
-        }
-      ]
-    },
-    {
-      "name": "long-press",
-      "type": "registry:ui",
-      "title": "Long press",
-      "description": "longPress(onLongPress, { delay, slop, vibrate }): a Svelte attachment, the touch counterpart of a right-click, for a touch screen that shows an element's actions in a sheet or a list. A finger or pen resting 500ms within 8px fires it once, with a short vibration where supported; drifting, lifting early or the browser scrolling cancels it, and a mouse's left button never long-presses. The platform's own context-menu gesture fires it too and never opens the browser's menu: a right-click, Shift+F10 or the Menu key, and Android's own long press, deduplicated so one press is one call. The click a lifted long press would deliver to the node is swallowed; text selection and the iOS callout are off on the node while attached. The detail says source (press or contextmenu), pointerType, x / y and target. No copy, no markup.",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://ui.simon-lund.com/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "src/lib/registry/ui/long-press/index.ts",
-          "type": "registry:ui",
-          "target": "long-press/index.ts"
-        },
-        {
-          "path": "src/lib/registry/ui/long-press/long-press.ts",
-          "type": "registry:ui",
-          "target": "long-press/long-press.ts"
         }
       ]
     },
@@ -546,7 +417,7 @@
       "name": "stepper",
       "type": "registry:ui",
       "title": "Stepper",
-      "description": "A task in a few ordered steps (account setup, checkout). Parts: Stepper (bind:value = the current step from 1; horizontal | vertical; linear by default: back to any earlier step, ahead only past done steps; or free), StepperList (default, or the inline bars | dots), StepperItem (value, done (default: before the furthest step reached), disabled, loading, invalid), StepperTrigger, StepperIndicator (a ring, a copper disc when active, a tonal disc with a check when done; a Spinner while loading, a red dot when invalid), StepperTitle, StepperDescription, StepperSeparator (a foreground fill that scales in once the step is done), StepperContent and StepperPrevious / StepperNext (stock Buttons, dimmed but focusable at the ends). In a form, StepperNext checks the current panel's fields first, and a submit with an invalid hidden field goes to its step. Keyboard: the triggers share one tab stop, arrows move, Enter / Space go. Under 30rem only the current title stays in sight.",
+      "description": "A task in a few ordered steps (account setup, checkout). Parts: Stepper (bind:value = the current step from 1; horizontal | vertical; linear by default: back to any earlier step, ahead only past done steps; or free), StepperList (default, or the inline bars | dots), StepperItem (value, done (default: before the furthest step reached), disabled, loading, invalid), StepperTrigger, StepperIndicator (a ring, a copper disc when active, a tonal disc with a check when done; a Spinner while loading, a red ring with an X when invalid), StepperTitle, StepperDescription, StepperSeparator (a foreground fill that scales in once the current step lies past it, and out when you go back), StepperContent and StepperPrevious / StepperNext (stock Buttons, dimmed but focusable at the ends). In a form, StepperNext checks the current panel's fields first, and a submit with an invalid hidden field goes to its step. Keyboard: the triggers share one tab stop, arrows move, Enter / Space go. Under 30rem only the current title stays in sight.",
       "dependencies": [
         "@lucide/svelte",
         "tailwind-variants"
@@ -685,7 +556,7 @@
       "name": "swipe-deck",
       "type": "registry:ui",
       "title": "Swipe deck",
-      "description": "A stack of cards you go through one at a time, swiping each away. Parts: SwipeDeck (root, one tab stop), SwipeDeckStack (the stage), SwipeDeckCard (any content as children, `value` is its identity), SwipeDeckLabel (turns `left`, `right` or `up` on for its card; the word that grows with the drag), SwipeDeckEmpty (shown once no card is left), SwipeDeckActions with SwipeDeckAction (a Button per direction) and SwipeDeckUndo. The drag locks to an axis, follows 1:1 toward a labelled direction, rubber-bands elsewhere, commits past a threshold or on a flick, else springs home. The deck owns the order and a 10-step history: onSwipe(card, direction, { via }) fires as a card leaves (return false to keep it); undo (button, Backspace, Cmd+Z / Ctrl+Z, undo()) brings it back and calls onUndo. Keyboard: Left, Right, Up; the label is announced. Only a dragged card has a shadow. Reduced motion cross-fades. No copy inside.",
+      "description": "A stack of cards you go through one at a time, swiping each away. Parts: SwipeDeck (root, one tab stop), SwipeDeckStack (the stage), SwipeDeckCard (any content as children, `value` is its identity), SwipeDeckLabel (turns `left`, `right` or `up` on for its card; an icon in a circle over the card that grows with the drag, in its button's colour: `variant` outline or default; its word is announced), SwipeDeckEmpty (shown once no card is left), SwipeDeckActions with SwipeDeckAction (a Button per direction) and SwipeDeckUndo. The drag locks to an axis, follows 1:1 toward a labelled direction, rubber-bands elsewhere, commits past a threshold or on a flick, else springs home. The deck owns the order and a 10-step history: onSwipe(card, direction, { via }) fires as a card leaves (return false to keep it); undo (button, Backspace, Cmd+Z / Ctrl+Z, undo()) brings it back and calls onUndo. Keyboard: Left, Right, Up; the label is announced. Only a dragged card has a shadow. Reduced motion cross-fades. No copy inside.",
       "dependencies": [],
       "registryDependencies": [
         "https://ui.simon-lund.com/r/utils.json",
@@ -750,7 +621,7 @@
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch",
-      "description": "A switch on bits-ui Switch, with the part name of the stock shadcn-svelte Switch, for settings that apply at once. The knob is the one moving piece: it slides on settle while the copper fill follows it as a clip-path, and holding stretches the knob toward its destination. Sizes default (52 × 32) and sm (40 × 24), both 44px to touch. In a form it submits with a name, and form.reset() puts it back to its mount state, drawn and submitted alike. bind:checked may point at an undefined value (a missing record key): it reads as off.",
+      "description": "A switch on bits-ui Switch, with the part name of the stock shadcn-svelte Switch, for settings that apply at once. The knob is the one moving piece: it slides on settle while the colour of the state it goes to is wiped in behind it (copper from the start, the track from the end), and holding stretches the knob toward its destination. Sizes default (52 × 32) and sm (40 × 24), both 44px to touch. In a form, with a name, it always submits: value (\"on\") while on, uncheckedValue (\"off\") while off; disabled, nothing. form.reset() puts it back to its mount state, drawn and submitted alike. bind:checked may point at an undefined value (a missing record key): it reads as off.",
       "dependencies": [
         "bits-ui",
         "tailwind-variants"

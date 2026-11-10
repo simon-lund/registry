@@ -44,7 +44,9 @@
 	</PlateExample>
 
 	<PlateExample title="Form" example={example('form')}>
-		Set <code>name</code> to submit it with the form. A form reset puts it back to the state it
+		Set <code>name</code> to submit it with the form. It always sends a value:
+		<code>digest=on</code> while on, <code>digest=off</code> while off. Only a disabled switch sends
+		nothing, so a missing field means no change, never off. A form reset puts it back to the state it
 		mounted with, drawn and submitted alike, and does not call <code>onCheckedChange</code>.
 	</PlateExample>
 
@@ -65,7 +67,8 @@
 					<PlateProp name="size" type={`"default" | "sm"`} default={`"default"`} />
 					<PlateProp name="disabled" type="boolean" default="false" />
 					<PlateProp name="name" type="string">The form field's name. Without it nothing is submitted.</PlateProp>
-					<PlateProp name="value" type="string">What is submitted while on.</PlateProp>
+					<PlateProp name="value" type="string" default={`"on"`}>What is submitted while on.</PlateProp>
+					<PlateProp name="uncheckedValue" type="string" default={`"off"`}>What is submitted while off.</PlateProp>
 					<PlateProp name="required" type="boolean" default="false" />
 					<PlateProp name="onCheckedChange" type="(checked: boolean) => void" />
 					<PlateProp name="id" type="string" />
@@ -88,7 +91,7 @@
 			<PlateMeasure label="Knob" value="24px · sm 16px, 4px from the edge" />
 			<PlateMeasure label="Stretch" value="6px · sm 4px, toward where it will go" />
 			<PlateMeasure label="Hit area" value="at least 44 × 44px" />
-			<PlateMeasure label="Slide and fill" value="220ms (--dur-base) on --ease-settle" />
+			<PlateMeasure label="Slide and wipe" value="220ms (--dur-base) on --ease-settle; on from the start, off from the end" />
 			<PlateMeasure label="Stretch opens" value="140ms (--dur-quick) on --ease-settle" />
 			<PlateMeasure label="Line on hover" value="140ms (--dur-quick)" />
 			<PlateMeasure label="Disabled" value="45% opacity" />

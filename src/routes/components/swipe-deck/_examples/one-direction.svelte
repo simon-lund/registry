@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CheckIcon from '@lucide/svelte/icons/check';
 	import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import {
 		SwipeDeck,
@@ -22,7 +23,7 @@
 	<SwipeDeckStack>
 		{#each steps as step (step.id)}
 			<SwipeDeckCard value={step.id}>
-				<SwipeDeckLabel direction="right">Done</SwipeDeckLabel>
+				<SwipeDeckLabel direction="right" variant="default"><CheckIcon aria-hidden="true" />Done</SwipeDeckLabel>
 				<div class="bg-card h-full min-h-40 rounded-lg border p-5">{step.title}</div>
 			</SwipeDeckCard>
 		{/each}

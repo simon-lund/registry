@@ -138,16 +138,19 @@
 				</PlatePart>
 				<PlatePart name="SwipeDeckLabel">
 					<p>
-						Inside a card: turns a direction on, and is the word that grows while the card is dragged that
-						way. Tonal until the threshold, then primary. Hidden from assistive tech. Other props and
-						<code>class</code> go to the pill; its <code>data-state</code> is <code>hidden</code>,
-						<code>approaching</code> or <code>armed</code>.
+						Inside a card: turns a direction on, and is the circle that grows over the card while it is
+						dragged that way. Children are an icon and a word: the icon shows, the word is what the deck
+						announces. Give it the <code>variant</code> of the direction's button, so the circle has that
+						button's colour. Hidden from assistive tech. Other props and <code>class</code> go to the
+						circle; its <code>data-state</code> is <code>hidden</code>, <code>approaching</code> or
+						<code>armed</code>.
 					</p>
 					<PlateProps>
 						<PlateProp name="direction" type="SwipeDeckDirection" required />
+						<PlateProp name="variant" type={`"outline" | "default"`} default={`"outline"`}>The colour of the direction's button: a ring, or the primary disc.</PlateProp>
 						<PlateProp name="ref" type="HTMLDivElement | null" default="null" bindable />
 						<PlateProp name="class" type="string" />
-						<PlateProp name="children" type="Snippet">An icon and a word. The word is what gets announced.</PlateProp>
+						<PlateProp name="children" type="Snippet">An icon and a word. The icon shows; the word is announced.</PlateProp>
 					</PlateProps>
 				</PlatePart>
 				<PlatePart name="SwipeDeckEmpty">
@@ -228,8 +231,8 @@
 				<PlateMeasure label="Each card behind" value="9px lower, 5% narrower, 320ms into place" />
 				<PlateMeasure label="Blank face" value="22% toward the background per card, two steps at most, 1px border" />
 				<PlateMeasure label="Dragged card" value="shadow-lg, fades in 140ms" />
-				<PlateMeasure label="Label" value="44px high, 16px from the card's edge" />
-				<PlateMeasure label="Label growth" value="72% to 86% with the drag, 100% at the threshold in 220ms" />
+				<PlateMeasure label="Label" value="64px circle over the card's centre, 28px icon, shadow-lg" />
+				<PlateMeasure label="Label motion" value="hidden for the first 15%, then 60% to 90% and faded in with the drag; full size at the threshold in 220ms" />
 				<PlateMeasure label="Empty state" value="rises 8px, 220ms after 140ms" />
 				<PlateMeasure label="History" value="last 10 swipes" />
 			</PlateMeasures>

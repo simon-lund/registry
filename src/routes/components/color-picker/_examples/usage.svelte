@@ -1,16 +1,11 @@
 <script lang="ts">
-	import {
-		ColorPicker,
-		ColorPickerArea,
-		ColorPickerHue,
-		ColorPickerInput
-	} from '#lib/registry/ui/color-picker/index.js';
+	import { ColorPicker, ColorPickerSwatch } from '#lib/registry/ui/color-picker/index.js';
 
 	let value = $state('#2f6f8f');
 </script>
 
-<ColorPicker bind:value>
-	<ColorPickerArea aria-label="Colour" channelLabels={['Saturation', 'Brightness']} />
-	<ColorPickerHue aria-label="Hue" />
-	<ColorPickerInput aria-label="Hex value" />
+<ColorPicker bind:value aria-label="Label colour">
+	<ColorPickerSwatch value="#2f6f8f" aria-label="Lake" />
+	<ColorPickerSwatch value="#c2552d" aria-label="Rust" />
+	<ColorPickerSwatch value="#5f7a3a" aria-label="Moss" />
 </ColorPicker>

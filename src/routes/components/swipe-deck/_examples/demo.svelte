@@ -48,7 +48,7 @@
 			<SwipeDeckStack>
 				{#each articles as article (article.id)}
 					<SwipeDeckCard value={article.id}>
-						<SwipeDeckLabel direction="right"><BookmarkIcon aria-hidden="true" />Save</SwipeDeckLabel>
+						<SwipeDeckLabel direction="right" variant="default"><BookmarkIcon aria-hidden="true" />Save</SwipeDeckLabel>
 						<SwipeDeckLabel direction="left"><XIcon aria-hidden="true" />Skip</SwipeDeckLabel>
 						<div class="bg-card text-card-foreground flex h-full min-h-48 flex-col gap-2 rounded-lg border p-5">
 							<p class="text-muted-foreground m-0 mt-auto text-sm">{article.source}</p>

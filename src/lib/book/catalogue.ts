@@ -19,14 +19,9 @@ export const components: Entry[] = [
 		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.'
 	},
 	{
-		name: 'behaviours',
-		title: 'Behaviours',
-		tagline: 'Six small helpers with no look of their own: closing, focus, inert, long press, form reset and swipe.'
-	},
-	{
 		name: 'color-picker',
 		title: 'Color picker',
-		tagline: 'A colour you set by area, sliders, swatches or typing, with its own OKLCH maths and no colour library.'
+		tagline: 'One colour out of a few, as a row of swatches.'
 	},
 	{
 		name: 'dial',

@@ -1,4 +1,7 @@
 <script lang="ts">
+	import CheckIcon from '@lucide/svelte/icons/check';
+	import StarIcon from '@lucide/svelte/icons/star';
+	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import {
 		SwipeDeck,
@@ -22,9 +25,9 @@
 	<SwipeDeckStack>
 		{#each photos as photo (photo.id)}
 			<SwipeDeckCard value={photo.id}>
-				<SwipeDeckLabel direction="left">Delete</SwipeDeckLabel>
-				<SwipeDeckLabel direction="right">Keep</SwipeDeckLabel>
-				<SwipeDeckLabel direction="up">Favourite</SwipeDeckLabel>
+				<SwipeDeckLabel direction="left"><Trash2Icon aria-hidden="true" />Delete</SwipeDeckLabel>
+				<SwipeDeckLabel direction="right" variant="default"><CheckIcon aria-hidden="true" />Keep</SwipeDeckLabel>
+				<SwipeDeckLabel direction="up"><StarIcon aria-hidden="true" />Favourite</SwipeDeckLabel>
 				<div class="bg-card h-full min-h-48 rounded-lg border p-5">{photo.title}</div>
 			</SwipeDeckCard>
 		{/each}

@@ -1,14 +1,16 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '#lib/utils.js';
-	import { getStepperItem, getStepperList, getStepperRoot } from './context.js';
+	import { getStepperItem, getStepperList, getStepperRoot, sweepStyle } from './context.js';
 
 	/**
 	 * StepperSeparator: the line from this step to the next. Put it in every StepperItem but the
-	 * last. A 2px track in the border colour; once the step is done a foreground line runs along it
-	 * from this step to the next (base 220ms, settle, transform only: a scale from the start).
-	 * Horizontal it stretches between the two steps on the indicators' centre line; vertical it
-	 * runs down the indicators' column. Decoration only (`aria-hidden`). Not drawn in the inline
+	 * last. A 2px track in the border colour; once the current step lies past it, a foreground line
+	 * runs along it from this step to the next, and going back draws it in again the same way
+	 * (settle, transform only: a scale from the start). It shows where you are; the checks show
+	 * what is done. Horizontal it stretches between the two steps on the indicators' centre line in
+	 * the base 220ms; vertical it runs down the indicators' column, a longer way, in the calm 320ms.
+	 * A jump across several steps draws their segments as one line, in order from the step left. Decoration only (`aria-hidden`). Not drawn in the inline
 	 * lists.
 	 *
 	 * @example
@@ -23,7 +25,7 @@
 	const root = getStepperRoot('StepperSeparator');
 	const item = getStepperItem('StepperSeparator');
 	const list = getStepperList();
-	const filled = $derived(item.done);
+	const filled = $derived(item.value < root.value);
 </script>
 
 {#if list.variant === 'default'}
@@ -32,6 +34,7 @@
 		data-slot="stepper-separator"
 		data-orientation={root.orientation}
 		data-filled={filled || undefined}
+		style={sweepStyle(root.sweep(item.value))}
 		aria-hidden="true"
 		class={cn(
 			'separator block overflow-hidden rounded-full bg-border',
@@ -50,7 +53,8 @@
 
 <style>
 	.separator-fill {
-		transition: scale var(--dur-base) var(--ease-settle);
+		transition: scale var(--sweep-dur, var(--seg-dur, var(--dur-base)))
+			var(--sweep-ease, var(--ease-settle)) var(--sweep-delay, 0s);
 	}
 	.separator[data-orientation='horizontal'] .separator-fill {
 		transform-origin: left center;
@@ -62,6 +66,7 @@
 	.separator[data-orientation='vertical'] .separator-fill {
 		transform-origin: center top;
 		scale: 1 0;
+		--seg-dur: var(--dur-calm);
 	}
 	.separator[data-filled] .separator-fill {
 		scale: 1 1;

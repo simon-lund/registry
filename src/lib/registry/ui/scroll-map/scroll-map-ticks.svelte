@@ -5,9 +5,10 @@
 
 	/**
 	 * ScrollMapTicks: the column of ScrollMapTick, with the band behind the ticks in view: a
-	 * muted rounded strip that glides and stretches to the new range as the reader
-	 * scrolls (a clip-path, base 220ms, settle; it simply moves under reduced motion). One tab
-	 * stop; ArrowUp, ArrowDown, Home and End move between the ticks.
+	 * rounded strip of foreground at 10% (it reads on any surface), 24px wide from the ticks' side
+	 * so it sits evenly around the long ticks, 4px clear on both sides. It glides and stretches to
+	 * the new range as the reader scrolls (a clip-path, base 220ms, settle; it simply moves under
+	 * reduced motion). One tab stop; ArrowUp, ArrowDown, Home and End move between the ticks.
 	 */
 	let {
 		ref = $bindable(null),
@@ -61,7 +62,7 @@
 	<span
 		aria-hidden="true"
 		data-slot="scroll-map-band"
-		class="pointer-events-none absolute inset-x-1 inset-y-0 rounded-full bg-muted transition-[clip-path] duration-(--dur-base) ease-(--ease-settle)"
+		class="bg-foreground/10 pointer-events-none absolute inset-y-0 w-6 rounded-full transition-[clip-path] duration-(--dur-base) ease-(--ease-settle) group-data-[side=left]/scroll-map:left-0.5 group-data-[side=right]/scroll-map:right-0.5"
 		style:clip-path={clip}
 	></span>
 	{@render children?.()}

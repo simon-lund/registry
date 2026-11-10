@@ -135,7 +135,7 @@
 			<PlateMeasure label="Tick row" value="10px high, 12px to press" />
 			<PlateMeasure label="Tick line" value="16px · sm 10px, 2px thick" />
 			<PlateMeasure label="Dot" value="4px, 4px from the line" />
-			<PlateMeasure label="Band" value="inset 4px at the sides, 2px past the ticks in view" />
+			<PlateMeasure label="Band" value="foreground at 10%, 24px from the ticks' side: 4px around a long tick, 2px past the ticks in view" />
 			<PlateMeasure label="Band glide" value="220ms (--dur-base), --ease-settle" />
 			<PlateMeasure label="Tick colour" value="140ms (--dur-quick); hover stretches it to 125%" />
 			<PlateMeasure label="Previous and next" value="32px, 44px to press; 90% on press, 80ms" />

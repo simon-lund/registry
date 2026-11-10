@@ -58,7 +58,7 @@
 
 	<PlateExample title="Done" example={example('done')}>
 		By default the steps before the furthest one reached are done. Pass <code>done</code> on an item
-		to say it yourself.
+		to control it.
 	</PlateExample>
 
 	<PlateExample title="Icons" example={example('icons')}>
@@ -71,9 +71,8 @@
 	</PlateExample>
 
 	<PlateExample title="Invalid" example={example('invalid')}>
-		Set <code>invalid</code> on the item for the red dot, and say what is wrong in a
-		<code>StepperDescription</code>. Set <code>--stepper-cutout</code> on a surface other than the
-		background.
+		Set <code>invalid</code> on the item for a red ring with an X, and say what is wrong in a
+		<code>StepperDescription</code>.
 	</PlateExample>
 
 	<PlateExample title="Disabled step" example={example('disabled')}>
@@ -124,7 +123,7 @@
 					<PlateProp name="done" type="boolean">By default, whether the step lies before the furthest one reached.</PlateProp>
 					<PlateProp name="disabled" type="boolean" default="false">Dimmed, never a button, skipped by the next and previous buttons.</PlateProp>
 					<PlateProp name="loading" type="boolean" default="false">A spinner in the indicator, <code>aria-busy</code> on the trigger.</PlateProp>
-					<PlateProp name="invalid" type="boolean" default="false">A small red dot on the indicator.</PlateProp>
+					<PlateProp name="invalid" type="boolean" default="false">A red ring with an X on the indicator, over any other look.</PlateProp>
 					<PlateProp name="ref" type="HTMLLIElement | null" default="null" bindable />
 					<PlateProp name="class" type="string" />
 				</PlateProps>
@@ -137,7 +136,7 @@
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="StepperIndicator">
-				<p>The step's circle, or its bar or dot in the inline lists. Decoration, hidden from screen readers. Children replace the number. Set <code>--stepper-cutout</code> to the surface's colour for the invalid dot's ring.</p>
+				<p>The step's circle, or its bar or dot in the inline lists. Decoration, hidden from screen readers. Children replace the number.</p>
 				<PlateProps>
 					<PlateProp name="ref" type="HTMLSpanElement | null" default="null" bindable />
 					<PlateProp name="class" type="string" />
@@ -222,11 +221,11 @@
 			<PlateMeasure label="Title" value="14px, medium · active semibold" />
 			<PlateMeasure label="Description" value="12px" />
 			<PlateMeasure label="Separator" value="2px, at least 16px long" />
-			<PlateMeasure label="Separator fill" value="220ms" />
+			<PlateMeasure label="Separator fill" value="220ms horizontal, 320ms vertical; up to the current step" />
 			<PlateMeasure label="Glyph swap" value="220ms blurred cross-fade (Swap)" />
 			<PlateMeasure label="Done disc grows" value="220ms from the centre, shrinks in 140ms" />
 			<PlateMeasure label="Press" value="94% in 80ms" />
-			<PlateMeasure label="Invalid dot" value="10px, 2px cutout, centred on the edge at 45°" />
+			<PlateMeasure label="Invalid" value="1.5px destructive ring, 16px X" />
 			<PlateMeasure label="Bars" value="24 × 6px, 4px apart" />
 			<PlateMeasure label="Dots" value="8px, 8px apart · current 125%" />
 			<PlateMeasure label="Disabled step" value="45% opacity" />

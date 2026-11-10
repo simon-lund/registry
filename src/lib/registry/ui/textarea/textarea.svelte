@@ -172,7 +172,7 @@
 				aria-hidden={resizeLabel ? undefined : 'true'}
 				tabindex={resizeLabel ? 0 : undefined}
 				class={cn(
-					'relative me-1.5 mb-1.5 grid size-6 cursor-ns-resize touch-none place-items-center self-end justify-self-end rounded-xs text-muted-foreground',
+					'relative me-0.75 mb-0.75 grid size-6 cursor-ns-resize touch-none place-items-center self-end justify-self-end rounded-xs text-muted-foreground',
 					'transition-colors duration-(--dur-quick) ease-(--ease-settle)',
 					'hover:text-foreground group-data-dragging/textarea:text-foreground focus-visible:text-foreground',
 					'focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ring'
