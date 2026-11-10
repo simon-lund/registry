@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	// The same switch as simon-lund.com: a class on <html>, remembered in localStorage.
+	// The same switch as simon-lund.com: a class on <html>, remembered in localStorage, and the
+	// favicon to match.
 	let dark = $state(false);
 	onMount(() => {
 		dark = document.documentElement.classList.contains('dark');
@@ -9,6 +10,8 @@
 	function toggle() {
 		dark = !dark;
 		document.documentElement.classList.toggle('dark', dark);
+		const icon = document.querySelector<HTMLLinkElement>('link[rel="icon"][type="image/svg+xml"]');
+		if (icon) icon.href = dark ? '/favicon.svg' : '/favicon-light.svg';
 		try {
 			localStorage.setItem('theme', dark ? 'dark' : 'light');
 		} catch {

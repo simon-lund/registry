@@ -4,6 +4,9 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="color-scheme" content="light dark" />
+		<!-- simon-lund.com's monogram; the theme script below picks the one for the theme -->
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -11,11 +14,14 @@
 			href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
 		/>
 		<script>
-			// Same as simon-lund.com: the saved theme, else the system's, as a class on <html>.
+			// Same as simon-lund.com: the saved theme, else the system's, as a class on <html>, and the
+			// favicon to match.
 			(function () {
 				var saved = localStorage.getItem('theme');
 				var dark = saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches);
 				document.documentElement.classList.toggle('dark', dark);
+				var icon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+				if (icon) icon.href = dark ? '/favicon.svg' : '/favicon-light.svg';
 			})();
 		</script>
 		%sveltekit.head%
