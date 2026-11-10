@@ -28,20 +28,15 @@ export interface Collision {
 	file: string;
 }
 
-/** Linux's letter for a state: R running, S sleeping, T stopped; done and failed carry an exit code. */
-export function letter(agent: Pick<Agent, 'state' | 'exit'>): string {
+/** The words for a state; a failed agent adds its exit code, the one number that says why. */
+export function stateText(agent: Pick<Agent, 'state' | 'exit'>): string {
 	switch (agent.state) {
-		case 'working':
-			return 'R';
-		case 'waiting':
 		case 'needs-you':
-			return 'S';
-		case 'paused':
-			return 'T';
-		case 'done':
-			return `exit ${agent.exit ?? 0}`;
+			return 'needs you';
 		case 'failed':
-			return `exit ${agent.exit ?? 1}`;
+			return `failed, exit ${agent.exit ?? 1}`;
+		default:
+			return agent.state;
 	}
 }
 

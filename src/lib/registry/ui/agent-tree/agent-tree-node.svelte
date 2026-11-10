@@ -2,7 +2,7 @@
 	import Self from './agent-tree-node.svelte';
 	import AgentTreeState from './agent-tree-state.svelte';
 	import { cn } from '#lib/utils.js';
-	import { finished, getTree, letter, type Agent } from './context.svelte.js';
+	import { finished, getTree, stateText, type Agent } from './context.svelte.js';
 
 	/** One agent as a row, then its children as a group under it. */
 	let { agent, level = 0 }: { agent: Agent; level?: number } = $props();
@@ -13,6 +13,8 @@
 	const steered = $derived(tree.steers.has(agent.pid));
 	const above = $derived(tree.reportsTo.has(agent.pid));
 	const ended = $derived(finished(agent.state));
+	// The one state that wants you: it stands out by contrast, not colour (copper is the reach).
+	const needsYou = $derived(agent.state === 'needs-you');
 	const sockets = $derived(tree.socketsOf(agent.pid));
 	const collisions = $derived(tree.collisionsOf(agent.pid));
 	// Whom it reports to, said on its own row once it is selected (the chain above is the tree).
@@ -106,17 +108,20 @@
 		/>
 		<span class="flex min-w-0 flex-1 items-baseline gap-2">
 			<!-- the name stays ink: copper at text size fails contrast on cream, so the reach is on the mark and the line -->
-			<span class={cn('truncate', agent.state === 'needs-you' && !ended && 'font-medium')}
-				>{agent.name}</span
-			>
+			<span class={cn('truncate', needsYou && 'font-medium')}>{agent.name}</span>
 			{#if agent.task}
-				<!-- what it is doing: kept on a phone, where the pid and the letter go -->
-				<span class="text-muted-foreground min-w-0 truncate text-sm">{agent.task}</span>
+				<!-- what it is doing: kept on a phone, where the pid and the state go -->
+				<span class={cn('min-w-0 truncate text-sm', needsYou ? 'text-foreground' : 'text-muted-foreground')}
+					>{agent.task}</span
+				>
 			{/if}
 		</span>
+		{#if needsYou}
+			<!-- inverted, so it is the darkest thing on the row in both themes; kept on a phone too -->
+			<span class="bg-foreground text-background shrink-0 rounded-full px-2 py-0.5 text-xs font-medium">needs you</span>
+		{/if}
 		<span class="text-muted-foreground hidden shrink-0 font-mono text-xs tabular-nums sm:inline">
-			{agent.pid} · {letter(agent)}
-			{#if !ended}<span class="hidden sm:inline">{agent.state === 'needs-you' ? 'needs you' : agent.state}</span>{/if}
+			{needsYou ? agent.pid : `${agent.pid} · ${stateText(agent)}`}
 		</span>
 	</div>
 

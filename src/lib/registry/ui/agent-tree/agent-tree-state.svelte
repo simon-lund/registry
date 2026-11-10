@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '#lib/utils.js';
-	import { letter, type AgentState } from './context.svelte.js';
+	import type { AgentState } from './context.svelte.js';
 
-	/** The mark and the word for one state, with Linux's letter. Stands alone in a legend. */
+	/** The mark and the word for one state. Stands alone in a legend. */
 	interface Props extends HTMLAttributes<HTMLSpanElement> {
 		state: AgentState;
 		exit?: number;
@@ -60,6 +60,5 @@
 	</svg>
 	{#if !markOnly}
 		<span class={cn(state === 'needs-you' && 'font-medium')}>{words[state]}</span>
-		<span class="text-muted-foreground font-mono text-xs">{letter({ state, exit })}</span>
 	{/if}
 </span>

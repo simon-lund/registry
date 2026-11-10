@@ -39,8 +39,9 @@
 	</PlateSection>
 
 	<PlateExample title="States" example={example('states')}>
-		Every agent has exactly one state, with the letter Linux gives it: working is R, waiting S,
-		needs you S with weight, paused T. Done and failed carry an exit code and a dashed line.
+		Every agent has exactly one state, shown by its mark and named beside its pid. Needs you, the one
+		that wants you, stands out as a solid pill. Done and failed have a dashed line; a failed agent
+		gives its exit code.
 	</PlateExample>
 
 	<PlateExample title="Selection" example={example('selected')}>
@@ -142,10 +143,10 @@
 					<PlateProp name="file" type="string" required />
 				</PlateProps>
 			</PlatePart>
-			<PlatePart name="letter" kind="function">
+			<PlatePart name="stateText" kind="function">
 				<p>
-					<code>letter(agent: Pick&lt;Agent, "state" | "exit"&gt;): string</code>. Linux's letter for a
-					state: R, S or T, or "exit n".
+					<code>stateText(agent: Pick&lt;Agent, "state" | "exit"&gt;): string</code>. The words for a
+					state, as a row writes them: "working", "needs you", or "failed, exit n".
 				</p>
 			</PlatePart>
 		</PlateApi>
@@ -158,7 +159,8 @@
 			<PlateMeasure label="Mark" value="16px, 1.5px stroke, on the row's centre line" />
 			<PlateMeasure label="Mark to name" value="12px" />
 			<PlateMeasure label="Name" value="16px / 400 (needs you: 500)" />
-			<PlateMeasure label="pid · state" value="12px mono, tabular" />
+			<PlateMeasure label="pid · state" value="12px mono, tabular; hidden on a phone" />
+			<PlateMeasure label="Needs you" value="a 12px / 500 pill in foreground on background, inverted; the task in foreground; kept on a phone" />
 			<PlateMeasure label="Tree line" value="1px border, copper below the selected agent" />
 			<PlateMeasure label="Selection" value="instant: a cut, no ease" />
 			<PlateMeasure label="Working mark" value="one turn in 3s, linear; still under reduced motion" />
