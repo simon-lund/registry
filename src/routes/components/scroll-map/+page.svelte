@@ -53,7 +53,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>The ticks are one tab stop. <code>Tab</code> enters on the first tick in view.</li>
 			<li><code>ArrowUp</code> and <code>ArrowDown</code> move between the ticks.</li>
 			<li><code>Home</code> and <code>End</code> go to the first and the last tick.</li>

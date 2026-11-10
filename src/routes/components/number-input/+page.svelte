@@ -61,7 +61,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li><code>ArrowUp</code> and <code>ArrowDown</code> step; with <code>Shift</code>, ten steps.</li>
 			<li><code>PageUp</code> and <code>PageDown</code> step ten.</li>
 			<li><code>Home</code> and <code>End</code> go to <code>min</code> and <code>max</code>.</li>

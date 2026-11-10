@@ -88,7 +88,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>The triggers that are buttons share one tab stop: the current step, or the last one focused.</li>
 			<li><code>ArrowLeft</code> and <code>ArrowRight</code> move the focus along a horizontal list, <code>ArrowUp</code> and <code>ArrowDown</code> along a vertical one. They wrap around, and they do not switch steps.</li>
 			<li><code>Home</code> and <code>End</code> go to the first and last trigger.</li>

@@ -10,8 +10,8 @@
 	<section class="flex flex-col gap-3">
 		<h1 class="text-4xl">Less, but better.</h1>
 		<p class="text-muted-foreground max-w-prose">
-			A registry of components I designed and use, each on its own plate: large and working, with
-			its intention, what was left out, its states and its measurements.
+			Svelte components I designed and use. Copy any of them into your app with the shadcn-svelte
+			CLI.
 		</p>
 	</section>
 

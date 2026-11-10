@@ -73,7 +73,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>The tree is one focus stop. <code>ArrowUp</code> and <code>ArrowDown</code> move between agents.</li>
 			<li><code>Home</code> and <code>End</code> go to the first and last agent.</li>
 			<li><code>Enter</code> or <code>Space</code> selects the focused agent.</li>

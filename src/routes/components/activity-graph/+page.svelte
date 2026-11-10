@@ -71,7 +71,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>The grid is one tab stop. <code>Tab</code> enters on the newest square, or the last one visited.</li>
 			<li><code>ArrowLeft</code> and <code>ArrowRight</code> move along a row; <code>ArrowUp</code> and <code>ArrowDown</code> move within a column. No wrap, and gaps are skipped.</li>
 			<li><code>Home</code> and <code>End</code> go to the ends of the row.</li>

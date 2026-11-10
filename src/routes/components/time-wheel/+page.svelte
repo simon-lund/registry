@@ -54,7 +54,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>Each column is a focus stop. <code>ArrowUp</code> and <code>ArrowDown</code> move one row at once.</li>
 			<li><code>Home</code> and <code>End</code> go to the first and last row.</li>
 			<li>The mouse wheel steps one row; a click on a row turns to it.</li>

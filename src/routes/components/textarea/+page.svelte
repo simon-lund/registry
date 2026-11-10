@@ -64,7 +64,7 @@
 
 	<PlateSection title="Keyboard">
 		<p>The grip takes focus when you set <code>resizeLabel</code>. It is a focusable separator placed after the field in the tab order.</p>
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li><code>ArrowDown</code> and <code>ArrowUp</code> make the field a line taller or shorter.</li>
 			<li><code>Home</code> goes to its least height.</li>
 			<li><code>End</code> goes to its greatest height, if it has a <code>max-h-*</code>.</li>

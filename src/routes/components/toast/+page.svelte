@@ -69,7 +69,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li><code>Alt+T</code> moves focus to the front toast's action, or to the stack if it has none. Again, it gives focus back.</li>
 			<li><code>Escape</code> inside the stack gives focus back.</li>
 			<li><code>Tab</code> and <code>Shift+Tab</code> reach the action in DOM order; <code>Enter</code> or <code>Space</code> runs it.</li>
@@ -179,7 +179,7 @@
 			</PlatePart>
 			<PlatePart name="ToastDismissReason" kind="type">
 				<p>Why a toast left. Exactly one applies.</p>
-				<ul class="m-0 flex flex-col gap-1 pl-5">
+				<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 					<li><code>timeout</code>: its window ran out.</li>
 					<li><code>swipe</code>: swiped away by hand.</li>
 					<li><code>action</code>: its action ran.</li>

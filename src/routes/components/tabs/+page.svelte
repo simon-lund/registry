@@ -66,7 +66,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li><code>ArrowLeft</code> and <code>ArrowRight</code> move along the segments and select, and loop at the ends.</li>
 			<li><code>Home</code> and <code>End</code> go to the first and the last segment.</li>
 			<li><code>Enter</code> and <code>Space</code> select the focused segment.</li>

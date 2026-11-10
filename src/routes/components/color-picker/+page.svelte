@@ -102,7 +102,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>Area: arrows move 1%; with <code>Shift</code>, 10%.</li>
 			<li>Area: <code>PageUp</code> and <code>PageDown</code> move up and down 10%, <code>Home</code> and <code>End</code> left and right 10%.</li>
 			<li>Hue: arrows step 1 degree; with <code>Shift</code>, or <code>PageUp</code> and <code>PageDown</code>, 15. <code>Home</code> and <code>End</code> go to the ends.</li>

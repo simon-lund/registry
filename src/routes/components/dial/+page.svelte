@@ -65,7 +65,7 @@
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li><code>ArrowRight</code> and <code>ArrowUp</code> go one stop up.</li>
 			<li><code>ArrowLeft</code> and <code>ArrowDown</code> go one stop down.</li>
 			<li><code>PageUp</code> and <code>PageDown</code> go a tenth of the stops, at least one.</li>

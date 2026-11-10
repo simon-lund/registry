@@ -51,7 +51,7 @@
 	<PlateExample title="Disabled" example={example('disabled')} />
 
 	<PlateSection title="Keyboard">
-		<ul class="m-0 flex flex-col gap-1 pl-5">
+		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li><code>Space</code> and <code>Enter</code> toggle it.</li>
 		</ul>
 	</PlateSection>

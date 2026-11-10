@@ -84,7 +84,7 @@
 		</PlateExample>
 
 		<PlateSection title="Keyboard">
-			<ul class="m-0 flex flex-col gap-1 pl-5">
+			<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 				<li>The deck is one tab stop.</li>
 				<li><code>ArrowLeft</code>, <code>ArrowRight</code> and <code>ArrowUp</code> send the top card that way, if it has a label for it.</li>
 				<li><code>Backspace</code>, <code>Cmd+Z</code> and <code>Ctrl+Z</code> undo.</li>
