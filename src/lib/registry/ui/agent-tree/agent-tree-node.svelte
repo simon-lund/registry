@@ -15,6 +15,10 @@
 	const ended = $derived(finished(agent.state));
 	const sockets = $derived(tree.socketsOf(agent.pid));
 	const collisions = $derived(tree.collisionsOf(agent.pid));
+	// Whom it reports to, said on its own row once it is selected (the chain above is the tree).
+	const parent = $derived(selected ? tree.byPid.get(agent.ppid) : undefined);
+	// Other agents are named, never numbered: a pid means nothing until you look it up.
+	const nameOf = (pid: number) => tree.byPid.get(pid)?.name ?? String(pid);
 	// The first row holds the tab stop until a key or a click moves it.
 	const tabbable = $derived((tree.focused ?? tree.order[0]) === agent.pid);
 
@@ -82,7 +86,8 @@
 		// the focus ring sits on the row (the first child), not around the whole subtree
 		'list-none outline-none [&:focus-visible>div]:ring-ring [&:focus-visible>div]:ring-2',
 		'[&>ul]:border-border [&>ul]:ml-2 [&>ul]:border-l [&>ul]:pl-4',
-		steered && '[&>ul]:border-primary'
+		// the selected agent's reach: the lines down to everything it steers
+		(selected || steered) && '[&>ul]:border-primary'
 	)}
 >
 	<div
@@ -105,36 +110,38 @@
 				>{agent.name}</span
 			>
 			{#if agent.task}
-				<span class="text-muted-foreground hidden min-w-0 truncate text-sm sm:inline">{agent.task}</span>
+				<!-- what it is doing: kept on a phone, where the pid and the letter go -->
+				<span class="text-muted-foreground min-w-0 truncate text-sm">{agent.task}</span>
 			{/if}
 		</span>
-		{#if above}
-			<span class="text-muted-foreground shrink-0 text-xs">reports to</span>
-		{/if}
-		<span class="text-muted-foreground shrink-0 font-mono text-xs tabular-nums">
+		<span class="text-muted-foreground hidden shrink-0 font-mono text-xs tabular-nums sm:inline">
 			{agent.pid} · {letter(agent)}
 			{#if !ended}<span class="hidden sm:inline">{agent.state === 'needs-you' ? 'needs you' : agent.state}</span>{/if}
 		</span>
 	</div>
 
-	{#if sockets.length || collisions.length || (selected && tree.actions)}
+	{#if sockets.length || collisions.length || parent || (selected && tree.actions)}
 		<div class="mb-1 ml-7 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
 			{#each sockets as s (s.name + s.a + s.b)}
 				<span class="text-muted-foreground inline-flex items-center gap-1.5 font-mono">
 					<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4h8M7 1.5 9.5 4 7 6.5M10.5 8h-8M5 5.5 2.5 8 5 10.5" /></svg>
 					{s.name}
-					<span class="font-sans">with {s.a === agent.pid ? s.b : s.a}, opened by {s.by}</span>
+					<span class="font-sans">with {nameOf(s.a === agent.pid ? s.b : s.a)}, opened by {nameOf(s.by)}</span>
 				</span>
 			{/each}
 			{#each collisions as c (c.file)}
 				<span class="inline-flex items-center gap-1.5">
 					<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M6 1.5 11 10.5H1z" /><path d="M6 5v2.5M6 9v.01" stroke-linecap="round" /></svg>
 					<span class="font-mono">{c.file}</span>
-					<span class="text-muted-foreground">also open in {c.pids.filter((p) => p !== agent.pid).join(', ')}</span>
+					<span class="text-muted-foreground">also open in {c.pids.filter((p) => p !== agent.pid).map(nameOf).join(', ')}</span>
 				</span>
 			{/each}
+			{#if parent}
+				<span class="text-muted-foreground">Reports to <span class="text-foreground">{parent.name}</span></span>
+			{/if}
 			{#if selected && tree.actions}
-				<span class="flex basis-full items-center gap-2 py-1">{@render tree.actions(agent)}</span>
+				<!-- the app's own actions; it renders none for an agent where none apply (a finished one) -->
+				<span class="flex basis-full items-center gap-2 py-1 empty:hidden">{@render tree.actions(agent)}</span>
 			{/if}
 		</div>
 	{/if}

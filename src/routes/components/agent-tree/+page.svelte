@@ -44,13 +44,15 @@
 	</PlateExample>
 
 	<PlateExample title="Selection" example={example('selected')}>
-		Selecting an agent shows its reach: the agents below it, which it steers, in copper, and the
-		ones above, which it reports to. Bind <code>selected</code> to read or set it.
+		Selecting an agent shows its reach: the agents below it, which it steers, and the lines down to
+		them, in copper. Its own row then names the agent it reports to. Bind <code>selected</code> to
+		read or set it.
 	</PlateExample>
 
 	<PlateExample title="Actions" example={example('actions')}>
 		The <code>actions</code> snippet renders inside the selected row. Pause, Stop and Message
-		belong to the app, which knows what they do.
+		belong to the app, which knows what they do. Render only what applies: nothing for a finished
+		agent, Resume for a paused one.
 	</PlateExample>
 
 	<PlateExample title="Sockets" example={example('socket')}>
