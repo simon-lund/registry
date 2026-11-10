@@ -3,7 +3,7 @@
 
 	export const pinVariants = tv({
 		base: [
-			'grid size-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full border-2 border-background text-xs font-medium tabular-nums shadow-md outline-none',
+			'grid size-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full border text-xs font-medium tabular-nums shadow-md outline-none',
 			'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-background',
 			"transition-[scale] duration-(--dur-quick) ease-(--ease-settle) starting:scale-40 [&_svg:not([class*='size-'])]:size-3.5"
 		],
@@ -21,30 +21,71 @@
 
 <script lang="ts">
 	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import { autoUpdate } from '@floating-ui/dom';
 	import { cn } from '#lib/utils.js';
 	import { getMarkup } from './context.svelte.js';
 	import { getComment } from './comment.svelte.js';
 
 	/**
-	 * MarkupCommentPin: the comment's pin, a 24px circle that opens and closes its box. Its centre
-	 * sits on `left` and `top`: position it yourself (`class="absolute"` in a layer over the page,
-	 * `fixed` in viewport coordinates), above the layer that catches the clicks. Put the comment's
-	 * number inside, or a check once it is done (`variant="done"`, quiet). `aria-label` is yours.
+	 * MarkupCommentPin: the comment's pin, a 24px circle that opens and closes its box. Put the
+	 * comment's number inside, or a check once it is done (`variant="done"`, quiet). `aria-label` is
+	 * yours.
+	 *
+	 * Where it sits, one of two ways:
+	 * - On an element (the one the select tool clicked): give it as `anchor` and the point clicked
+	 *   as `at`, fractions of the element's box. The pin places itself there and follows the element
+	 *   as the page scrolls, resizes or reflows (Floating UI's autoUpdate).
+	 * - Anywhere else: its centre sits on `left` and `top`; position it yourself (`class="absolute"`
+	 *   in a layer over the page, `fixed` in viewport coordinates).
+	 *
+	 * Either way, render it above the layer that catches the clicks.
 	 *
 	 * @example
-	 * <MarkupCommentPin class="absolute" style="left: {x}px; top: {y}px" aria-label="Comment 1">1</MarkupCommentPin>
+	 * <MarkupCommentPin anchor={el} at={{ x: 0.2, y: 0.5 }} aria-label="Comment 1">1</MarkupCommentPin>
 	 */
 	let {
 		variant = 'default',
+		anchor = null,
+		at = { x: 0.5, y: 0.5 },
 		class: className,
+		style,
 		children,
 		onclick,
 		onkeydown,
 		...restProps
-	}: Omit<HTMLButtonAttributes, 'type'> & { variant?: PinVariant } = $props();
+	}: Omit<HTMLButtonAttributes, 'type'> & {
+		variant?: PinVariant;
+		/** The element the comment is on; the pin follows it. */
+		anchor?: Element | null;
+		/** Where on the anchor, as fractions of its box: 0, 0 its top left, 1, 1 its bottom right. */
+		at?: { x: number; y: number };
+	} = $props();
 
 	const markup = getMarkup('MarkupCommentPin');
 	const comment = getComment('MarkupCommentPin');
+
+	// On an anchor: the point on its box, in the pin's containing block, kept up to date.
+	let pos = $state<{ left: number; top: number } | null>(null);
+	$effect(() => {
+		const pin = comment.pin;
+		const el = anchor;
+		const { x, y } = at;
+		if (!pin || !el) return;
+		const stop = autoUpdate(el, pin, () => {
+			const r = el.getBoundingClientRect();
+			const parent = pin.offsetParent;
+			// no positioned ancestor: the document is the containing block
+			const o = parent && parent !== document.body ? parent.getBoundingClientRect() : { left: -scrollX, top: -scrollY };
+			pos = {
+				left: r.left + x * r.width - o.left - (parent?.clientLeft ?? 0) + (parent?.scrollLeft ?? 0),
+				top: r.top + y * r.height - o.top - (parent?.clientTop ?? 0) + (parent?.scrollTop ?? 0)
+			};
+		});
+		return () => {
+			stop();
+			pos = null;
+		};
+	});
 </script>
 
 <button
@@ -56,7 +97,8 @@
 	data-state={comment.open ? 'open' : 'closed'}
 	aria-expanded={comment.open}
 	aria-controls={comment.open ? comment.id : undefined}
-	class={cn(pinVariants({ variant }), className)}
+	class={cn(pinVariants({ variant }), anchor && 'absolute', className)}
+	style={anchor && pos ? `left: ${pos.left}px; top: ${pos.top}px` : style}
 	onclick={(e) => {
 		onclick?.(e);
 		if (!e.defaultPrevented) comment.setOpen(!comment.open);

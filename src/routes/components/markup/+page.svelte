@@ -32,9 +32,11 @@
 
 	<PlateSection title="Installation">
 		<p>
-			After the markup bar in Claude Code's browser pane: the bar (select, pen, shapes, text; colour,
-			width; undo, redo, delete), the outline around the element the select tool points at, the
-			handles around a selected mark, and comments, a numbered pin and a box to write in. It is the
+			After the markup bar in Claude Code's browser pane: the bar (select, comment, pen, shapes;
+			colour, width; undo, redo, delete), the outline around the element the select tool points at,
+			the handles around a selected mark, and comments, a numbered pin and a box to write in. A
+			comment made with select stays on its element and follows it; one made with the comment tool,
+			a chat bubble, sits wherever you clicked. It is the
 			UI only: it catches no clicks, draws nothing and keeps nothing. What the tools draw, the history
 			behind undo and redo, and saving each mark and comment as it is made are your app's; the demo
 			shows one way. The comment box is placed with Floating UI.
@@ -67,11 +69,10 @@
 			<PlatePart name="Markup">
 				<p>The state, shared with the parts. Renders nothing of its own. Also exported as <code>Root</code>.</p>
 				<PlateProps>
-					<PlateProp name="tool" type={`"select" | "pen" | "shape" | "text" | null`} default="null" bindable>The tool in hand; null: none, the page works as usual.</PlateProp>
+					<PlateProp name="tool" type={`"select" | "comment" | "pen" | "shape" | null`} default="null" bindable>The tool in hand; null: none, the page works as usual. Select comments on an element; comment leaves one anywhere.</PlateProp>
 					<PlateProp name="shape" type={`"line" | "arrow" | "rectangle" | "ellipse" | "step"`} default={`"rectangle"`} bindable>The kind the shape tool draws; a step is a numbered circle.</PlateProp>
 					<PlateProp name="colour" type="string" default={`"var(--foreground)"`} bindable>Any CSS colour: the picked swatch's value.</PlateProp>
 					<PlateProp name="width" type="number" default="3" bindable>In px.</PlateProp>
-					<PlateProp name="onSend" type="() => void | Promise<void>">Called by MarkupSend. Sending while its promise runs; failed when it rejects.</PlateProp>
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="MarkupBar">
@@ -91,7 +92,7 @@
 			<PlatePart name="MarkupTool">
 				<p>A tool, a toggle. The icon goes inside; the label shows as a tooltip.</p>
 				<PlateProps>
-					<PlateProp name="value" type={`"select" | "pen"`} required />
+					<PlateProp name="value" type={`"select" | "comment" | "pen"`} required>The shape tool is MarkupShapes.</PlateProp>
 					<PlateProp name="aria-label" type="string" required />
 					<PlateProp name="class" type="string" />
 				</PlateProps>
@@ -174,8 +175,10 @@
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="MarkupCommentPin">
-				<p>The circle that opens the box. Its centre sits on <code>left</code> and <code>top</code>; position it yourself, above your click layer. The number, or a check, goes inside. Other props go to its <code>button</code>.</p>
+				<p>The circle that opens the box; the number, or a check, goes inside. On an element, give it as <code>anchor</code> with the point clicked as <code>at</code>: the pin places itself there and follows the element as the page scrolls, resizes or reflows. Anywhere else its centre sits on <code>left</code> and <code>top</code>; position it yourself. Either way, above your click layer. Other props go to its <code>button</code>.</p>
 				<PlateProps>
+					<PlateProp name="anchor" type="Element | null">The element the comment is on.</PlateProp>
+					<PlateProp name="at" type={`{ x: number; y: number }`} default={`{ x: 0.5, y: 0.5 }`}>Where on the anchor, as fractions of its box.</PlateProp>
 					<PlateProp name="variant" type={`"default" | "done"`} default={`"default"`}>Done is quiet.</PlateProp>
 					<PlateProp name="aria-label" type="string" />
 					<PlateProp name="class" type="string" />

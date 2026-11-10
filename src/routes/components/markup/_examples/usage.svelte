@@ -14,25 +14,33 @@
 	} from '#lib/registry/ui/markup/index.js';
 
 	let tool = $state<MarkupToolName | null>(null);
-	type Comment = { x: number; y: number; text: string; open: boolean };
+	// on the element select clicked, at that point of its box
+	type Comment = { anchor: Element; at: { x: number; y: number }; text: string; open: boolean };
 	let comments = $state<Comment[]>([]);
 
-	// Saved as it is sent: there is nothing to send them all with.
-	const save = (c: Comment, text: string) => fetch('/comments', { method: 'POST', body: JSON.stringify({ ...c, text }) });
+	// Saved as it is sent: there is nothing to send them all with. An element is not data: keep a
+	// way to find it again (here its id) and the point on it.
+	const save = (c: Comment, text: string) =>
+		fetch('/comments', { method: 'POST', body: JSON.stringify({ element: c.anchor.id, at: c.at, text }) });
 </script>
 
 {#if tool === 'select'}
 	<button
-		class="fixed inset-0 cursor-crosshair"
-		aria-label="Place a comment here"
-		onclick={(e) => comments.push({ x: e.clientX, y: e.clientY, text: '', open: true })}
+		class="fixed inset-0 cursor-default"
+		aria-label="Comment on what is here"
+		onclick={(e) => {
+			// the element under the click layer
+			const el = document.elementsFromPoint(e.clientX, e.clientY)[1];
+			const r = el.getBoundingClientRect();
+			comments.push({ anchor: el, at: { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }, text: '', open: true });
+		}}
 	></button>
 {/if}
 
 <Markup bind:tool>
 	{#each comments as c, i (c)}
 		<MarkupComment bind:open={c.open} bind:value={c.text} onSend={(text) => save(c, text)}>
-			<MarkupCommentPin class="fixed" style="left: {c.x}px; top: {c.y}px" aria-label="Comment {i + 1}">{i + 1}</MarkupCommentPin>
+			<MarkupCommentPin anchor={c.anchor} at={c.at} aria-label="Comment {i + 1}">{i + 1}</MarkupCommentPin>
 			<MarkupCommentBox placeholder="Add a comment" aria-label="Comment {i + 1}">
 				<MarkupCommentSend aria-label="Send"><ArrowUpIcon /></MarkupCommentSend>
 			</MarkupCommentBox>

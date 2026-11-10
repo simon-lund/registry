@@ -2,6 +2,7 @@
 	import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import CircleIcon from '@lucide/svelte/icons/circle';
+	import MessageCircleIcon from '@lucide/svelte/icons/message-circle';
 	import MousePointer2Icon from '@lucide/svelte/icons/mouse-pointer-2';
 	import MoveUpRightIcon from '@lucide/svelte/icons/move-up-right';
 	import PencilIcon from '@lucide/svelte/icons/pencil';
@@ -9,8 +10,7 @@
 	import SlashIcon from '@lucide/svelte/icons/slash';
 	import SquareIcon from '@lucide/svelte/icons/square';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
-	import TypeIcon from '@lucide/svelte/icons/type';
-	import Undo2Icon from '@lucide/svelte/icons/undo-2';
+		import Undo2Icon from '@lucide/svelte/icons/undo-2';
 	import XIcon from '@lucide/svelte/icons/x';
 	import { ColorPickerSwatch } from '#lib/registry/ui/color-picker/index.js';
 	import {
@@ -49,9 +49,11 @@
 	];
 
 	type Point = [number, number];
-	// pen: every point; line, arrow, rectangle, ellipse: start and end; step and text: where
-	type Mark = { id: number; kind: 'pen' | 'text' | MarkupShapeName; colour: string; width: number; points: Point[]; n?: number; text?: string };
-	type Comment = { id: number; x: number; y: number; text: string; open: boolean; done: boolean };
+	// pen: every point; line, arrow, rectangle, ellipse: start and end; step: where
+	type Mark = { id: number; kind: 'pen' | MarkupShapeName; colour: string; width: number; points: Point[]; n?: number };
+	// on an element (select): the element and where on it, as fractions of its box; anywhere
+	// (the comment tool): x and y on the stage
+	type Comment = { id: number; anchor?: Element; at?: { x: number; y: number }; x: number; y: number; text: string; open: boolean; done: boolean };
 	type Box = { x: number; y: number; width: number; height: number };
 
 	let tool = $state<MarkupToolName | null>('select');
@@ -66,13 +68,12 @@
 	let past = $state<Mark[][]>([]);
 	let future = $state<Mark[][]>([]);
 	let selected = $state<number | null>(null);
-	let editing = $state<number | null>(null);
 	let hover = $state<{ box: Box; label: string } | null>(null);
 	// One comment from earlier, already done.
 	let comments = $state<Comment[]>([{ id: 0, x: 40, y: 32, text: 'A shorter title', open: false, done: true }]);
 	let next = 1;
 
-	const drawing = $derived(tool === 'pen' || tool === 'shape' || tool === 'text');
+	const drawing = $derived(tool === 'pen' || tool === 'shape');
 
 	function local(e: { clientX: number; clientY: number }): Point {
 		const r = stage!.getBoundingClientRect();
@@ -109,25 +110,41 @@
 	}
 
 	// Select: the element under the pointer, outlined and named as its tag and first class.
-	function point(e: PointerEvent) {
-		const el = document.elementsFromPoint(e.clientX, e.clientY).find((n) => page?.contains(n) && n !== page);
-		if (!el || !stage) return (hover = null);
+	const under = (e: { clientX: number; clientY: number }) =>
+		document.elementsFromPoint(e.clientX, e.clientY).find((n) => page?.contains(n) && n !== page);
+	function outline(el: Element) {
 		const r = el.getBoundingClientRect();
-		const s = stage.getBoundingClientRect();
+		const s = stage!.getBoundingClientRect();
 		const cls = el.classList[0];
-		hover = { box: { x: r.left - s.left, y: r.top - s.top, width: r.width, height: r.height }, label: el.tagName.toLowerCase() + (cls ? `.${cls}` : '') };
+		return { box: { x: r.left - s.left, y: r.top - s.top, width: r.width, height: r.height }, label: el.tagName.toLowerCase() + (cls ? `.${cls}` : '') };
 	}
+	function point(e: PointerEvent) {
+		const el = under(e);
+		hover = el && stage ? outline(el) : null;
+	}
+	// A click on an element comments on it: the pin stays on that element, where it was clicked.
+	function anchor(e: MouseEvent) {
+		const el = under(e);
+		if (!el) return;
+		const r = el.getBoundingClientRect();
+		const [x, y] = local(e);
+		selected = null;
+		comments.push({ id: next++, anchor: el, at: { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }, x, y, text: '', open: true, done: false });
+	}
+	// The comment tool: a chat bubble anywhere.
 	function place(e: MouseEvent) {
 		const [x, y] = local(e);
 		selected = null;
 		comments.push({ id: next++, x, y, text: '', open: true, done: false });
 	}
+	// The element an open comment is on stays outlined.
+	const onto = $derived(comments.find((c) => c.open && c.anchor)?.anchor);
 	// Closed with nothing written, a comment is dropped.
 	function closed(c: Comment, isOpen: boolean) {
 		if (!isOpen && !c.text.trim()) comments = comments.filter((o) => o.id !== c.id);
 	}
 
-	// Pen, shapes, steps and text.
+	// Pen, shapes and steps.
 	let drag: { pointer: number; id: number; before: Mark[] } | null = null;
 	function down(e: PointerEvent & { currentTarget: HTMLElement }) {
 		if (e.button !== 0) return;
@@ -135,12 +152,6 @@
 		const before = snap();
 		const id = next++;
 		selected = null;
-		if (tool === 'text') {
-			marks.push({ id, kind: 'text', colour, width, points: [p], text: '' });
-			editing = id;
-			drag = { pointer: -1, id, before };
-			return;
-		}
 		if (tool === 'shape' && shape === 'step') {
 			marks.push({ id, kind: 'step', colour, width, points: [p], n: marks.filter((m) => m.kind === 'step').length + 1 });
 			commit(before);
@@ -173,13 +184,6 @@
 		commit(before);
 		if (m.kind !== 'pen') selected = id;
 	}
-	function written(m: Mark) {
-		editing = null;
-		const before = drag?.id === m.id ? drag.before : snap();
-		drag = null;
-		if (!m.text?.trim()) marks = marks.filter((o) => o.id !== m.id);
-		else commit(before);
-	}
 
 	// A mark's box: the points' extent.
 	function boxOf(m: Mark): Box {
@@ -189,7 +193,7 @@
 		const y = Math.min(...ys);
 		return { x, y, width: Math.max(...xs) - x, height: Math.max(...ys) - y };
 	}
-	const chosen = $derived(marks.find((m) => m.id === selected && m.kind !== 'step' && m.kind !== 'text'));
+	const chosen = $derived(marks.find((m) => m.id === selected && m.kind !== 'step'));
 
 	// Moving and resizing the selected mark: its points follow its box.
 	function hold(handle: MarkupHandle, e: PointerEvent) {
@@ -228,8 +232,6 @@
 		const l = 8 + m.width * 2;
 		return `${x2 - l * Math.cos(a - 0.5)},${y2 - l * Math.sin(a - 0.5)} ${x2},${y2} ${x2 - l * Math.cos(a + 0.5)},${y2 - l * Math.sin(a + 0.5)}`;
 	}
-
-	const focus = (el: HTMLInputElement) => el.focus();
 </script>
 
 {#snippet shapeIcon(kind: MarkupShapeName)}
@@ -258,12 +260,15 @@
 			aria-label="Comment on what is here"
 			onpointermove={point}
 			onpointerleave={() => (hover = null)}
-			onclick={place}
+			onclick={anchor}
 		></button>
+	{:else if open && tool === 'comment'}
+		<!-- comment: a chat bubble anywhere -->
+		<button type="button" class="absolute inset-0 cursor-crosshair" aria-label="Leave a comment here" onclick={place}></button>
 	{:else if open && drawing}
-		<!-- pen, shapes, steps, text -->
+		<!-- pen, shapes, steps -->
 		<div
-			class="absolute inset-0 touch-none {tool === 'text' ? 'cursor-text' : 'cursor-crosshair'}"
+			class="absolute inset-0 touch-none cursor-crosshair"
 			role="presentation"
 			onpointerdown={down}
 			onpointermove={move}
@@ -274,8 +279,7 @@
 
 	<svg class="pointer-events-none absolute inset-0 size-full overflow-visible" aria-hidden="true">
 		{#each marks as m (m.id)}
-			{#if m.kind !== 'text'}
-				<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<g
 					fill="none"
 					stroke={m.colour}
@@ -302,34 +306,17 @@
 						<text x={m.points[0][0]} y={m.points[0][1]} fill="white" stroke="none" text-anchor="middle" dominant-baseline="central" class="text-xs font-semibold">{m.n}</text>
 					{/if}
 				</g>
-			{/if}
 		{/each}
 	</svg>
 
-	{#each marks as m (m.id)}
-		{#if m.kind === 'text'}
-			{#if editing === m.id}
-				<input
-					{@attach focus}
-					bind:value={m.text}
-					class="absolute -translate-y-1/2 bg-transparent text-base font-medium outline-none"
-					style:left="{m.points[0][0]}px"
-					style:top="{m.points[0][1]}px"
-					style:color={m.colour}
-					aria-label="Text"
-					onblur={() => written(m)}
-					onkeydown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-				/>
-			{:else}
-				<span class="pointer-events-none absolute -translate-y-1/2 text-base font-medium whitespace-pre" style:left="{m.points[0][0]}px" style:top="{m.points[0][1]}px" style:color={m.colour}>{m.text}</span>
-			{/if}
-		{/if}
-	{/each}
 
 	{#if open}
 		<Markup bind:tool bind:shape bind:colour bind:width>
 			{#if tool === 'select' && hover}
 				<MarkupHighlight class="absolute" rect={hover.box}>{hover.label}</MarkupHighlight>
+			{:else if onto}
+				{@const o = outline(onto)}
+				<MarkupHighlight class="absolute" rect={o.box}>{o.label}</MarkupHighlight>
 			{/if}
 			{#if chosen}
 				<MarkupSelection class="absolute" rect={boxOf(chosen)} onHold={hold} />
@@ -337,7 +324,7 @@
 
 			{#each comments as c, i (c.id)}
 				<MarkupComment bind:open={c.open} bind:value={c.text} onOpenChange={(o) => closed(c, o)}>
-					<MarkupCommentPin variant={c.done ? 'done' : 'default'} class="absolute" style="left: {c.x}px; top: {c.y}px" aria-label="Comment {i + 1}">
+					<MarkupCommentPin variant={c.done ? 'done' : 'default'} anchor={c.anchor} at={c.at} class="absolute" style="left: {c.x}px; top: {c.y}px" aria-label="Comment {i + 1}">
 						{#if c.done}<CheckIcon />{:else}{i + 1}{/if}
 					</MarkupCommentPin>
 					<MarkupCommentBox placeholder="Add a comment" aria-label="Comment {i + 1}">
@@ -349,6 +336,7 @@
 			<MarkupBar aria-label="Mark up this page" class="absolute max-w-[calc(100%-1rem)]">
 				<MarkupTools aria-label="Tools">
 					<MarkupTool value="select" aria-label="Select"><MousePointer2Icon /></MarkupTool>
+					<MarkupTool value="comment" aria-label="Comment"><MessageCircleIcon /></MarkupTool>
 					<MarkupTool value="pen" aria-label="Pen"><PencilIcon /></MarkupTool>
 					<MarkupShapes aria-label="Shape" kindsLabel="Shapes">
 						{#snippet icon({ shape: kind })}{@render shapeIcon(kind)}{/snippet}
@@ -358,7 +346,6 @@
 						<MarkupShape value="ellipse">{@render shapeIcon('ellipse')} Ellipse</MarkupShape>
 						<MarkupShape value="step">{@render shapeIcon('step')} Step</MarkupShape>
 					</MarkupShapes>
-					<MarkupTool value="text" aria-label="Text"><TypeIcon /></MarkupTool>
 				</MarkupTools>
 				{#if drawing || marks.length > 0}
 					<!-- drawing, or something drawn: its colour, its width, and the history -->

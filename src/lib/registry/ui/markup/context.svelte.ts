@@ -1,7 +1,10 @@
 import { getContext, hasContext, setContext } from 'svelte';
 
-/** The tool in hand, or none: the page works as usual. */
-export type MarkupTool = 'select' | 'pen' | 'shape' | 'text';
+/**
+ * The tool in hand, or none: the page works as usual. Select comments on an element (the comment
+ * is anchored to it); comment leaves a comment anywhere, a chat bubble; pen and shape draw.
+ */
+export type MarkupTool = 'select' | 'comment' | 'pen' | 'shape';
 
 /** The kind the shape tool draws; a step is a numbered circle. */
 export type MarkupShape = 'line' | 'arrow' | 'rectangle' | 'ellipse' | 'step';

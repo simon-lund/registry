@@ -8,7 +8,8 @@
 	 * a colour and a width, and comments (a numbered pin, a box to write in) for the places you
 	 * click. It catches no clicks, draws nothing and keeps nothing by itself: what a tool does, where
 	 * a pin goes and where marks and comments are saved are the app's. Read `tool`, `colour` and
-	 * `width`; place a MarkupComment where the select tool clicked; save a comment in its `onSend`
+	 * `width`; anchor a MarkupComment to the element the select tool clicked, or place one where the
+	 * comment tool did; save a comment in its `onSend`
 	 * and a drawing when its stroke ends, so nothing waits for a send.
 	 *
 	 * The root holds the shared state and renders nothing of its own: compose MarkupBar and the
