@@ -6,10 +6,17 @@ import Separator from './markup-separator.svelte';
 import Colors from './markup-colors.svelte';
 import Widths from './markup-widths.svelte';
 import Width from './markup-width.svelte';
-import Note from './markup-note.svelte';
-import Send from './markup-send.svelte';
 import Close from './markup-close.svelte';
-import type { MarkupStatus, MarkupTool } from './context.svelte.js';
+import Shapes from './markup-shapes.svelte';
+import Shape from './markup-shape.svelte';
+import Action from './markup-action.svelte';
+import Highlight from './markup-highlight.svelte';
+import Selection, { type MarkupHandle } from './markup-selection.svelte';
+import Comment from './markup-comment.svelte';
+import CommentPin from './markup-comment-pin.svelte';
+import CommentBox from './markup-comment-box.svelte';
+import CommentSend from './markup-comment-send.svelte';
+import type { MarkupShape, MarkupTool } from './context.svelte.js';
 
 export {
 	Root,
@@ -20,9 +27,16 @@ export {
 	Colors,
 	Widths,
 	Width,
-	Note,
-	Send,
 	Close,
+	Shapes,
+	Shape,
+	Action,
+	Highlight,
+	Selection,
+	Comment,
+	CommentPin,
+	CommentBox,
+	CommentSend,
 	//
 	Root as Markup,
 	Bar as MarkupBar,
@@ -32,9 +46,17 @@ export {
 	Colors as MarkupColors,
 	Widths as MarkupWidths,
 	Width as MarkupWidth,
-	Note as MarkupNote,
-	Send as MarkupSend,
 	Close as MarkupClose,
-	type MarkupStatus,
-	type MarkupTool as MarkupToolName
+	Shapes as MarkupShapes,
+	Shape as MarkupShape,
+	Action as MarkupAction,
+	Highlight as MarkupHighlight,
+	Selection as MarkupSelection,
+	Comment as MarkupComment,
+	CommentPin as MarkupCommentPin,
+	CommentBox as MarkupCommentBox,
+	CommentSend as MarkupCommentSend,
+	type MarkupTool as MarkupToolName,
+	type MarkupShape as MarkupShapeName,
+	type MarkupHandle
 };

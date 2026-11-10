@@ -1,39 +1,44 @@
 import { getContext, hasContext, setContext } from 'svelte';
 
 /** The tool in hand, or none: the page works as usual. */
-export type MarkupTool = 'select' | 'pen';
+export type MarkupTool = 'select' | 'pen' | 'shape' | 'text';
 
-/** Mutually exclusive: ready to send, sending, or the last send failed (the note is kept). */
-export type MarkupStatus = 'ready' | 'sending' | 'failed';
+/** The kind the shape tool draws; a step is a numbered circle. */
+export type MarkupShape = 'line' | 'arrow' | 'rectangle' | 'ellipse' | 'step';
 
 /** The menu that is open, at most one. */
-export type MarkupMenu = 'colours' | 'widths';
+export type MarkupMenu = 'shapes' | 'colours' | 'widths';
 
 type Bound<T> = { get: () => T; set: (value: T) => void };
 
 /** The bar's state: what it shows and what its parts change. The root owns the values. */
 export class MarkupState {
 	#tool: Bound<MarkupTool | null>;
+	#shape: Bound<MarkupShape>;
 	#colour: Bound<string>;
 	#width: Bound<number>;
-	#note: Bound<string>;
-	#onSend: () => ((note: string) => void | Promise<void>) | undefined;
+	// The open comments' closers, the last opened last: Escape closes the newest first. A plain
+	// list (an effect adds to it), with a reactive count for whoever asks.
+	#comments: (() => void)[] = [];
+	#open = $state(0);
 
-	status = $state<MarkupStatus>('ready');
+	/** Marks this Markup's bar and comment boxes (`data-markup`), to tell them from another's. */
+	readonly id: string;
+
 	menu = $state<MarkupMenu | null>(null);
 
 	constructor(opts: {
+		id: string;
 		tool: Bound<MarkupTool | null>;
+		shape: Bound<MarkupShape>;
 		colour: Bound<string>;
 		width: Bound<number>;
-		note: Bound<string>;
-		onSend: () => ((note: string) => void | Promise<void>) | undefined;
 	}) {
+		this.id = opts.id;
 		this.#tool = opts.tool;
+		this.#shape = opts.shape;
 		this.#colour = opts.colour;
 		this.#width = opts.width;
-		this.#note = opts.note;
-		this.#onSend = opts.onSend;
 	}
 
 	get tool() {
@@ -41,6 +46,12 @@ export class MarkupState {
 	}
 	set tool(value) {
 		this.#tool.set(value);
+	}
+	get shape() {
+		return this.#shape.get();
+	}
+	set shape(value) {
+		this.#shape.set(value);
 	}
 	get colour() {
 		return this.#colour.get();
@@ -54,16 +65,21 @@ export class MarkupState {
 	set width(value) {
 		this.#width.set(value);
 	}
-	get note() {
-		return this.#note.get();
-	}
-	set note(value) {
-		this.#note.set(value);
+
+	/** A comment is open: Escape has it to close. */
+	get commenting() {
+		return this.#open > 0;
 	}
 
-	/** Something to send: a note with words in it, and not already on its way. */
-	get canSend() {
-		return this.note.trim().length > 0 && this.status !== 'sending';
+	/** An open comment takes its place on the Escape ladder; the returned function gives it up. */
+	holdComment(close: () => void) {
+		this.#comments.push(close);
+		this.#open = this.#comments.length;
+		return () => {
+			const i = this.#comments.indexOf(close);
+			if (i !== -1) this.#comments.splice(i, 1);
+			this.#open = this.#comments.length;
+		};
 	}
 
 	/** Takes up a tool; the active one again puts it down. */
@@ -72,12 +88,17 @@ export class MarkupState {
 	}
 
 	/**
-	 * Escape, as a ladder: an open menu closes; else the tool is put down. True when it did
-	 * something (so the key is the bar's).
+	 * Escape, as a ladder: an open menu closes; else the newest open comment; else the tool is put
+	 * down. True when it did something (so the key is the bar's).
 	 */
 	escape(): boolean {
 		if (this.menu) {
 			this.menu = null;
+			return true;
+		}
+		const close = this.#comments.at(-1);
+		if (close) {
+			close();
 			return true;
 		}
 		if (this.tool) {
@@ -85,20 +106,6 @@ export class MarkupState {
 			return true;
 		}
 		return false;
-	}
-
-	/** Hands the note to the consumer; sent, it clears; failed, it stays for a retry. */
-	async send() {
-		const onSend = this.#onSend();
-		if (!this.canSend || !onSend) return;
-		this.status = 'sending';
-		try {
-			await onSend(this.note.trim());
-			this.note = '';
-			this.status = 'ready';
-		} catch {
-			this.status = 'failed';
-		}
 	}
 }
 

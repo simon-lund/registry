@@ -36,7 +36,7 @@ export const components: Entry[] = [
 	{
 		name: 'markup',
 		title: 'Markup',
-		tagline: 'The bar of a mark-up tool: tools, colour, width and a note to send, after Claude Code\'s.'
+		tagline: 'A mark-up tool\'s parts: its bar, the outline on an element, handles on a mark, numbered comments.'
 	},
 	{
 		name: 'middot',

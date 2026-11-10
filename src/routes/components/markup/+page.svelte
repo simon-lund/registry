@@ -32,9 +32,12 @@
 
 	<PlateSection title="Installation">
 		<p>
-			After the markup bar in Claude Code's browser pane. This is the bar only: it holds the tool,
-			colour, width and note, and draws nothing on the page. What a tool does, where marks are kept
-			and where a note goes are your app's.
+			After the markup bar in Claude Code's browser pane: the bar (select, pen, shapes, text; colour,
+			width; undo, redo, delete), the outline around the element the select tool points at, the
+			handles around a selected mark, and comments, a numbered pin and a box to write in. It is the
+			UI only: it catches no clicks, draws nothing and keeps nothing. What the tools draw, the history
+			behind undo and redo, and saving each mark and comment as it is made are your app's; the demo
+			shows one way. The comment box is placed with Floating UI.
 		</p>
 		<PlateInstall name="markup" dependencies={meta.dependencies} needs={meta.registryDependencies} files={source} />
 	</PlateSection>
@@ -43,22 +46,19 @@
 		<PlateCode code={usage.code} html={usage.html} label="usage" />
 	</PlateSection>
 
-	<PlateExample title="Sending" example={example('send')}>
-		<code>onSend</code> gets the note and may return a promise. While it runs the bar is sending; if it
-		rejects, the note is kept and Send's children get <code>status</code> "failed", to say Retry.
-	</PlateExample>
-
 	<PlateExample title="Keys stay inside" example={example('keys')}>
-		No key typed in the bar or its menus reaches the page, so a slide deck's space and arrows never
-		turn the slide while you write. Escape is the bar's while there is something to undo.
+		Open the comment and type. No key typed in a comment, the bar or its menus reaches the page, so a
+		slide deck's space and arrows never turn the slide while you write. Escape closes the comment,
+		then puts the tool down.
 	</PlateExample>
 
 	<PlateSection title="Keyboard">
 		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
-			<li>The tools and the two menus are one tab stop; the arrows move along them.</li>
+			<li>Each group of tools and menus is one tab stop; the arrows move along it.</li>
 			<li><code>Enter</code> or <code>Space</code> takes a tool up, or puts it down.</li>
-			<li><code>Escape</code>, wherever focus is: an open menu closes, else the tool in hand is put down. With nothing in hand the page has its Escape back.</li>
-			<li>In the note, <code>Enter</code> sends.</li>
+			<li><code>Escape</code>, wherever focus is: an open menu closes, else the open comment, else the tool in hand is put down. With nothing open or in hand the page has its Escape back.</li>
+			<li>A pin is a button: <code>Enter</code> or <code>Space</code> opens its comment, and focus goes into it.</li>
+			<li>In a comment, <code>Enter</code> sends and <code>Shift+Enter</code> starts a new line. Sent or closed by Escape, focus goes back to its pin.</li>
 		</ul>
 	</PlateSection>
 
@@ -67,11 +67,11 @@
 			<PlatePart name="Markup">
 				<p>The state, shared with the parts. Renders nothing of its own. Also exported as <code>Root</code>.</p>
 				<PlateProps>
-					<PlateProp name="tool" type={`"select" | "pen" | null`} default="null" bindable>The tool in hand; null: none, the page works as usual.</PlateProp>
+					<PlateProp name="tool" type={`"select" | "pen" | "shape" | "text" | null`} default="null" bindable>The tool in hand; null: none, the page works as usual.</PlateProp>
+					<PlateProp name="shape" type={`"line" | "arrow" | "rectangle" | "ellipse" | "step"`} default={`"rectangle"`} bindable>The kind the shape tool draws; a step is a numbered circle.</PlateProp>
 					<PlateProp name="colour" type="string" default={`"var(--foreground)"`} bindable>Any CSS colour: the picked swatch's value.</PlateProp>
 					<PlateProp name="width" type="number" default="3" bindable>In px.</PlateProp>
-					<PlateProp name="note" type="string" default={`""`} bindable />
-					<PlateProp name="onSend" type="(note: string) => void | Promise<void>">Sending while its promise runs; failed when it rejects; the note clears when it fulfils.</PlateProp>
+					<PlateProp name="onSend" type="() => void | Promise<void>">Called by MarkupSend. Sending while its promise runs; failed when it rejects.</PlateProp>
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="MarkupBar">
@@ -117,22 +117,26 @@
 					<PlateProp name="aria-label" type="string" required />
 				</PlateProps>
 			</PlatePart>
-			<PlatePart name="MarkupNote">
-				<p>The note: a stock Input in a form. Put a <code>MarkupSend</code> inside.</p>
+			<PlatePart name="MarkupShapes">
+				<p>The shape tool, drawn with the kind in hand, and a chevron that opens the kinds. Inside MarkupTools.</p>
 				<PlateProps>
-					<PlateProp name="placeholder" type="string" />
-					<PlateProp name="aria-label" type="string">Or <code>aria-labelledby</code>.</PlateProp>
-					<PlateProp name="name" type="string" />
-					<PlateProp name="maxlength" type="number" />
-					<PlateProp name="class" type="string">Goes to the form.</PlateProp>
+					<PlateProp name="icon" type={`Snippet<[{ shape }]>`} required>Draws the kind in hand on the button.</PlateProp>
+					<PlateProp name="aria-label" type="string" required>Names the tool.</PlateProp>
+					<PlateProp name="kindsLabel" type="string" required>Names the menu.</PlateProp>
 				</PlateProps>
 			</PlatePart>
-			<PlatePart name="MarkupSend">
-				<p>A submit Button, primary. Other Button props apply.</p>
+			<PlatePart name="MarkupShape">
+				<p>One kind: its icon and name inside. Picking it takes the shape tool up.</p>
 				<PlateProps>
-					<PlateProp name="children" type={`Snippet<[{ status: "ready" | "sending" | "failed" }]>`}>Shown unless sending.</PlateProp>
-					<PlateProp name="size" type="Button size" default={`"icon-sm"`} />
-					<PlateProp name="aria-label" type="string" />
+					<PlateProp name="value" type={`"line" | "arrow" | "rectangle" | "ellipse" | "step"`} required />
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupAction">
+				<p>A command (undo, redo, delete): a ghost icon Button with its label as a tooltip. What it does is your <code>onclick</code>.</p>
+				<PlateProps>
+					<PlateProp name="aria-label" type="string" required />
+					<PlateProp name="disabled" type="boolean">While there is nothing to do.</PlateProp>
+					<PlateProp name="onclick" type="(e: MouseEvent) => void" />
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="MarkupClose">
@@ -145,6 +149,54 @@
 			<PlatePart name="MarkupSeparator">
 				<p>A fine vertical line between groups.</p>
 			</PlatePart>
+			<PlatePart name="MarkupHighlight">
+				<p>The outline around the element the select tool points at, its tag above it as children. Draws only; clicks pass through.</p>
+				<PlateProps>
+					<PlateProp name="rect" type={`{ x, y, width, height }`} required>The element's box, where you place it.</PlateProp>
+					<PlateProp name="class" type="string">Position it: <code>fixed</code> or <code>absolute</code>.</PlateProp>
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupSelection">
+				<p>Eight handles around a selected mark. Draws only: moving and resizing are yours.</p>
+				<PlateProps>
+					<PlateProp name="rect" type={`{ x, y, width, height }`} required>The mark's box.</PlateProp>
+					<PlateProp name="onHold" type={`(handle: "move" | "n" | "ne" | … | "nw", e: PointerEvent) => void`}>A pointerdown on the body or a handle.</PlateProp>
+					<PlateProp name="class" type="string">Position it.</PlateProp>
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupComment">
+				<p>One comment: holds a pin and its box, renders nothing of its own. Open, it is on the Escape ladder; a press outside its box and pin closes it.</p>
+				<PlateProps>
+					<PlateProp name="open" type="boolean" default="false" bindable>Whether the box is open.</PlateProp>
+					<PlateProp name="value" type="string" default={`""`} bindable>The text.</PlateProp>
+					<PlateProp name="onSend" type="(text: string) => void">The trimmed text, when sent: save it here. The box closes, the text stays.</PlateProp>
+					<PlateProp name="onOpenChange" type="(open: boolean) => void">To drop a comment closed empty.</PlateProp>
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupCommentPin">
+				<p>The circle that opens the box. Its centre sits on <code>left</code> and <code>top</code>; position it yourself, above your click layer. The number, or a check, goes inside. Other props go to its <code>button</code>.</p>
+				<PlateProps>
+					<PlateProp name="variant" type={`"default" | "done"`} default={`"default"`}>Done is quiet.</PlateProp>
+					<PlateProp name="aria-label" type="string" />
+					<PlateProp name="class" type="string" />
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupCommentBox">
+				<p>The box, while open: a field that grows with its text, with a MarkupCommentSend inside. It floats from the pin's corner to the side that has room, and that corner is pointed; with no side free it is moved to fit, round all round.</p>
+				<PlateProps>
+					<PlateProp name="placeholder" type="string" />
+					<PlateProp name="aria-label" type="string">Names the box and its field.</PlateProp>
+					<PlateProp name="name" type="string" />
+					<PlateProp name="maxlength" type="number" />
+					<PlateProp name="class" type="string">Goes to the box.</PlateProp>
+				</PlateProps>
+			</PlatePart>
+			<PlatePart name="MarkupCommentSend">
+				<p>The box's submit, a primary icon Button; off while the text is empty.</p>
+				<PlateProps>
+					<PlateProp name="aria-label" type="string" />
+				</PlateProps>
+			</PlatePart>
 		</PlateApi>
 	</PlateSection>
 
@@ -154,8 +206,12 @@
 			<PlateMeasure label="Tool" value="32px, 16px icon; in hand: primary" />
 			<PlateMeasure label="Menu trigger" value="32px high: the value, then a 12px chevron" />
 			<PlateMeasure label="Separator" value="1px × 20px, 4px each side" />
-			<PlateMeasure label="Note" value="32px high, flat until focus" />
-			<PlateMeasure label="Send" value="28px, primary; a Spinner while sending" />
+			<PlateMeasure label="Shape menu" value="a 32px tool and a 20px chevron; the menu a list of 32px rows, icon and name" />
+			<PlateMeasure label="Highlight" value="1.5px primary outline, 2px out; its tag primary, 12px text, 6px above" />
+			<PlateMeasure label="Handles" value="10px primary dots, 2px background ring, on the box's corners and sides; 26px targets" />
+			<PlateMeasure label="Pin" value="24px circle, 2px background ring, shadow-md; primary, done: muted" />
+			<PlateMeasure label="Comment" value="288px wide, popover surface, 12px radius (0 at the pin), shadow-lg; its corner on the pin's box corner; 8px from the screen's edge" />
+			<PlateMeasure label="Comment field" value="one line, grows to 192px; send 28px inside, bottom right" />
 		</PlateMeasures>
 	</PlateSection>
 </Plate>
