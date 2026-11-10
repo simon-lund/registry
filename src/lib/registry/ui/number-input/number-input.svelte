@@ -9,11 +9,13 @@
 	 * a chevron held keeps stepping. The field never holds an invalid value: what you type is taken
 	 * as soon as it reads as a number, and clamped to min and max when you leave.
 	 */
+	// The stock Input's field, class for class (border, radius, surface, focus ring, disabled), so it
+	// sits in a form beside one; `lg` is its own, for a number that is the point of the screen.
 	const root = tv({
-		base: 'group/number inline-flex items-stretch rounded-md border border-input bg-background text-foreground transition-[box-shadow,border-color] focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/40 data-[disabled]:opacity-50',
+		base: 'group/number border-input dark:bg-input/30 focus-within:border-ring focus-within:ring-ring/50 data-[disabled]:bg-input/50 dark:data-[disabled]:bg-input/80 inline-flex min-w-0 items-stretch rounded-lg border bg-transparent text-foreground transition-colors focus-within:ring-3 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
 		variants: {
 			size: {
-				default: 'h-10 text-base',
+				default: 'h-8 text-base md:text-sm',
 				lg: 'h-14 text-2xl'
 			}
 		},
@@ -157,7 +159,7 @@
 		<!-- the rolling digits, under the text field; hidden while the typed text is mid-edit -->
 		<div
 			class={cn(
-				'pointer-events-none absolute inset-0 flex items-center px-3 transition-opacity',
+				'pointer-events-none absolute inset-0 flex items-center px-2.5 transition-opacity',
 				editing && 'opacity-0'
 			)}
 			aria-hidden="true"
@@ -181,7 +183,7 @@
 			aria-label={ariaLabel}
 			aria-labelledby={ariaLabelledby}
 			class={cn(
-				'caret-foreground h-full w-full bg-transparent px-3 tabular-nums outline-none',
+				'caret-foreground h-full w-full bg-transparent px-2.5 tabular-nums outline-none disabled:cursor-not-allowed',
 				editing ? 'text-foreground' : 'text-transparent'
 			)}
 			onfocus={() => (focused = true)}

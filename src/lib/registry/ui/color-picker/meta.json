@@ -1,10 +1,11 @@
 {
 	"title": "Color Picker",
-	"description": "One colour out of a few, as a row of swatches: ColorPicker (bits-ui RadioGroup; bind:value is the picked swatch's value as written, name and required for forms, disabled) and ColorPickerSwatch (a 32px disc of any CSS colour with a hairline, drawn in with a primary ring when picked, 44px to touch, aria-label required). Tab enters at the picked one, the arrows move and pick. No copy inside: you name every colour.",
+	"description": "One colour out of a few, as a row of swatches, and a hex field for any other: ColorPicker (bits-ui RadioGroup; bind:value is the picked swatch's value as written, name and required for forms, disabled), ColorPickerSwatch (a 32px disc of any CSS colour with a hairline, drawn in with a primary ring when picked, 44px to touch, aria-label required) and ColorPickerInput (hex in a stock Input with a preview of the colour at its start; bind it to the same value and the two follow each other; writes #rrggbb, bind:invalid, Escape puts it back). Tab enters the swatches at the picked one, the arrows move and pick. No copy inside: you name every colour.",
 	"dependencies": [
 		"bits-ui"
 	],
 	"registryDependencies": [
-		"motion"
+		"motion",
+		"input"
 	]
 }

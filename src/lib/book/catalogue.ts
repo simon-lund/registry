@@ -21,7 +21,7 @@ export const components: Entry[] = [
 	{
 		name: 'color-picker',
 		title: 'Color picker',
-		tagline: 'One colour out of a few, as a row of swatches.'
+		tagline: 'One colour out of a few as a row of swatches, or any other by its hex.'
 	},
 	{
 		name: 'dial',

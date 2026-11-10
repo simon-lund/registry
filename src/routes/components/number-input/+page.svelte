@@ -107,12 +107,12 @@
 
 	<PlateSection title="Measurements">
 		<PlateMeasures>
-			<PlateMeasure label="Height" value="40px · lg 56px" />
-			<PlateMeasure label="Text" value="16px · lg 24px, tabular figures" />
-			<PlateMeasure label="Padding" value="12px" />
+			<PlateMeasure label="Height" value="32px, as Input · lg 56px" />
+			<PlateMeasure label="Text" value="16px, 14px from tablet up, as Input · lg 24px; tabular figures" />
+			<PlateMeasure label="Padding" value="10px, as Input" />
 			<PlateMeasure label="Chevron column" value="32px, two halves" />
-			<PlateMeasure label="Radius" value="8px (--radius)" />
-			<PlateMeasure label="Focus ring" value="2px ring at 40 %, border to ring" />
+			<PlateMeasure label="Radius" value="rounded-lg, as Input" />
+			<PlateMeasure label="Focus ring" value="3px ring at 50%, border to ring, as Input" />
 			<PlateMeasure label="Roll" value="NumberFlow: a 900ms spring; digits fade in 450ms" />
 			<PlateMeasure label="Digit mask" value="0.25em fade at the top and bottom" />
 			<PlateMeasure label="Hold to repeat" value="after 400ms, every 60ms" />
