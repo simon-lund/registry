@@ -154,7 +154,16 @@ export class TabsGeometry {
 			this.#measured = true;
 			this.#jump();
 		}
-		this.size = { w: Math.max(lr.width / scale - 2 * bl, contentW), h: lr.height / scale - 2 * bt };
+		// The key's sheet spans the track inside its border, or the segments' extent when they
+		// overflow. It must never reach past the scrollable area, not even by a fraction of a pixel:
+		// that fraction would scroll, and the end's fade would show on a track that cannot move. So
+		// the exact width inside the border (not clientWidth, which is rounded), and an overflowing
+		// extent rounded down.
+		const inner = lr.width / scale - 2 * bl;
+		this.size = {
+			w: contentW > inner + 1 ? Math.floor(contentW) : inner,
+			h: lr.height / scale - 2 * bt
+		};
 		this.rects = next;
 		if (!this.#revealed) {
 			this.#revealed = true;

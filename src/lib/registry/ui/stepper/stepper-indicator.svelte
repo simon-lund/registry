@@ -49,13 +49,20 @@
 	);
 	// Inline marks fill up to and including the current step, done or not.
 	const filled = $derived(item.value <= root.value);
-	// A mark's colour belongs to its fill: one that empties keeps the colour it had until it is
-	// gone, one that fills starts in its final colour, and only one that stays filled while it
-	// changes role (the current step moving on or back to it) cross-fades.
-	const wasFilled = $derived(item.value <= root.from);
-	const tone = $derived(
-		(filled ? item.value === root.value : item.value === root.from) ? 'current' : 'tonal'
+	// Where the copper of the current step sits for this mark, one of three: on it (it is the
+	// current one); folded away at its end, waiting before the current one (a step back enters it
+	// from there, the right); folded away at its start, waiting after it (a step on grows it from
+	// there, the left). So the copper always moves the way you go.
+	const head = $derived(
+		item.value === root.value ? 'on' : item.value < root.value ? 'before' : 'after'
 	);
+	// A jump back across several marks: the copper enters the mark you land on as the emptying
+	// reaches it, with the last segment of the sweep, not at once.
+	const headDelay = $derived.by(() => {
+		const n = root.from - root.value;
+		return item.value === root.value && n >= 2 ? `--head-delay:calc(var(--dur-quick) * ${n - 1});` : '';
+	});
+	const markStyle = $derived((sweepStyle(root.sweep(item.value - 1)) ?? '') + headDelay || undefined);
 </script>
 
 {#if list.variant === 'default'}
@@ -90,14 +97,14 @@
 		data-state={item.state}
 		data-variant={list.variant}
 		data-filled={filled || undefined}
-		data-tone={tone}
-		data-recolor={(filled && wasFilled) || undefined}
-		style={sweepStyle(root.sweep(item.value - 1))}
+		data-head={head}
+		style={markStyle}
 		aria-hidden="true"
 		class={cn('mark relative block shrink-0 overflow-hidden rounded-full bg-border', className)}
 		{...restProps}
 	>
 		<span class="mark-fill"></span>
+		<span class="mark-head"></span>
 	</span>
 {/if}
 
@@ -202,30 +209,45 @@
 		scale: 1.25;
 	}
 	/*
-	 * The step you are on is copper; those behind it stay tonal (data-tone, see the script: the
-	 * colour follows the fill). The colour only animates on a mark that stays filled (data-recolor),
-	 * in the base duration, beside the fill's own motion.
+	 * Behind the current step the marks are tonal; the current one is copper: its own layer over the
+	 * fill (data-head, see the script), a clip that opens and folds sideways, the way you go. On,
+	 * the new mark's copper grows from its start with its fill, and the last one's copper leaves
+	 * through its end, uncovering the tonal fill; back, the copper of the mark you leave folds to its
+	 * start with its fill, and the mark you return to takes it in from its end. Same clock as the
+	 * fill, sweep included.
 	 */
 	.mark-fill {
-		--recolor: 0s;
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
 		background: var(--foreground);
 	}
-	.mark[data-recolor] .mark-fill {
-		--recolor: var(--dur-base);
-	}
-	.mark[data-tone='current'] .mark-fill {
+	.mark-head {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
 		background: var(--primary);
+		clip-path: inset(0 0 0 0);
+		transition: clip-path var(--sweep-dur, var(--dur-base)) var(--sweep-ease, var(--ease-settle))
+			var(--head-delay, var(--sweep-delay, 0s));
+	}
+	.mark[data-head='before'] .mark-head {
+		clip-path: inset(0 0 0 100%);
+	}
+	.mark[data-head='after'] .mark-head {
+		clip-path: inset(0 100% 0 0);
+	}
+	:global([dir='rtl']) .mark[data-head='before'] .mark-head {
+		clip-path: inset(0 100% 0 0);
+	}
+	:global([dir='rtl']) .mark[data-head='after'] .mark-head {
+		clip-path: inset(0 0 0 100%);
 	}
 	.mark[data-variant='bars'] .mark-fill {
 		transform-origin: left center;
 		scale: 0 1;
-		transition:
-			scale var(--sweep-dur, var(--dur-base)) var(--sweep-ease, var(--ease-settle))
-				var(--sweep-delay, 0s),
-			background-color var(--recolor) var(--ease-settle);
+		transition: scale var(--sweep-dur, var(--dur-base)) var(--sweep-ease, var(--ease-settle))
+			var(--sweep-delay, 0s);
 	}
 	:global([dir='rtl']) .mark[data-variant='bars'] .mark-fill {
 		transform-origin: right center;
@@ -238,8 +260,7 @@
 		scale: 0.5;
 		transition:
 			opacity var(--dur-quick) var(--ease-settle) var(--sweep-delay, 0s),
-			scale var(--dur-quick) var(--ease-settle) var(--sweep-delay, 0s),
-			background-color var(--recolor) var(--ease-settle);
+			scale var(--dur-quick) var(--ease-settle) var(--sweep-delay, 0s);
 	}
 	.mark[data-variant='dots'][data-filled] .mark-fill {
 		opacity: 1;
@@ -259,6 +280,15 @@
 		}
 		.mark[data-variant='dots'] .mark-fill {
 			scale: 1;
+		}
+		.mark-head,
+		.mark[data-head] .mark-head {
+			clip-path: none;
+			opacity: 0;
+			transition: opacity var(--dur-quick) var(--ease-settle);
+		}
+		.mark[data-head='on'] .mark-head {
+			opacity: 1;
 		}
 	}
 </style>

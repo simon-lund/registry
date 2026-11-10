@@ -145,7 +145,7 @@
 			<PlateMeasure label="Label hover" value="140ms (--dur-quick)" />
 			<PlateMeasure label="Disabled" value="45% opacity" />
 			<PlateMeasure label="Focus ring" value="2px ring colour, 1px out" />
-			<PlateMeasure label="Scroll" value="the selection 16px clear of the edge; a 44px fade, solid across the round end, the selection above it" />
+			<PlateMeasure label="Scroll" value="the selection 16px clear of the edge; a light 24px fade from the line, the selection above it" />
 		</PlateMeasures>
 	</PlateSection>
 </Plate>

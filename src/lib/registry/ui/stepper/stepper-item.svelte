@@ -11,7 +11,7 @@
 		variants: {
 			layout: {
 				horizontal: 'flex flex-auto items-start gap-3 last:flex-none',
-				vertical: 'flex flex-col gap-3 pb-6 last:pb-0',
+				vertical: 'flex flex-col gap-(--stepper-gap) pb-6 [--stepper-gap:calc(var(--spacing)*3)] last:pb-0',
 				inline: 'flex flex-none items-center'
 			}
 		},

@@ -181,6 +181,32 @@
       ]
     },
     {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "A checkbox on bits-ui Checkbox, with the part name of the stock shadcn-svelte Checkbox, for a choice confirmed later. Checking, the copper grows from the centre and the tick draws itself along its stroke; unchecking, the mark undraws and the copper shrinks away, faster. Indeterminate is a dash that draws the same way. 16px, the stock size, 44px to touch; presses give a little. In a form, with a name, it always submits: value (\"on\") while checked, uncheckedValue (\"off\") while not; disabled, nothing. form.reset() puts it back to its mount state, drawn and submitted alike. Reduced motion cross-fades.",
+      "dependencies": [
+        "bits-ui"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "https://ui.simon-lund.com/r/form-reset.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/checkbox/checkbox.svelte",
+          "type": "registry:ui",
+          "target": "checkbox/checkbox.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/checkbox/index.ts",
+          "type": "registry:ui",
+          "target": "checkbox/index.ts"
+        }
+      ]
+    },
+    {
       "name": "color-picker",
       "type": "registry:ui",
       "title": "Color Picker",

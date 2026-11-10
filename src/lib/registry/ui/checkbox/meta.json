@@ -1,0 +1,11 @@
+{
+	"title": "Checkbox",
+	"description": "A checkbox on bits-ui Checkbox, with the part name of the stock shadcn-svelte Checkbox, for a choice confirmed later. Checking, the copper grows from the centre and the tick draws itself along its stroke; unchecking, the mark undraws and the copper shrinks away, faster. Indeterminate is a dash that draws the same way. 16px, the stock size, 44px to touch; presses give a little. In a form, with a name, it always submits: value (\"on\") while checked, uncheckedValue (\"off\") while not; disabled, nothing. form.reset() puts it back to its mount state, drawn and submitted alike. Reduced motion cross-fades.",
+	"dependencies": [
+		"bits-ui"
+	],
+	"registryDependencies": [
+		"motion",
+		"form-reset"
+	]
+}

@@ -19,6 +19,11 @@ export const components: Entry[] = [
 		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.'
 	},
 	{
+		name: 'checkbox',
+		title: 'Checkbox',
+		tagline: 'A box whose tick draws itself in, and whose copper grows from the centre.'
+	},
+	{
 		name: 'color-picker',
 		title: 'Color picker',
 		tagline: 'One colour out of a few as a row of swatches, or any other by its hex.'

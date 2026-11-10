@@ -44,7 +44,7 @@
 	 * track's scroll coordinates, scrolls with its segment. The selected segment is scrolled into
 	 * view (16px clear of the edge) when it is chosen and when the track first lays out, never
 	 * scrolling the page. Where the browser has scroll-state container queries, the edge with more
-	 * segments behind it fades into the track (44px); elsewhere there is no hint.
+	 * segments behind it fades into the track (24px); elsewhere there is no hint.
 	 *
 	 * @example
 	 * <TabsList aria-label="Tasks">…</TabsList>
@@ -189,8 +189,8 @@
 
 	/*
 	 * Scroll hints. Zero-width flex items (their gap taken back) stuck to the scrollport's edges,
-	 * each covering the track's round end inside the line and fading into the track colour inward. Only where `scroll-state` queries
-	 * exist (the list is then a scroll-state container), and only while that way can scroll.
+	 * each a light 24px fade into the track colour, inward from the line. Only where `scroll-state`
+	 * queries exist (the list is then a scroll-state container), and only while that way can scroll.
 	 */
 	.hint {
 		display: none;
@@ -217,34 +217,23 @@
 		}
 		/*
 		 * A sticky item stops at the track's padding, so the fade reaches back across the padding to
-		 * the border, where the track clips, and takes the end's shape: round, wider than the end's
-		 * 21px inner radius (narrower, the rounding would be squashed and leave slivers at the curve).
-		 * Solid across the curve, then 22px of fade: no letter shows inside the round end.
+		 * the border, where the track clips (and rounds) what scrolls. From there a light 24px fade
+		 * into the track colour: a hint that more is that way, the labels under it still legible.
 		 */
 		.hint::before {
 			--reach: calc(var(--spacing, 4px) - 1px);
 			content: '';
 			position: absolute;
 			inset-block: calc(-1 * var(--reach));
-			width: calc(var(--spacing, 4px) * 10 + var(--reach));
+			width: calc(var(--spacing, 4px) * 6 + var(--reach));
 		}
 		.hint-start::before {
 			left: calc(-1 * var(--reach));
-			border-radius: 9999px 0 0 9999px;
-			background: linear-gradient(
-				to right,
-				var(--tabs-track) calc(var(--spacing, 4px) * 5.5),
-				transparent
-			);
+			background: linear-gradient(to right, var(--tabs-track) var(--reach), transparent);
 		}
 		.hint-end::before {
 			right: calc(-1 * var(--reach));
-			border-radius: 0 9999px 9999px 0;
-			background: linear-gradient(
-				to left,
-				var(--tabs-track) calc(var(--spacing, 4px) * 5.5),
-				transparent
-			);
+			background: linear-gradient(to left, var(--tabs-track) var(--reach), transparent);
 		}
 		@container scroll-state(scrollable: inline-start) {
 			.hint-start {
