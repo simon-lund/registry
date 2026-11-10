@@ -46,12 +46,12 @@
 
 	<PlateExample title="Selection" example={example('selected')}>
 		Selecting an agent shows its reach: the agents below it, which it steers, and the lines down to
-		them, in copper. Its own row then names the agent it reports to. Bind <code>selected</code> to
-		read or set it.
+		them, in copper. Its own row takes a quiet tint. Bind <code>selected</code> to read or set it.
 	</PlateExample>
 
 	<PlateExample title="Actions" example={example('actions')}>
-		The <code>actions</code> snippet renders inside the selected row. Pause, Stop and Message
+		The <code>actions</code> snippet renders on the right of the selected row, so selecting moves
+		nothing below it. Pause, Stop and Message
 		belong to the app, which knows what they do. Render only what applies: nothing for a finished
 		agent, Resume for a paused one.
 	</PlateExample>
@@ -162,7 +162,7 @@
 			<PlateMeasure label="pid · state" value="12px mono, tabular; hidden on a phone" />
 			<PlateMeasure label="Needs you" value="a 12px / 500 pill in foreground on background, inverted; the task in foreground; kept on a phone" />
 			<PlateMeasure label="Tree line" value="1px border, copper below the selected agent" />
-			<PlateMeasure label="Selection" value="instant: a cut, no ease" />
+			<PlateMeasure label="Selection" value="foreground at 8% (hover 4%); instant: a cut, no ease" />
 			<PlateMeasure label="Working mark" value="one turn in 3s, linear; still under reduced motion" />
 		</PlateMeasures>
 	</PlateSection>

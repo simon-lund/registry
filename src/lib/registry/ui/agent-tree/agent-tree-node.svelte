@@ -17,8 +17,6 @@
 	const needsYou = $derived(agent.state === 'needs-you');
 	const sockets = $derived(tree.socketsOf(agent.pid));
 	const collisions = $derived(tree.collisionsOf(agent.pid));
-	// Whom it reports to, said on its own row once it is selected (the chain above is the tree).
-	const parent = $derived(selected ? tree.byPid.get(agent.ppid) : undefined);
 	// Other agents are named, never numbered: a pid means nothing until you look it up.
 	const nameOf = (pid: number) => tree.byPid.get(pid)?.name ?? String(pid);
 	// The first row holds the tab stop until a key or a click moves it.
@@ -32,8 +30,12 @@
 		node?.focus();
 	}
 
-	// Tree items nest, so a key or a click is handled by the row it landed on and by no ancestor.
-	const mine = (e: Event) => (e.target as Element).closest('[role="treeitem"]') === row;
+	// Tree items nest, so a key or a click is handled by the row it landed on and by no ancestor,
+	// and never by the row when it landed on one of the app's actions inside it.
+	const mine = (e: Event) => {
+		const target = e.target as Element;
+		return target.closest('[role="treeitem"]') === row && !target.closest('[data-slot="agent-tree-actions"]');
+	};
 
 	function onkeydown(e: KeyboardEvent) {
 		if (!mine(e)) return;
@@ -95,8 +97,9 @@
 	<div
 		class={cn(
 			'-ml-2 flex min-h-10 cursor-pointer items-center gap-3 rounded-md px-2',
-			'hover:bg-accent/60',
-			selected && 'bg-accent',
+			// selection is a quiet, neutral step up from hover; the copper is the reach below it
+			'hover:bg-foreground/4',
+			selected && 'bg-foreground/8 hover:bg-foreground/8',
 			ended && 'text-muted-foreground'
 		)}
 	>
@@ -108,7 +111,8 @@
 		/>
 		<span class="flex min-w-0 flex-1 items-baseline gap-2">
 			<!-- the name stays ink: copper at text size fails contrast on cream, so the reach is on the mark and the line -->
-			<span class={cn('truncate', needsYou && 'font-medium')}>{agent.name}</span>
+			<!-- the name keeps its room; the task gives way first -->
+			<span class={cn('max-w-full shrink-0 truncate', needsYou && 'font-medium')}>{agent.name}</span>
 			{#if agent.task}
 				<!-- what it is doing: kept on a phone, where the pid and the state go -->
 				<span class={cn('min-w-0 truncate text-sm', needsYou ? 'text-foreground' : 'text-muted-foreground')}
@@ -116,6 +120,13 @@
 				>
 			{/if}
 		</span>
+		{#if selected && tree.actions}
+			<!-- the app's own actions, in the row from tablet up, so selecting moves nothing below it;
+			     it renders none where none apply (a finished agent) -->
+			<span data-slot="agent-tree-actions" class="hidden shrink-0 items-center gap-1.5 empty:hidden sm:flex"
+				>{@render tree.actions(agent)}</span
+			>
+		{/if}
 		{#if needsYou}
 			<!-- inverted, so it is the darkest thing on the row in both themes; kept on a phone too -->
 			<span class="bg-foreground text-background shrink-0 rounded-full px-2 py-0.5 text-xs font-medium">needs you</span>
@@ -125,7 +136,13 @@
 		</span>
 	</div>
 
-	{#if sockets.length || collisions.length || parent || (selected && tree.actions)}
+	{#if selected && tree.actions}
+		<!-- a phone has no room for them in the row: they take a line under it -->
+		<div data-slot="agent-tree-actions" class="mb-1 ml-7 flex items-center gap-1.5 py-1 empty:hidden sm:hidden">
+			{@render tree.actions(agent)}
+		</div>
+	{/if}
+	{#if sockets.length || collisions.length}
 		<div class="mb-1 ml-7 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
 			{#each sockets as s (s.name + s.a + s.b)}
 				<span class="text-muted-foreground inline-flex items-center gap-1.5 font-mono">
@@ -141,13 +158,6 @@
 					<span class="text-muted-foreground">also open in {c.pids.filter((p) => p !== agent.pid).map(nameOf).join(', ')}</span>
 				</span>
 			{/each}
-			{#if parent}
-				<span class="text-muted-foreground">Reports to <span class="text-foreground">{parent.name}</span></span>
-			{/if}
-			{#if selected && tree.actions}
-				<!-- the app's own actions; it renders none for an agent where none apply (a finished one) -->
-				<span class="flex basis-full items-center gap-2 py-1 empty:hidden">{@render tree.actions(agent)}</span>
-			{/if}
 		</div>
 	{/if}
 
