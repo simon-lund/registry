@@ -39,7 +39,7 @@ const OUT = outFlag > -1 ? resolve(process.argv[outFlag + 1]) : join(ROOT, 'regi
 const url = (/** @type {string} */ name) => `${HOMEPAGE}/r/${name}.json`;
 
 /** shadcn-svelte's own components: items depend on them by bare name, and they never ship from here. */
-const STOCK = new Set(['button', 'input', 'spinner', 'tooltip']);
+const STOCK = new Set(['button', 'input', 'popover', 'spinner', 'tooltip']);
 
 /** What items stand on: `cn` and the type helpers for all of them, `motion` for the ones that move. */
 const BASE = [

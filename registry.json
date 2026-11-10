@@ -333,6 +333,98 @@
       ]
     },
     {
+      "name": "markup",
+      "type": "registry:ui",
+      "title": "Markup",
+      "description": "The toolbar of a mark-up tool, after Claude Code's browser-pane markup bar: the bar only, it draws nothing on the page. Parts: Markup (the state: bind:tool select | pen | null, bind:colour, bind:width, bind:note; onSend(note) may return a promise: sending while it runs, failed on rejection with the note kept, cleared on success), MarkupBar (the floating surface; no key in it or its menus reaches the page; Escape is a ladder: an open menu closes, else the tool is put down), MarkupTools (bits-ui Toolbar: one tab stop, arrows move), MarkupTool (a toggle; the tool in hand is the copper key; aria-label shown as a tooltip), MarkupSeparator, MarkupColors (a menu of your ColorPickerSwatch), MarkupWidths and MarkupWidth (a menu of lines), MarkupNote (a stock Input in a form; Enter sends), MarkupSend (primary, a Spinner while sending, children get the status) and MarkupClose. What a tool does, where marks live and where a note goes are the app's. No copy inside: every label is yours.",
+      "dependencies": [
+        "bits-ui",
+        "@lucide/svelte"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "button",
+        "input",
+        "spinner",
+        "tooltip",
+        "popover",
+        "https://ui.simon-lund.com/r/color-picker.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/markup/context.svelte.ts",
+          "type": "registry:ui",
+          "target": "markup/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/index.ts",
+          "type": "registry:ui",
+          "target": "markup/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-bar.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-bar.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-close.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-close.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-colors.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-colors.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-note.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-note.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-send.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-send.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-separator.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-separator.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-tool.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-tool.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-tools.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-tools.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-width.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-width.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup-widths.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup-widths.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/markup.svelte",
+          "type": "registry:ui",
+          "target": "markup/markup.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/markup/menu.ts",
+          "type": "registry:ui",
+          "target": "markup/menu.ts"
+        }
+      ]
+    },
+    {
       "name": "middot",
       "type": "registry:ui",
       "title": "Middot",

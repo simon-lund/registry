@@ -36,6 +36,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20260101.0
         version: 4.20260702.1
+      '@internationalized/date':
+        specifier: ^3.12.4
+        version: 3.12.4
       '@sveltejs/adapter-cloudflare':
         specifier: ^8.0.2
         version: 8.0.2(@sveltejs/kit@3.1.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.3)(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)))(svelte@5.57.3)(typescript@6.0.3)(vite@8.3.6(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)))(wrangler@4.158.0(@cloudflare/workers-types@4.20260702.1)(@types/node@24.19.2))

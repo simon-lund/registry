@@ -39,7 +39,7 @@ it.** Everything on the site sits on:
 | Path | What |
 | --- | --- |
 | `src/lib/registry/ui/<name>/` | one item: one file per part, `index.ts`, and its `meta.json` (title, description, npm and registry dependencies) |
-| `src/lib/registry/ui/{button,input,spinner,tooltip}/` | stock shadcn-svelte, added with its CLI so items and pages can import them; never edited and never shipped from here (`STOCK` in the build script and `catalogue.ts`). An item lists one by its bare name, and the consumer's CLI takes it from their own registry |
+| `src/lib/registry/ui/{button,input,popover,spinner,tooltip}/` | stock shadcn-svelte, added with its CLI so items and pages can import them; never edited and never shipped from here (`STOCK` in the build script and `catalogue.ts`). An item lists one by its bare name, and the consumer's CLI takes it from their own registry |
 | `src/lib/utils.ts` | `cn` and the type helpers; the item `utils`, which every item depends on |
 | `src/app.css` | the theme: the tokens, the fonts, the base |
 | `src/lib/book/` | the book's own parts (the plate with its copyable code block, the sidebar, the theme toggle) and its catalogue (`catalogue.ts`, which the index and the sidebar read); never shipped |

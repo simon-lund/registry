@@ -34,6 +34,11 @@ export const components: Entry[] = [
 		tagline: 'A rotary knob over a few stops: drag it, click a mark or use the arrow keys.'
 	},
 	{
+		name: 'markup',
+		title: 'Markup',
+		tagline: 'The bar of a mark-up tool: tools, colour, width and a note to send, after Claude Code\'s.'
+	},
+	{
 		name: 'middot',
 		title: 'Middot',
 		tagline: 'The separator between two pieces of meta, drawn so both sides get the same space.'
@@ -111,7 +116,7 @@ export const homepage = 'https://ui.simon-lund.com';
 export const install = (name: string) => `pnpm dlx shadcn-svelte@latest add ${homepage}/r/${name}.json`;
 
 /** shadcn-svelte's own components: an item needs them by bare name, from the consumer's registry. */
-const stock = new Set(['button', 'input', 'spinner', 'tooltip']);
+const stock = new Set(['button', 'input', 'popover', 'spinner', 'tooltip']);
 
 /** The command that installs what an item needs: an item of this registry, or a stock one. */
 export const installNeed = (name: string) =>

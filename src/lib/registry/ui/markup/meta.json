@@ -1,0 +1,17 @@
+{
+	"title": "Markup",
+	"description": "The toolbar of a mark-up tool, after Claude Code's browser-pane markup bar: the bar only, it draws nothing on the page. Parts: Markup (the state: bind:tool select | pen | null, bind:colour, bind:width, bind:note; onSend(note) may return a promise: sending while it runs, failed on rejection with the note kept, cleared on success), MarkupBar (the floating surface; no key in it or its menus reaches the page; Escape is a ladder: an open menu closes, else the tool is put down), MarkupTools (bits-ui Toolbar: one tab stop, arrows move), MarkupTool (a toggle; the tool in hand is the copper key; aria-label shown as a tooltip), MarkupSeparator, MarkupColors (a menu of your ColorPickerSwatch), MarkupWidths and MarkupWidth (a menu of lines), MarkupNote (a stock Input in a form; Enter sends), MarkupSend (primary, a Spinner while sending, children get the status) and MarkupClose. What a tool does, where marks live and where a note goes are the app's. No copy inside: every label is yours.",
+	"dependencies": [
+		"bits-ui",
+		"@lucide/svelte"
+	],
+	"registryDependencies": [
+		"motion",
+		"button",
+		"input",
+		"spinner",
+		"tooltip",
+		"popover",
+		"color-picker"
+	]
+}
