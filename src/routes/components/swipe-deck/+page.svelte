@@ -138,16 +138,16 @@
 				</PlatePart>
 				<PlatePart name="SwipeDeckLabel">
 					<p>
-						Inside a card: turns a direction on, and is the circle that grows over the card while it is
+						Inside a card: turns a direction on, and frosts the whole card with its icon while the card is
 						dragged that way. Children are an icon and a word: the icon shows, the word is what the deck
-						announces. Give it the <code>variant</code> of the direction's button, so the circle has that
+						announces. Give it the <code>variant</code> of the direction's button, so the glass has that
 						button's colour. Hidden from assistive tech. Other props and <code>class</code> go to the
-						circle; its <code>data-state</code> is <code>hidden</code>, <code>approaching</code> or
+						glass; its <code>data-state</code> is <code>hidden</code>, <code>approaching</code> or
 						<code>armed</code>.
 					</p>
 					<PlateProps>
 						<PlateProp name="direction" type="SwipeDeckDirection" required />
-						<PlateProp name="variant" type={`"outline" | "default"`} default={`"outline"`}>The colour of the direction's button: a ring, or the primary disc.</PlateProp>
+						<PlateProp name="variant" type={`"outline" | "default"`} default={`"outline"`}>The colour of the direction's button: milky glass, or copper glass.</PlateProp>
 						<PlateProp name="ref" type="HTMLDivElement | null" default="null" bindable />
 						<PlateProp name="class" type="string" />
 						<PlateProp name="children" type="Snippet">An icon and a word. The icon shows; the word is announced.</PlateProp>
@@ -229,10 +229,10 @@
 				<PlateMeasure label="Exit" value="48px past its edge, 140 to 220ms, fading over the second half" />
 				<PlateMeasure label="Undo return" value="320ms" />
 				<PlateMeasure label="Each card behind" value="9px lower, 5% narrower, 320ms into place" />
-				<PlateMeasure label="Blank face" value="22% toward the background per card, two steps at most, 1px border" />
+				<PlateMeasure label="Blank face" value="on the cards behind: 22% toward the background per card, two steps at most, 1px border" />
 				<PlateMeasure label="Dragged card" value="shadow-lg, fades in 140ms" />
-				<PlateMeasure label="Label" value="64px circle over the card's centre, 28px icon, shadow-lg" />
-				<PlateMeasure label="Label motion" value="hidden for the first 15%, then 60% to 90% and faded in with the drag; full size at the threshold in 220ms" />
+				<PlateMeasure label="Label" value="the whole card: an 8px backdrop blur under background at 60% (outline) or primary at 80% (default); a 48px icon" />
+				<PlateMeasure label="Label motion" value="hidden for the first 15%, then the glass fades in and the icon grows 80% to 95% with the drag; full size at the threshold in 220ms" />
 				<PlateMeasure label="Empty state" value="rises 8px, 220ms after 140ms" />
 				<PlateMeasure label="History" value="last 10 swipes" />
 			</PlateMeasures>

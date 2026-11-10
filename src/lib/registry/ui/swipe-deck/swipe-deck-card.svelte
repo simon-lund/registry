@@ -492,8 +492,8 @@
 	}
 
 	/*
-	 * The blank face: over a card behind, full one step down and gone at the top; over the top card
-	 * it rises with the drag (to 75% at the threshold), so the words fade back and the label reads.
+	 * The blank face: over a card behind, full one step down and gone at the top. The top card shows
+	 * its content while dragged; its label frosts over it.
 	 */
 	.face {
 		position: absolute;
@@ -508,7 +508,7 @@
 		);
 		/* It covers the card's own border, and the stack is flat: this edge is what shows. */
 		border: 1px solid var(--border);
-		opacity: max(min(1, var(--d)), calc(var(--swipe-progress, 0) * 0.75));
+		opacity: min(1, var(--d));
 		pointer-events: none;
 		transition: opacity var(--dur-base) var(--ease-settle);
 	}
