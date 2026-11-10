@@ -4,7 +4,7 @@
 	let agreed = $state(false);
 </script>
 
-<div class="flex flex-col gap-1.5">
+<div class="flex w-full max-w-xs flex-col gap-1.5">
 	<div class="flex items-center gap-2">
 		<Checkbox id="terms-invalid" bind:checked={agreed} aria-invalid={!agreed} aria-describedby="terms-message" />
 		<label for="terms-invalid" class="text-sm">I agree to the terms</label>

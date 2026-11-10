@@ -11,7 +11,7 @@
 	}
 </script>
 
-<form {onsubmit} class="flex flex-col items-center gap-3">
+<form {onsubmit} class="flex w-full max-w-xs flex-col items-center gap-3">
 	<ColorPicker name="colour" required aria-label="Label colour">
 		<ColorPickerSwatch value="#2f6f8f" aria-label="Lake" />
 		<ColorPickerSwatch value="#c2552d" aria-label="Rust" />

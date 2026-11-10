@@ -16,7 +16,7 @@
 	}
 </script>
 
-<form class="flex flex-col items-center gap-3" {onsubmit}>
+<form class="flex w-full max-w-xs flex-col items-center gap-3" {onsubmit}>
 	<span id="pause-after" class="text-muted-foreground text-sm">Pause after</span>
 	<Dial name="pause" bind:value={pause} step={stops} aria-labelledby="pause-after" aria-valuetext="{pause} minutes">
 		{#each stops as stop (stop)}

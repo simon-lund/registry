@@ -31,6 +31,11 @@
 	<PlateStage example={example('demo')} />
 
 	<PlateSection title="Installation">
+		<p>
+			Its parts and their names follow Vercel's
+			<a href="https://elements.ai-sdk.dev/components/terminal">AI Elements Terminal</a>. The ANSI
+			parser, the colours for both themes and the streaming are its own, with no dependency.
+		</p>
 		<PlateInstall name="terminal" dependencies={meta.dependencies} needs={meta.registryDependencies} files={source} />
 	</PlateSection>
 

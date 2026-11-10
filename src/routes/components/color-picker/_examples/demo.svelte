@@ -14,7 +14,7 @@
 	const name = $derived(colours.find((colour) => colour.value === value)?.name);
 </script>
 
-<div class="flex flex-col items-center gap-3">
+<div class="flex w-full max-w-xs flex-col items-center gap-3">
 	<p id="label-colour" class="text-muted-foreground m-0 text-sm">Label colour</p>
 	<ColorPicker bind:value aria-labelledby="label-colour">
 		{#each colours as colour (colour.value)}
