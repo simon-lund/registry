@@ -24,9 +24,10 @@
 			/*
 			 * Focus is drawn by ::after above the key (the key is a layer over the triggers, so a
 			 * plain outline would sit under it) and above the scroll hints (z 2). The track clips its
-			 * overflow at its padding (one spacing step), so the 2px ring sits 2px out, never clipped.
+			 * overflow inside its border, 3px out from the trigger, so the 2px ring sits 1px out,
+			 * never clipped.
 			 */
-			'focus-visible:outline-none after:pointer-events-none after:absolute after:inset-0 after:z-[4] after:rounded-full focus-visible:after:outline-2 focus-visible:after:outline-offset-[calc(var(--spacing)-2px)] focus-visible:after:outline-ring',
+			'focus-visible:outline-none after:pointer-events-none after:absolute after:inset-0 after:z-[4] after:rounded-full focus-visible:after:outline-2 focus-visible:after:outline-offset-[calc(var(--spacing)-3px)] focus-visible:after:outline-ring',
 			/* A disabled segment dims itself; in a disabled list the list dims once, as a whole. */
 			'data-disabled:cursor-not-allowed [:not([data-disabled])>&]:data-disabled:opacity-45'
 		]

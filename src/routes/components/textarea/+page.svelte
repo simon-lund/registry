@@ -95,7 +95,7 @@
 			<PlateMeasure label="Padding" value="10px sides, 8px top and bottom" />
 			<PlateMeasure label="Text" value="16px, from md 14px" />
 			<PlateMeasure label="Radius" value="8px (--radius)" />
-			<PlateMeasure label="Grip" value="24px target, 10px strokes, 3px from the corner" />
+			<PlateMeasure label="Grip" value="24px target against the border, 10px strokes 6px from the field's edge" />
 			<PlateMeasure label="Grip colour" value="140ms (--dur-quick) on --ease-settle" />
 			<PlateMeasure label="Key step" value="one line height; 24px if the line height is normal" />
 			<PlateMeasure label="Focus ring" value="3px ring at 50 %, border to ring" />

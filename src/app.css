@@ -50,6 +50,15 @@
 	}
 }
 
+/* The book's slow motion (the header's toggle, never shipped): every duration five times longer,
+   so a motion can be watched frame by frame. Everything that moves reads these, the springs too. */
+:root[data-slow] {
+	--dur-press: 400ms;
+	--dur-quick: 700ms;
+	--dur-base: 1100ms;
+	--dur-calm: 1600ms;
+}
+
 /* Code: tonal, from ink and stone only. Copper keeps its one meaning, so highlighting is
    structure in ink and the rest in stone. Shiki writes these as var(--code-*) (vite.config.ts);
    set on :root, they follow .dark through --foreground and --muted-foreground. */

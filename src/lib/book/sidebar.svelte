@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { cn } from '#lib/utils.js';
-	import { components } from './catalogue.js';
+	import { categories, components } from './catalogue.js';
+	import { filter } from './filter.svelte.js';
 
 	interface Props {
 		/** Tablet and up: a column beside the content. Phone: one row of links under the header. */
@@ -12,6 +13,10 @@
 	let { variant = 'column', class: className }: Props = $props();
 
 	const current = (name: string) => page.url.pathname === `/components/${name}`;
+	// Still in alphabetical order, only the chosen category's.
+	const shown = $derived(
+		filter.category ? components.filter((c) => c.category === filter.category) : components
+	);
 
 	// On a phone the links are one scrolling row: keep the page you are on in view. No smooth scroll,
 	// this is not a move you made.
@@ -28,6 +33,23 @@
 	<p class={cn('text-muted-foreground text-xs tracking-wide uppercase', variant === 'column' ? 'px-2' : 'sr-only')}>
 		Components
 	</p>
+	<!-- One category at a time: a tag shows only its components, pressed again it shows them all. -->
+	<div
+		role="group"
+		aria-label="Filter by category"
+		class={cn('flex gap-1', variant === 'column' ? 'flex-wrap px-1' : 'overflow-x-auto [scrollbar-width:none]')}
+	>
+		{#each categories as category (category)}
+			<button
+				type="button"
+				aria-pressed={filter.category === category}
+				onclick={() => (filter.category = filter.category === category ? null : category)}
+				class="text-muted-foreground hover:text-foreground focus-visible:ring-ring aria-pressed:bg-muted aria-pressed:text-foreground shrink-0 cursor-pointer rounded-md px-1.5 py-0.5 text-xs transition-colors duration-(--dur-quick) focus-visible:ring-2 focus-visible:outline-none aria-pressed:font-medium"
+			>
+				#{category}
+			</button>
+		{/each}
+	</div>
 	<ul
 		bind:this={list}
 		class={cn(
@@ -35,7 +57,7 @@
 			variant === 'column' ? 'flex min-h-0 flex-col overflow-y-auto [scrollbar-width:thin]' : 'flex gap-1 overflow-x-auto [scrollbar-width:none]'
 		)}
 	>
-		{#each components as c (c.name)}
+		{#each shown as c (c.name)}
 			<li class={variant === 'row' ? 'shrink-0' : undefined}>
 				<a
 					href="/components/{c.name}"

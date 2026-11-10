@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import ThemeToggle from '#lib/book/theme-toggle.svelte';
+	import SlowMotion from '#lib/book/slow-motion.svelte';
 	import Sidebar from '#lib/book/sidebar.svelte';
 
 	let { children } = $props();
@@ -11,7 +12,10 @@
 		<a href="/" class="font-heading text-lg">Registry</a>
 		<nav class="flex items-center gap-4 text-sm">
 			<a href="https://simon-lund.com" class="text-muted-foreground hover:text-foreground">simon-lund.com</a>
-			<ThemeToggle />
+			<div class="flex items-center">
+				<SlowMotion />
+				<ThemeToggle />
+			</div>
 		</nav>
 	</header>
 	<!-- phone: the components as one row under the header, scrolling sideways when there are many -->

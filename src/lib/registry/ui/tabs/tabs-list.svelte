@@ -2,16 +2,17 @@
 	import { tv } from 'tailwind-variants';
 
 	/**
-	 * The track is a pill with 4px padding and a fine line, so it shows on any surface, and the
-	 * key inside is a pill too (concentric). The line is an inset ring, not a border: a border
-	 * would move the box the key is measured from.
+	 * The track is a pill with a fine line, so it shows on any surface, and the key inside is a
+	 * pill too (concentric), 4px in from the outer edge. The line is a real 1px border with 3px of
+	 * padding inside it: a scrolling track clips its segments inside its border, so a label scrolled
+	 * to the edge never crosses the line. The key is measured from inside the border.
 	 * Segments share the width equally by default; give the list `w-fit` and the triggers
 	 * `flex-none` for content-sized segments. A segment never shrinks below its label: when they
 	 * do not fit, the track scrolls sideways (no scrollbar; touch, shift-wheel, the arrow keys).
 	 */
 	export const tabsListVariants = tv({
 		base: [
-			'bg-muted relative isolate flex w-full items-center gap-0.5 rounded-full p-1 ring-1 ring-(--tabs-line) ring-inset [--tabs-line:var(--border)] [--tabs-track:var(--muted)]',
+			'bg-muted relative isolate flex w-full items-center gap-0.5 rounded-full border border-(--tabs-line) p-[calc(var(--spacing)-1px)] [--tabs-line:var(--border)] [--tabs-track:var(--muted)]',
 			'overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
 			'supports-[container-type:scroll-state]:[container-type:scroll-state]',
 			'data-disabled:opacity-45'
@@ -188,7 +189,7 @@
 
 	/*
 	 * Scroll hints. Zero-width flex items (their gap taken back) stuck to the scrollport's edges,
-	 * each covering the track's round end and fading into the track colour inward. Only where `scroll-state` queries
+	 * each covering the track's round end inside the line and fading into the track colour inward. Only where `scroll-state` queries
 	 * exist (the list is then a scroll-state container), and only while that way can scroll.
 	 */
 	.hint {
@@ -215,25 +216,20 @@
 			margin-inline-start: calc(var(--spacing, 4px) * -0.5);
 		}
 		/*
-		 * A sticky item stops at the track's padding, not its edge, so the fade reaches back across
-		 * the padding to the track's edge and takes the end's shape: round, wider than the end's
-		 * 22px radius (narrower, the rounding would be squashed and leave slivers at the curve).
-		 * It covers the whole end, so it draws that stretch of the fine line itself (the track's line
-		 * is a shadow under the labels, which would paint over it). Solid across the curve, then
-		 * 22px of fade: no letter shows inside the round end.
+		 * A sticky item stops at the track's padding, so the fade reaches back across the padding to
+		 * the border, where the track clips, and takes the end's shape: round, wider than the end's
+		 * 21px inner radius (narrower, the rounding would be squashed and leave slivers at the curve).
+		 * Solid across the curve, then 22px of fade: no letter shows inside the round end.
 		 */
 		.hint::before {
-			--reach: var(--spacing, 4px);
+			--reach: calc(var(--spacing, 4px) - 1px);
 			content: '';
 			position: absolute;
-			box-sizing: border-box;
 			inset-block: calc(-1 * var(--reach));
 			width: calc(var(--spacing, 4px) * 10 + var(--reach));
-			border: 1px solid var(--tabs-line);
 		}
 		.hint-start::before {
 			left: calc(-1 * var(--reach));
-			border-inline-end-width: 0;
 			border-radius: 9999px 0 0 9999px;
 			background: linear-gradient(
 				to right,
@@ -243,7 +239,6 @@
 		}
 		.hint-end::before {
 			right: calc(-1 * var(--reach));
-			border-inline-start-width: 0;
 			border-radius: 0 9999px 9999px 0;
 			background: linear-gradient(
 				to left,

@@ -155,7 +155,8 @@
 		{@render field('resize-none')}
 		{#if !restProps.disabled}
 			<!--
-				Two diagonal strokes, inset from the field's 8px rounding. A separator (focusable) when
+				Two diagonal strokes in the corner of a 24px target that sits against the border, so the
+				strokes are 6px from the field's edge, inside its 8px rounding. A separator (focusable) when
 				named; otherwise for the pointer only, hidden from assistive tech like the browser's own
 				resizer. A focusable separator is a widget (WAI-ARIA), which Svelte's role table does not
 				know.
@@ -172,7 +173,7 @@
 				aria-hidden={resizeLabel ? undefined : 'true'}
 				tabindex={resizeLabel ? 0 : undefined}
 				class={cn(
-					'relative me-0.75 mb-0.75 grid size-6 cursor-ns-resize touch-none place-items-center self-end justify-self-end rounded-xs text-muted-foreground',
+					'relative me-px mb-px grid size-6 cursor-ns-resize touch-none place-items-end p-1.25 self-end justify-self-end rounded-xs text-muted-foreground',
 					'transition-colors duration-(--dur-quick) ease-(--ease-settle)',
 					'hover:text-foreground group-data-dragging/textarea:text-foreground focus-visible:text-foreground',
 					'focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ring'

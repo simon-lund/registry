@@ -201,7 +201,7 @@
 			tabindex="-1"
 			aria-label="Increase"
 			disabled={disabled || atMax}
-			class="text-muted-foreground hover:text-foreground hover:bg-accent active:bg-accent flex flex-1 items-center justify-center rounded-tr-[inherit] disabled:pointer-events-none disabled:opacity-40"
+			class="text-muted-foreground hover:text-foreground hover:bg-accent active:bg-accent flex flex-1 items-center justify-center rounded-tr-[calc(var(--radius-lg)-1px)] disabled:pointer-events-none disabled:opacity-40"
 			onpointerdown={(e) => {
 				e.preventDefault();
 				hold(1);
@@ -217,7 +217,7 @@
 			tabindex="-1"
 			aria-label="Decrease"
 			disabled={disabled || atMin}
-			class="border-input text-muted-foreground hover:text-foreground hover:bg-accent active:bg-accent flex flex-1 items-center justify-center rounded-br-[inherit] border-t disabled:pointer-events-none disabled:opacity-40"
+			class="border-input text-muted-foreground hover:text-foreground hover:bg-accent active:bg-accent flex flex-1 items-center justify-center rounded-br-[calc(var(--radius-lg)-1px)] border-t disabled:pointer-events-none disabled:opacity-40"
 			onpointerdown={(e) => {
 				e.preventDefault();
 				hold(-1);

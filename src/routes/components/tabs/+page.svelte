@@ -135,16 +135,16 @@
 
 	<PlateSection title="Measurements">
 		<PlateMeasures>
-			<PlateMeasure label="Track" value="44px high, 4px padding, a pill with a 1px line" />
+			<PlateMeasure label="Track" value="44px high, a pill with a 1px border and 3px of padding inside it; segments scroll inside the border" />
 			<PlateMeasure label="Segment" value="36px high, 44px to touch, 14px side padding, 2px gap" />
 			<PlateMeasure label="Label" value="14px, weight 500; count 12px" />
 			<PlateMeasure label="Icon" value="16px, 6px from the label" />
 			<PlateMeasure label="Key" value="the selected segment's box, with a 1px line" />
 			<PlateMeasure label="Key slide" value="clip-path, 220ms (--dur-base) on --ease-settle" />
-			<PlateMeasure label="Panel" value="8px of travel and a fade, 220ms (--dur-base) on --ease-settle" />
+			<PlateMeasure label="Panel" value="8px of travel, a fade and the 4px swap blur, 220ms (--dur-base) on --ease-settle" />
 			<PlateMeasure label="Label hover" value="140ms (--dur-quick)" />
 			<PlateMeasure label="Disabled" value="45% opacity" />
-			<PlateMeasure label="Focus ring" value="2px ring colour, 2px out" />
+			<PlateMeasure label="Focus ring" value="2px ring colour, 1px out" />
 			<PlateMeasure label="Scroll" value="the selection 16px clear of the edge; a 44px fade, solid across the round end, the selection above it" />
 		</PlateMeasures>
 	</PlateSection>

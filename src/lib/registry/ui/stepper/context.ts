@@ -67,14 +67,14 @@ export type StepperSweep = { readonly k: number; readonly n: number };
 /**
  * A move across several segments draws them as one line, one after the other from the step left:
  * each segment but the last runs in quick, linear, after the ones before it; the last lands on an
- * ease-out over 280ms, its start about as fast as the linear ones, so the line never jerks. As
+ * ease-out over 1.25 base durations (275ms), its start about as fast as the linear ones, so the line never jerks. As
  * style variables for a part's transition; none for a move of one segment, which keeps its own.
  */
 export function sweepStyle(sweep: StepperSweep | null): string | undefined {
 	if (!sweep || sweep.n < 2) return undefined;
 	const delay = `--sweep-delay:calc(var(--dur-quick) * ${sweep.k});`;
 	return sweep.k === sweep.n - 1
-		? `${delay}--sweep-dur:280ms;--sweep-ease:cubic-bezier(0.33, 1, 0.68, 1);`
+		? `${delay}--sweep-dur:calc(var(--dur-base) * 1.25);--sweep-ease:cubic-bezier(0.33, 1, 0.68, 1);`
 		: `${delay}--sweep-dur:var(--dur-quick);--sweep-ease:linear;`;
 }
 

@@ -131,13 +131,16 @@ export class TabsGeometry {
 		const lr = list.getBoundingClientRect();
 		// A scaled ancestor (a transform, a zoomed preview) scales every box alike; undo it.
 		const scale = lr.width / list.offsetWidth || 1;
+		// The key is placed inside the track's border (its padding box): measure from there.
+		const bl = list.clientLeft;
+		const bt = list.clientTop;
 		const next: Record<string, TabsRect> = {};
 		let extent = 0;
 		for (const [value, el] of this.#triggers) {
 			const r = el.getBoundingClientRect();
 			const box = {
-				x: (r.left - lr.left) / scale + list.scrollLeft,
-				y: (r.top - lr.top) / scale,
+				x: (r.left - lr.left) / scale - bl + list.scrollLeft,
+				y: (r.top - lr.top) / scale - bt,
 				w: r.width / scale,
 				h: r.height / scale
 			};
@@ -151,7 +154,7 @@ export class TabsGeometry {
 			this.#measured = true;
 			this.#jump();
 		}
-		this.size = { w: Math.max(lr.width / scale, contentW), h: lr.height / scale };
+		this.size = { w: Math.max(lr.width / scale - 2 * bl, contentW), h: lr.height / scale - 2 * bt };
 		this.rects = next;
 		if (!this.#revealed) {
 			this.#revealed = true;
