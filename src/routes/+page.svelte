@@ -22,7 +22,7 @@
 
 	{#if ai.length}
 		<section class="flex flex-col gap-4" aria-labelledby="ai">
-			<h2 id="ai" class="text-xl">For AI agents</h2>
+			<h2 id="ai" class="text-xl">Examples</h2>
 			<ul class="m-0 flex list-none flex-col gap-10 p-0">
 				{#each ai as c (c.name)}
 					<li class="group relative flex flex-col gap-3">
