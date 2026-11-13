@@ -5,8 +5,8 @@ export interface Entry {
 	title: string;
 	/** One line: what it is, in the words of the plate. */
 	tagline: string;
-	/** Shown large and working at the top of the index: the ones I'd show first. */
-	spotlight?: boolean;
+	/** Made for working with AI agents: shown large and working at the top of the index. */
+	ai?: boolean;
 }
 
 export const components: Entry[] = [
@@ -19,13 +19,13 @@ export const components: Entry[] = [
 		name: 'agent-map',
 		title: 'Agent map',
 		tagline: 'What an agent is working on: what it reaches for round it, every call going out along a line.',
-		spotlight: true
+		ai: true
 	},
 	{
 		name: 'agent-tree',
 		title: 'Agent tree',
 		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.',
-		spotlight: true
+		ai: true
 	},
 	{
 		name: 'checkbox',

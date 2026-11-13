@@ -66,7 +66,7 @@
 		<ul class="m-0 flex list-disc flex-col gap-1 pl-5">
 			<li>
 				A call is running, done or failed. A blocked call is a failed one with its reason in the
-				label. A model switch is a call to the model ("opus 5.5 → fable 5.2").
+				label. A model switch is a call to the model, with the switch as its label.
 			</li>
 			<li>No colour per node and no red: ink says something is in use, copper only what you selected, as in the agent tree.</li>
 			<li>It keeps nothing. The app turns the agent's events into calls and passes them in.</li>
@@ -101,7 +101,7 @@
 				</PlateProps>
 			</PlatePart>
 			<PlatePart name="AgentMapHub">
-				<p>The agent in the middle. Its name and model are your children; the context ring is drawn round them.</p>
+				<p>The agent in the middle. Its name is your children; the context ring is drawn round it.</p>
 			</PlatePart>
 			<PlatePart name="AgentMapStatus">
 				<p>One line: the newest running call and how many more run beside it, or that nothing runs.</p>

@@ -24,10 +24,7 @@
 	<AgentMap {nodes} calls={run.calls} context={run.context} bind:selected class="grid w-full items-start gap-x-10 gap-y-6 @3xl:grid-cols-2">
 		<AgentMapGraph aria-label="What the agent is using">
 			{#snippet icon(id)}<Icon {id} />{/snippet}
-			<AgentMapHub>
-				Claude
-				<span class="text-muted-foreground font-mono text-[11px] leading-4 font-normal">opus 5.5</span>
-			</AgentMapHub>
+			<AgentMapHub>Claude</AgentMapHub>
 		</AgentMapGraph>
 		<div class="flex min-w-0 flex-col gap-3 @3xl:pt-6">
 			<AgentMapStatus />

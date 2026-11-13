@@ -4,12 +4,11 @@
 	import { CENTRE, getMap } from './context.svelte.js';
 
 	/**
-	 * AgentMapHub: the agent, in the middle of AgentMapGraph. Its name (and its model, smaller) are
-	 * your children; round it, how full its context is, as a ring and a percentage, when AgentMap has
-	 * `context`.
+	 * AgentMapHub: the agent, in the middle of AgentMapGraph. Its name is your children; round it,
+	 * how full its context is, as a ring and a percentage, when AgentMap has `context`.
 	 *
 	 * @example
-	 * <AgentMapHub>Claude <span class="text-muted-foreground font-mono text-[11px] font-normal">opus 5.5</span></AgentMapHub>
+	 * <AgentMapHub>Claude</AgentMapHub>
 	 */
 	let { class: className, children, ...rest }: HTMLAttributes<HTMLDivElement> = $props();
 
