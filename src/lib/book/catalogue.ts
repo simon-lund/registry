@@ -5,6 +5,8 @@ export interface Entry {
 	title: string;
 	/** One line: what it is, in the words of the plate. */
 	tagline: string;
+	/** Shown large and working at the top of the index: the ones I'd show first. */
+	spotlight?: boolean;
 }
 
 export const components: Entry[] = [
@@ -14,9 +16,16 @@ export const components: Entry[] = [
 		tagline: 'A year of activity as a grid of days, one step of ink per level.'
 	},
 	{
+		name: 'agent-map',
+		title: 'Agent map',
+		tagline: 'What an agent is working on: what it reaches for round it, every call going out along a line.',
+		spotlight: true
+	},
+	{
 		name: 'agent-tree',
 		title: 'Agent tree',
-		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.'
+		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.',
+		spotlight: true
 	},
 	{
 		name: 'checkbox',

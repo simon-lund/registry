@@ -34,6 +34,16 @@
 
 	const tree = new TreeState();
 	setTree(tree);
+	// The first render's state, set here as well as in the effects below, because effects never run
+	// on the server: without it the tree is sent empty and its rows pop in once the page hydrates.
+	const seed = () => {
+		tree.agents = agents;
+		tree.sockets = sockets;
+		tree.collisions = collisions;
+		tree.actions = actions;
+		tree.selected = selected;
+	};
+	seed();
 	$effect.pre(() => {
 		tree.agents = agents;
 		tree.sockets = sockets;
