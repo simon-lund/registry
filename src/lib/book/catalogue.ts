@@ -64,6 +64,11 @@ export const components: Entry[] = [
 		tagline: 'A rotary knob over a few stops: drag it, click a mark or use the arrow keys.'
 	},
 	{
+		name: 'filter-matrix',
+		title: 'Filter matrix',
+		tagline: 'Two filters as one grid, such as area against status: a count in every cell, the totals at the ends, a click to pick.'
+	},
+	{
 		name: 'markup',
 		title: 'Markup',
 		tagline: 'A mark-up tool\'s parts: its bar, the outline on an element, handles on a mark, numbered comments.'

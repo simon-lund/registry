@@ -1,0 +1,8 @@
+{
+	"title": "Filter matrix",
+	"description": "Two filters as one grid: rows are one dimension (the areas of your tasks), columns the other, which is usually the shorter (their statuses). Each cell shows how many things lie in it, and the end of every row and column shows its total, the corner the grand total. A click toggles a cell, so the filter is the union of the cells picked; a total picks its whole line; a double-click drops everything picked and picks only that cell. Nothing picked means no filter. Picked cells are copper, the value in hand. bind:value is a list of cell keys; matches() says whether a thing falls inside it. One tab stop: the arrow keys move over every cell and total, Space toggles, Enter picks only this one (the keyboard's double-click), Escape clears. 44px to touch. No copy inside: cellLabel says what a cell holds in your words.",
+	"dependencies": [],
+	"registryDependencies": [
+		"motion"
+	]
+}

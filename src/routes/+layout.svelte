@@ -31,4 +31,8 @@
 			{@render children()}
 		</main>
 	</div>
+	<footer class="text-muted-foreground mt-16 text-sm">
+		By <a href="https://simon-lund.com" class="text-foreground">Simon Lund</a>, who is building
+		<a href="https://klementine.net" class="text-foreground">Klementine</a>.
+	</footer>
 </div>
