@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { groups, inGroup } from '#lib/book/catalogue.js';
 
-	// The components for AI agents, live: each plate's own demo (loaded in +page.ts), still a
-	// picture here (inert), the card the link.
+	// The featured components, live: each plate's own demo (loaded in +page.ts), still a picture
+	// here (inert), the card the link.
 	let { data } = $props();
-	const ai = $derived(data.ai);
+	const featured = $derived(data.featured);
 </script>
 
 <svelte:head>
@@ -20,11 +20,11 @@
 		</p>
 	</section>
 
-	{#if ai.length}
-		<section class="flex flex-col gap-4" aria-labelledby="ai">
-			<h2 id="ai" class="text-xl">Examples</h2>
+	{#if featured.length}
+		<section class="flex flex-col gap-4" aria-labelledby="examples">
+			<h2 id="examples" class="text-xl">Examples</h2>
 			<ul class="m-0 flex list-none flex-col gap-10 p-0">
-				{#each ai as c (c.name)}
+				{#each featured as c (c.name)}
 					<li class="group relative flex flex-col gap-3">
 						<!-- the name first, so it reads as this card's title, not the section's -->
 						<div class="flex flex-col gap-1">

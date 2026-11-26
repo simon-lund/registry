@@ -5,8 +5,8 @@ export interface Entry {
 	title: string;
 	/** One line: what it is, in the words of the plate. */
 	tagline: string;
-	/** Made for working with AI agents: shown large and working at the top of the index. */
-	ai?: boolean;
+	/** Shown large and working under Examples, at the top of the index. */
+	featured?: boolean;
 	/**
 	 * Which list it sits in, as shadcn's docs split the generic components from the AI ones:
 	 * `components` (default) are generic, `ai` are for building with models and agents.
@@ -33,14 +33,14 @@ export const components: Entry[] = [
 		group: 'ai',
 		title: 'Agent map',
 		tagline: 'What an agent is working on: what it reaches for round it, every call going out along a line.',
-		ai: true
+		featured: true
 	},
 	{
 		name: 'agent-tree',
 		group: 'ai',
 		title: 'Agent tree',
 		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.',
-		ai: true
+		featured: true
 	},
 	{
 		name: 'chain-of-thought',

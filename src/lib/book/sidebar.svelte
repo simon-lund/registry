@@ -20,23 +20,25 @@
 		page.url.pathname;
 		if (variant !== 'row' || !list) return;
 		const link = list.querySelector<HTMLElement>('[aria-current=page]');
-		if (link) list.scrollLeft = link.offsetLeft - list.offsetLeft - 16;
+		// the row is the links' offset parent, so offsetLeft is already measured from its edge
+		if (link) list.scrollLeft = link.offsetLeft - 16;
 	});
 </script>
 
 <nav aria-label="Components" class={cn(variant === 'column' ? 'flex max-h-[calc(100dvh-3rem)] flex-col gap-4 overflow-y-auto [scrollbar-width:thin]' : 'flex flex-col gap-1', className)}>
 	<!-- phone: one row, the groups one after the other -->
-	<!-- relative: the groups' visually hidden headings are absolute, and must stay inside the scrolling row -->
+	<!-- relative: the groups' visually hidden names are absolute, and must stay inside the scrolling row -->
 	<div bind:this={list} class={cn('relative', variant === 'column' ? 'flex flex-col gap-4' : 'flex gap-1 overflow-x-auto [scrollbar-width:none]')}>
 		{#each groups as g (g.id)}
-			<section aria-labelledby="group-{g.id}-{variant}" class={cn(variant === 'column' ? 'flex flex-col gap-2' : 'flex shrink-0 gap-1')}>
-				<h2
+			<div class={cn(variant === 'column' ? 'flex flex-col gap-2' : 'flex shrink-0 gap-1')}>
+				<!-- a label for its list, not a heading: the page's own h1 comes first -->
+				<p
 					id="group-{g.id}-{variant}"
-					class={cn('text-muted-foreground m-0 font-sans text-xs font-normal tracking-wide uppercase', variant === 'column' ? 'px-2' : 'sr-only')}
+					class={cn('text-muted-foreground m-0 text-xs tracking-wide uppercase', variant === 'column' ? 'px-2' : 'sr-only')}
 				>
 					{g.title}
-				</h2>
-				<ul class={cn('m-0 list-none p-0', variant === 'column' ? 'flex flex-col' : 'flex gap-1')}>
+				</p>
+				<ul aria-labelledby="group-{g.id}-{variant}" class={cn('m-0 list-none p-0', variant === 'column' ? 'flex flex-col' : 'flex gap-1')}>
 					{#each inGroup(g.id) as c (c.name)}
 						<li class={variant === 'row' ? 'shrink-0' : undefined}>
 							<a
@@ -49,7 +51,7 @@
 						</li>
 					{/each}
 				</ul>
-			</section>
+			</div>
 		{/each}
 	</div>
 </nav>

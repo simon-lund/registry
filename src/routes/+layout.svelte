@@ -31,8 +31,11 @@
 			{@render children()}
 		</main>
 	</div>
-	<footer class="text-muted-foreground mt-16 text-sm">
-		By <a href="https://simon-lund.com" class="text-foreground">Simon Lund</a>, who is building
-		<a href="https://klementine.net" class="text-foreground">Klementine</a>.
+	<!-- under the content column: from tablet up, past the sidebar (w-44) and the gap (gap-10) -->
+	<footer
+		class="text-muted-foreground [&_a]:text-foreground [&_a]:decoration-border [&_a:hover]:decoration-foreground mt-16 text-sm md:pl-54 [&_a]:underline [&_a]:underline-offset-4"
+	>
+		By <a href="https://simon-lund.com">Simon Lund</a>, who is building
+		<a href="https://klementine.net">Klementine</a>.
 	</footer>
 </div>
