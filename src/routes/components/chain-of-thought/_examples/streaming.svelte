@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
 	import BrainIcon from '@lucide/svelte/icons/brain';
 	import {
 		ChainOfThought,
@@ -16,10 +17,11 @@
 	let arrived = $state(0);
 	let running = $state(false);
 
+	let timer: ReturnType<typeof setInterval> | undefined;
 	function run() {
 		arrived = 1;
 		running = true;
-		const timer = setInterval(() => {
+		timer = setInterval(() => {
 			if (arrived < all.length) arrived += 1;
 			else {
 				running = false;
@@ -27,6 +29,8 @@
 			}
 		}, 1100);
 	}
+	// leaving the page mid-run stops the run
+	onDestroy(() => clearInterval(timer));
 	const statusOf = (i: number): ChainOfThoughtStepStatus => (running && i === arrived - 1 ? 'active' : 'done');
 </script>
 

@@ -27,7 +27,8 @@
 			'transition-[scale,background-color] duration-(--dur-quick) ease-(--ease-settle) active:duration-(--dur-press)',
 			'hover:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_8%)] motion-safe:active:scale-[0.97]',
 			'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
-			"before:absolute before:inset-x-0 before:-inset-y-1 before:content-['']",
+			// drawn 32px; the ::before stretches the hit area to 44px without moving the layout
+			"before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-['']",
 			"[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_img]:size-4 [&_img]:rounded-xs",
 			className
 		)}

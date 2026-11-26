@@ -10,7 +10,7 @@
 	 * as one path and the content hangs off it.
 	 *
 	 * `status`: `done` (default; muted), `active` (full colour, a copper glyph that breathes: it is
-	 * happening now) or `pending` (muted, further back). A step that arrives while the chain
+	 * happening now) or `pending` (muted, its icon quieter and its dot hollow). A step that arrives while the chain
 	 * streams fades in and slides 4px down into place (base 220ms, settle; reduced motion: the fade).
 	 *
 	 * @example

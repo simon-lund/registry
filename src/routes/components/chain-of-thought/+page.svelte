@@ -27,7 +27,7 @@
 	const usage = example('usage');
 </script>
 
-<Plate name="chain-of-thought" title="Chain of Thought">
+<Plate name="chain-of-thought" title="Chain of thought">
 	<PlateStage example={example('demo')} />
 
 	<PlateSection title="Installation">
@@ -47,7 +47,8 @@
 		Append a <code>ChainOfThoughtStep</code> as each step arrives: it fades in and slides 4px into
 		place. Mark the one under way <code>status="active"</code> and the others <code>"done"</code>. Its
 		glyph is copper and breathes, because it is the one thing happening now. When the run ends, set
-		it to <code>"done"</code>.
+		it to <code>"done"</code>. A step still to come is <code>"pending"</code>: its dot is hollow and
+		its icon quieter, and its words keep their contrast.
 	</PlateExample>
 
 	<PlateExample title="What a step found" example={example('content')}>
@@ -131,6 +132,7 @@
 			<PlateMeasure label="Rail" value="1px, the border colour, from under one icon to the next" />
 			<PlateMeasure label="New step" value="220ms: fades in and slides 4px down" />
 			<PlateMeasure label="Active glyph" value="copper, opacity breathing in 1.6s" />
+			<PlateMeasure label="Pending" value="the icon at 60%, the dot hollow; the words as a done step's" />
 			<PlateMeasure label="Source link" value="32px high, a flat pill; 44px to touch" />
 			<PlateMeasure label="Image frame" value="6px around, at most 320px wide" />
 			<PlateMeasure label="Reduced motion" value="a fade instead of the unfold, no caret turn, no breathing" />

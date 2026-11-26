@@ -4,8 +4,10 @@
 
 	/**
 	 * ChainOfThoughtStepIcon: the step's glyph in the left column, 16px in a 20px cell. Muted when
-	 * done or pending; copper when active, and it breathes (opacity, 1.6s; still under reduced
-	 * motion). Empty, it is a small dot: a plain note. Decorative.
+	 * done; copper when active, and it breathes (opacity, 1.6s; still under reduced motion); quieter
+	 * when pending. Empty, it is a small dot, a plain note: filled once the step is done or under
+	 * way, hollow while it is pending. Decorative, so only it steps back for a pending step: the
+	 * step's words keep their contrast.
 	 *
 	 * @example
 	 * <ChainOfThoughtStepIcon><SearchIcon /></ChainOfThoughtStepIcon>
@@ -32,7 +34,13 @@
 	)}
 	{...restProps}
 >
-	{#if children}{@render children()}{:else}<span class="size-1.5 rounded-full bg-current"></span>{/if}
+	{#if children}
+		{@render children()}
+	{:else}
+		<span
+			class="size-1.5 rounded-full border border-current bg-current group-data-[status=pending]/cot-step:bg-transparent"
+		></span>
+	{/if}
 </span>
 
 <style>

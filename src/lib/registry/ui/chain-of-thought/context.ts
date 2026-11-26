@@ -4,7 +4,7 @@ import { getContext, hasContext, setContext } from 'svelte';
  * A step's state, mutually exclusive and exhaustive:
  *   done     finished (muted)
  *   active   under way (full colour, a copper glyph)
- *   pending  not started yet (muted, further back)
+ *   pending  not started yet (muted, a quieter icon, a hollow dot)
  */
 export type ChainOfThoughtStepStatus = 'done' | 'active' | 'pending';
 

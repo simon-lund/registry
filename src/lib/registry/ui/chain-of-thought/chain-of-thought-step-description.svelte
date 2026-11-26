@@ -14,7 +14,7 @@
 <span
 	bind:this={ref}
 	data-slot="chain-of-thought-step-description"
-	class={cn('col-start-2 mt-0.5 text-xs text-muted-foreground group-data-[status=pending]/cot-step:opacity-60', className)}
+	class={cn('col-start-2 mt-0.5 text-xs text-muted-foreground', className)}
 	{...restProps}
 >
 	{@render children?.()}
