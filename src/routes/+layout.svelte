@@ -19,8 +19,9 @@
 			</div>
 		</nav>
 	</header>
-	<!-- phone: the components as one row under the header, scrolling sideways when there are many -->
-	<Sidebar variant="row" class="-mx-2 md:hidden" />
+	<!-- phone: the components as one row under the header, scrolling sideways when there are many,
+	     and stuck to the top while the plate scrolls (full width, so nothing shows through at the sides) -->
+	<Sidebar variant="row" class="bg-background sticky top-0 z-20 -mx-4 px-2 py-1 sm:-mx-8 sm:px-6 md:hidden" />
 	<div class="flex flex-1 gap-10">
 		<!-- tablet and up: the components as a column that stays put while the plate scrolls -->
 		<aside class="hidden w-44 shrink-0 md:block">

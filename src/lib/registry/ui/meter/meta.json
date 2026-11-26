@@ -1,0 +1,11 @@
+{
+	"title": "Meter",
+	"description": "A value within a known range, on bits-ui Meter (role=meter): storage used, a monthly limit, a battery. Not a progress or loading state. A flat track filled from the start in ink; a new value slides the fill. Thresholds as on the HTML meter: low and high cut the range into regions and optimum names the good one, which sets the tone (optimum, suboptimal or poor); only a poor value changes the look, the fill and the value's words turning destructive. MeterField lays out MeterLabel and MeterValue on one line above the track and wires aria-labelledby and aria-describedby; pass aria-valuetext in words. Sizes default (8px) and sm (4px). No copy inside. After Klementine's Meter.",
+	"dependencies": [
+		"bits-ui",
+		"tailwind-variants"
+	],
+	"registryDependencies": [
+		"motion"
+	]
+}

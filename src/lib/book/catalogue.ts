@@ -7,7 +7,20 @@ export interface Entry {
 	tagline: string;
 	/** Made for working with AI agents: shown large and working at the top of the index. */
 	ai?: boolean;
+	/**
+	 * Which list it sits in, as shadcn's docs split the generic components from the AI ones:
+	 * `components` (default) are generic, `ai` are for building with models and agents.
+	 */
+	group?: Group;
 }
+
+export type Group = 'components' | 'ai';
+
+/** The groups, in the order the sidebar and the index show them. */
+export const groups: { id: Group; title: string }[] = [
+	{ id: 'components', title: 'Components' },
+	{ id: 'ai', title: 'AI' }
+];
 
 export const components: Entry[] = [
 	{
@@ -17,15 +30,23 @@ export const components: Entry[] = [
 	},
 	{
 		name: 'agent-map',
+		group: 'ai',
 		title: 'Agent map',
 		tagline: 'What an agent is working on: what it reaches for round it, every call going out along a line.',
 		ai: true
 	},
 	{
 		name: 'agent-tree',
+		group: 'ai',
 		title: 'Agent tree',
 		tagline: 'Coding agents as a process tree you can see and steer, with the rules Linux uses.',
 		ai: true
+	},
+	{
+		name: 'chain-of-thought',
+		group: 'ai',
+		title: 'Chain of thought',
+		tagline: 'What an assistant did on the way to its answer, folded under one line, the step under way in copper.'
 	},
 	{
 		name: 'checkbox',
@@ -48,6 +69,11 @@ export const components: Entry[] = [
 		tagline: 'A mark-up tool\'s parts: its bar, the outline on an element, handles on a mark, numbered comments.'
 	},
 	{
+		name: 'meter',
+		title: 'Meter',
+		tagline: 'A value in a known range, such as storage used or a limit: where a measurement stands, not how far work has got.'
+	},
+	{
 		name: 'middot',
 		title: 'Middot',
 		tagline: 'The separator between two pieces of meta, drawn so both sides get the same space.'
@@ -56,6 +82,11 @@ export const components: Entry[] = [
 		name: 'number-input',
 		title: 'Number input',
 		tagline: 'A number you step with two chevrons or type; the digits roll to the new value.'
+	},
+	{
+		name: 'rating',
+		title: 'Rating',
+		tagline: 'A score in copper stars: hover to preview, half stars, and the fill sweeps along the row.'
 	},
 	{
 		name: 'scroll-map',
@@ -118,6 +149,9 @@ export const components: Entry[] = [
 		tagline: 'A sound level as dots that stretch into bars: from a microphone, or any number you give it.'
 	}
 ];
+
+/** The entries of one group. */
+export const inGroup = (group: Group) => components.filter((c) => (c.group ?? 'components') === group);
 
 export const homepage = 'https://ui.simon-lund.com';
 

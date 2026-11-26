@@ -229,6 +229,92 @@
       ]
     },
     {
+      "name": "chain-of-thought",
+      "type": "registry:ui",
+      "title": "Chain of Thought",
+      "description": "What an assistant did on the way to its answer, folded under one quiet line, after Vercel's AI Elements Chain of Thought. A Collapsible on bits-ui (open bindable, closed by default): ChainOfThoughtHeader (your glyph and words, a caret turning over), ChainOfThoughtContent (an ordered list that unfolds and folds), ChainOfThoughtStep (status done | active | pending; a 1px rail from its icon to the next; a new step fades in and slides 4px into place), ChainOfThoughtStepIcon (a 16px glyph in a 20px column, a dot when empty), -StepLabel, -StepDescription and -StepContent, which hangs off the rail: ChainOfThoughtSearchResults of ChainOfThoughtSearchResult links, ChainOfThoughtImage with ChainOfThoughtImageCaption, or a paragraph. The step under way is copper, the value in hand, and its glyph breathes. Composition instead of Elements' label, description, icon and caption props. No copy inside.",
+      "dependencies": [
+        "bits-ui",
+        "@lucide/svelte"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-content.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-content.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-header.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-header.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-image-caption.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-image-caption.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-image.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-image.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-search-result.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-search-result.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-search-results.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-search-results.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-step-content.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-step-content.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-step-description.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-step-description.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-step-icon.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-step-icon.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-step-label.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-step-label.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought-step.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought-step.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/chain-of-thought.svelte",
+          "type": "registry:ui",
+          "target": "chain-of-thought/chain-of-thought.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/context.ts",
+          "type": "registry:ui",
+          "target": "chain-of-thought/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/chain-of-thought/index.ts",
+          "type": "registry:ui",
+          "target": "chain-of-thought/index.ts"
+        }
+      ]
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",
@@ -524,6 +610,52 @@
       ]
     },
     {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A value within a known range, on bits-ui Meter (role=meter): storage used, a monthly limit, a battery. Not a progress or loading state. A flat track filled from the start in ink; a new value slides the fill. Thresholds as on the HTML meter: low and high cut the range into regions and optimum names the good one, which sets the tone (optimum, suboptimal or poor); only a poor value changes the look, the fill and the value's words turning destructive. MeterField lays out MeterLabel and MeterValue on one line above the track and wires aria-labelledby and aria-describedby; pass aria-valuetext in words. Sizes default (8px) and sm (4px). No copy inside. After Klementine's Meter.",
+      "dependencies": [
+        "bits-ui",
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/meter/context.svelte.ts",
+          "type": "registry:ui",
+          "target": "meter/context.svelte.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/meter/index.ts",
+          "type": "registry:ui",
+          "target": "meter/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/meter/meter-field.svelte",
+          "type": "registry:ui",
+          "target": "meter/meter-field.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/meter/meter-label.svelte",
+          "type": "registry:ui",
+          "target": "meter/meter-label.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/meter/meter-value.svelte",
+          "type": "registry:ui",
+          "target": "meter/meter-value.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/meter/meter.svelte",
+          "type": "registry:ui",
+          "target": "meter/meter.svelte"
+        }
+      ]
+    },
+    {
       "name": "middot",
       "type": "registry:ui",
       "title": "Middot",
@@ -572,6 +704,44 @@
           "path": "src/lib/registry/ui/number-input/number-input.svelte",
           "type": "registry:ui",
           "target": "number-input/number-input.svelte"
+        }
+      ]
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "title": "Rating",
+      "description": "A score in stars on bits-ui RatingGroup: one tab stop with the slider role. The chosen stars are filled in copper (the value in hand), the rest are outlines; a half (allowHalf) fills the left half of a star. Hover previews the rating in a lighter copper (not on touch); a change of several stars sweeps star by star, 35ms apart, left to right as it fills and right to left as it empties (none under reduced motion). Sizes sm (a readonly display in a list), default and lg. Keyboard: arrows by one or a half, Home and End, typed digits. readonly shows without taking (still focusable, with aria-readonly); disabled at 45%. The consumer gives the name and aria-valuetext, with no English default. In a form it submits with a name, and form.reset() puts it back to the mount value. bind:value may point at an undefined value: it reads as 0. After Klementine's Rating.",
+      "dependencies": [
+        "bits-ui",
+        "@lucide/svelte",
+        "tailwind-variants"
+      ],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
+        "https://ui.simon-lund.com/r/motion.json",
+        "https://ui.simon-lund.com/r/form-reset.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/registry/ui/rating/context.ts",
+          "type": "registry:ui",
+          "target": "rating/context.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/rating/index.ts",
+          "type": "registry:ui",
+          "target": "rating/index.ts"
+        },
+        {
+          "path": "src/lib/registry/ui/rating/rating-item.svelte",
+          "type": "registry:ui",
+          "target": "rating/rating-item.svelte"
+        },
+        {
+          "path": "src/lib/registry/ui/rating/rating.svelte",
+          "type": "registry:ui",
+          "target": "rating/rating.svelte"
         }
       ]
     },

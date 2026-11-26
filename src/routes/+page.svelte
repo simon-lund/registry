@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { components } from '#lib/book/catalogue.js';
+	import { groups, inGroup } from '#lib/book/catalogue.js';
 
 	// The components for AI agents, live: each plate's own demo (loaded in +page.ts), still a
 	// picture here (inert), the card the link.
@@ -51,20 +51,22 @@
 		</section>
 	{/if}
 
-	<section class="flex flex-col gap-4">
-		<h2 class="text-xl">Components</h2>
-		<ul class="m-0 flex max-w-prose list-none flex-col gap-4 p-0">
-			{#each components as c (c.name)}
-				<li>
-					<a
-						href="/components/{c.name}"
-						class="bg-muted hover:bg-accent focus-visible:ring-ring flex h-full flex-col gap-2 rounded-xl p-5 no-underline focus-visible:ring-2 focus-visible:outline-none"
-					>
-						<span class="font-heading text-lg">{c.title}</span>
-						<span class="text-muted-foreground text-sm">{c.tagline}</span>
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</section>
+	{#each groups as g (g.id)}
+		<section class="flex flex-col gap-4">
+			<h2 class="text-xl">{g.title}</h2>
+			<ul class="m-0 flex list-none flex-col gap-4 p-0">
+				{#each inGroup(g.id) as c (c.name)}
+					<li>
+						<a
+							href="/components/{c.name}"
+							class="bg-muted hover:bg-accent focus-visible:ring-ring flex h-full flex-col gap-2 rounded-xl p-5 no-underline focus-visible:ring-2 focus-visible:outline-none"
+						>
+							<span class="font-heading text-lg">{c.title}</span>
+							<span class="text-muted-foreground text-sm">{c.tagline}</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</section>
+	{/each}
 </div>
