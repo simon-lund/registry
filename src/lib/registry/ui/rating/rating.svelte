@@ -11,6 +11,8 @@
 	export const ratingVariants = tv({
 		base: [
 			'group/rating inline-flex w-fit items-center rounded-sm text-foreground select-none',
+			/* one control, one ring: round the whole row, keyboard only */
+			'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
 			/* the fill runs from star to star, 35ms apart; reduced motion: all at once */
 			'[--rating-stagger:35ms] motion-reduce:[--rating-stagger:0ms]',
 			'data-disabled:cursor-not-allowed data-disabled:opacity-45'
@@ -39,7 +41,8 @@
 	/**
 	 * Rating: a score in stars (bits-ui RatingGroup). The chosen stars are filled in copper (the
 	 * value in hand), the rest are outlines; never yellow. `allowHalf` lets it stop at halves (the left half
-	 * of a star fills). `readonly` shows a rating without taking one (use `size="sm"` in a list).
+	 * of a star fills). `readonly` shows a rating without taking one (use `size="sm"` in a list): its stars are ink, not
+	 * copper, since a score on display is not a value in your hand.
 	 *
 	 * Keyboard: it is one tab stop with the slider role; ← → (↑ ↓) move by one (by a half with
 	 * `allowHalf`), Home / End jump to the ends, a digit sets that many stars ("2", ".", "5" for 2.5).

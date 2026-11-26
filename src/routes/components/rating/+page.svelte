@@ -43,7 +43,8 @@
 	</PlateSection>
 
 	<PlateExample title="Size" example={example('size')}>
-		<code>size="sm"</code> is 16px, for a score in a list row; use it with <code>readonly</code>.
+		<code>size="sm"</code> is 16px, for a score in a list row; use it with <code>readonly</code>,
+		which draws it in ink.
 		The default is 32px stars in 44px cells. <code>"lg"</code> is for the one question on a screen.
 	</PlateExample>
 
@@ -53,8 +54,9 @@
 	</PlateExample>
 
 	<PlateExample title="Read only" example={example('readonly')}>
-		<code>readonly</code> shows a score without taking one. It stays focusable, so a screen reader
-		can read it, and carries <code>aria-readonly</code>.
+		<code>readonly</code> shows a score without taking one. Its stars are ink, not copper: a score
+		on display is not a value in your hand. It stays focusable, so a screen reader can read it, and
+		carries <code>aria-readonly</code>.
 	</PlateExample>
 
 	<PlateExample title="Form" example={example('form')}>
@@ -119,6 +121,8 @@
 			<PlateMeasure label="Sweep" value="35ms between stars, filling left to right and emptying right to left" />
 			<PlateMeasure label="Hover" value="110% where the device can hover; 92% while pressed (--dur-press)" />
 			<PlateMeasure label="Preview" value="copper at 50%" />
+			<PlateMeasure label="Read only" value="ink" />
+			<PlateMeasure label="Focus ring" value="2px ring colour, 2px out, round the whole row" />
 			<PlateMeasure label="Disabled" value="45% opacity" />
 			<PlateMeasure label="Reduced motion" value="no scale, no sweep" />
 		</PlateMeasures>

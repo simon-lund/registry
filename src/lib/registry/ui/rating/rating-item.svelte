@@ -3,7 +3,7 @@
 
 	/**
 	 * One cell. The star is two glyphs on one spot: the outline and the filled star
-	 * (copper) clipped from the right, so a half is the left half filled (the right half under
+	 * (copper; ink when readonly) clipped from the right, so a half is the left half filled (the right half under
 	 * `dir="rtl"`). Choosing slides the clip open, quick 140ms on settle (clip-path only); the
 	 * hovered cell lifts to 110% (only where the device can hover) and dips to 92% while pressed.
 	 * When several stars change at once the clip of each waits its turn (`--rating-i`, the cell's
@@ -109,7 +109,9 @@
 							'[clip-path:inset(0_100%_0_0)] rtl:[clip-path:inset(0_0_0_100%)]',
 							'group-data-[state=partial]/rating-item:[clip-path:inset(0_50%_0_0)] rtl:group-data-[state=partial]/rating-item:[clip-path:inset(0_0_0_50%)]',
 							'group-data-[state=active]/rating-item:[clip-path:inset(0)] rtl:group-data-[state=active]/rating-item:[clip-path:inset(0)]',
-							'group-data-preview/rating-cell:text-primary/50'
+							'group-data-preview/rating-cell:text-primary/50',
+							// on display, not in hand: ink
+							'group-data-readonly/rating-item:text-foreground'
 						)}
 					/>
 				</span>
