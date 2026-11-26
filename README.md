@@ -40,7 +40,7 @@ it.** Everything on the site sits on:
 | --- | --- |
 | `src/lib/registry/ui/<name>/` | one item: one file per part, `index.ts`, and its `meta.json` (title, description, npm and registry dependencies) |
 | `src/lib/registry/ui/{button,input,popover,spinner,tooltip}/` | stock shadcn-svelte, added with its CLI so items and pages can import them; never edited and never shipped from here (`STOCK` in the build script and `catalogue.ts`). An item lists one by its bare name, and the consumer's CLI takes it from their own registry |
-| `src/lib/utils.ts` | `cn` and the type helpers; the item `utils`, which every item depends on |
+| `src/lib/utils.ts` | `cn` and the type helpers, with the same exports as the `utils.ts` that `shadcn-svelte init` writes. Never shipped: an item imports them from the consumer's own utils, so an install never touches that file |
 | `src/app.css` | the theme: the tokens, the fonts, the base |
 | `src/lib/book/` | the book's own parts (the plate with its copyable code block, the sidebar, the theme toggle) and its catalogue (`catalogue.ts`, which the index and the sidebar read); never shipped |
 | `src/routes/components/<name>/` | the plate of one component; `_examples/` holds one file per example, rendered as the preview and shown as the code |

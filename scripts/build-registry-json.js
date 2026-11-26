@@ -41,18 +41,15 @@ const url = (/** @type {string} */ name) => `${HOMEPAGE}/r/${name}.json`;
 /** shadcn-svelte's own components: items depend on them by bare name, and they never ship from here. */
 const STOCK = new Set(['button', 'input', 'popover', 'spinner', 'tooltip']);
 
-/** What items stand on: `cn` and the type helpers for all of them, `motion` for the ones that move. */
+/**
+ * What items stand on, beside each other: `motion`, for the ones that move.
+ *
+ * `cn` and the type helpers (WithElementRef, WithoutChild, …) are not an item. Every item imports
+ * them from the utils alias, and the consumer's own utils.ts has them: `shadcn-svelte init` writes
+ * it, with the same exports as src/lib/utils.ts here. Shipping a `utils` item made every install
+ * ask to overwrite that file, and a yes deleted whatever the app had added to it.
+ */
 const BASE = [
-	{
-		name: 'utils',
-		type: 'registry:lib',
-		title: 'Utils',
-		description:
-			'cn() (clsx + tailwind-merge) and the WithElementRef / WithoutChild… type helpers. Every item depends on it.',
-		dependencies: ['clsx', 'tailwind-merge'],
-		registryDependencies: [],
-		files: [{ path: 'src/lib/utils.ts', type: 'registry:lib', target: 'utils.ts' }]
-	},
 	{
 		name: 'motion',
 		type: 'registry:theme',
@@ -85,7 +82,6 @@ const BASE = [
 		files: []
 	}
 ];
-const BASE_DEPS = [url('utils')];
 
 const META_KEYS = new Set(['title', 'description', 'dependencies', 'registryDependencies']);
 
@@ -144,10 +140,9 @@ const components = names.map((name) => {
 		description: meta.description,
 		// Both arrays are required by the registry-item schema, empty or not.
 		dependencies: meta.dependencies,
-		registryDependencies: [
-			...BASE_DEPS,
-			...meta.registryDependencies.map((d) => (/^https?:\/\//.test(d) || STOCK.has(d) ? d : url(d)))
-		],
+		registryDependencies: meta.registryDependencies.map((d) =>
+			/^https?:\/\//.test(d) || STOCK.has(d) ? d : url(d)
+		),
 		files: readdirSync(dir)
 			// meta.json and notes describe the folder; they do not ship.
 			.filter((f) => !f.startsWith('.') && f !== 'meta.json' && !f.endsWith('.md'))

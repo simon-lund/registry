@@ -75,8 +75,8 @@
 			</li>
 			<li class="step flex flex-col gap-3">
 				<p>
-					Update the import paths to match your project. The files import <code>cn</code> from
-					<code>#lib/utils.js</code>, which a shadcn-svelte project already has.
+					Update the import paths to match your project. The files import <code>cn</code> and a few
+					type helpers from <code>#lib/utils.js</code>, which a shadcn-svelte project already has.
 				</p>
 			</li>
 		</ol>
