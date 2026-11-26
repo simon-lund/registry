@@ -42,14 +42,25 @@ const url = (/** @type {string} */ name) => `${HOMEPAGE}/r/${name}.json`;
 const STOCK = new Set(['button', 'input', 'popover', 'spinner', 'tooltip']);
 
 /**
- * What items stand on, beside each other: `motion`, for the ones that move.
+ * What items stand on: `cn` and the type helpers for all of them, `motion` for the ones that move.
  *
- * `cn` and the type helpers (WithElementRef, WithoutChild, …) are not an item. Every item imports
- * them from the utils alias, and the consumer's own utils.ts has them: `shadcn-svelte init` writes
- * it, with the same exports as src/lib/utils.ts here. Shipping a `utils` item made every install
- * ask to overwrite that file, and a yes deleted whatever the app had added to it.
+ * `utils` ships under the stock name, utils.ts, with the same exports as the file
+ * `shadcn-svelte init` writes. So the CLI asks an installer whether to overwrite the utils.ts they
+ * have: a yes loses nothing but what they added to it, a no keeps theirs. It does not merge the
+ * two. That choice is the installer's (Simon, 26 November 2026); the book's Utils page says what
+ * the question means.
  */
 const BASE = [
+	{
+		name: 'utils',
+		type: 'registry:lib',
+		title: 'Utils',
+		description:
+			'cn (from the cn package) and the WithElementRef / WithoutChild… type helpers: the same file as the utils.ts that shadcn-svelte init writes. Every item depends on it.',
+		dependencies: ['cn'],
+		registryDependencies: [],
+		files: [{ path: 'src/lib/utils.ts', type: 'registry:lib', target: 'utils.ts' }]
+	},
 	{
 		name: 'motion',
 		type: 'registry:theme',
@@ -82,6 +93,8 @@ const BASE = [
 		files: []
 	}
 ];
+
+const BASE_DEPS = [url('utils')];
 
 const META_KEYS = new Set(['title', 'description', 'dependencies', 'registryDependencies']);
 
@@ -140,9 +153,10 @@ const components = names.map((name) => {
 		description: meta.description,
 		// Both arrays are required by the registry-item schema, empty or not.
 		dependencies: meta.dependencies,
-		registryDependencies: meta.registryDependencies.map((d) =>
-			/^https?:\/\//.test(d) || STOCK.has(d) ? d : url(d)
-		),
+		registryDependencies: [
+			...BASE_DEPS,
+			...meta.registryDependencies.map((d) => (/^https?:\/\//.test(d) || STOCK.has(d) ? d : url(d)))
+		],
 		files: readdirSync(dir)
 			// meta.json and notes describe the folder; they do not ship.
 			.filter((f) => !f.startsWith('.') && f !== 'meta.json' && !f.endsWith('.md'))

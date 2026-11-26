@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Source } from '../examples.js';
 	import { install, installNeed } from '../catalogue.js';
+	import { shell } from '../shell.js';
 	import PlateCode from './plate-code.svelte';
 	import PlateTablist from './plate-tablist.svelte';
 
@@ -23,20 +24,6 @@
 		{ value: 'manual', label: 'Manual' }
 	];
 	let view = $state('cli');
-
-	// A shell line in the code tokens: the command in ink, a URL as a string, the rest in stone.
-	const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-	const shell = (line: string) =>
-		line
-			.split(' ')
-			.map((word, i) =>
-				i === 0
-					? `<span style="color:var(--code-token-function)">${escape(word)}</span>`
-					: /^https?:/.test(word)
-						? `<span style="color:var(--code-token-string)">${escape(word)}</span>`
-						: escape(word)
-			)
-			.join(' ');
 
 	const command = $derived(install(name));
 	const add = $derived(`pnpm add ${dependencies.join(' ')}`);
@@ -76,7 +63,8 @@
 			<li class="step flex flex-col gap-3">
 				<p>
 					Update the import paths to match your project. The files import <code>cn</code> and a few
-					type helpers from <code>#lib/utils.js</code>, which a shadcn-svelte project already has.
+					type helpers from <code>#lib/utils.js</code>: <a href="/components/utils">Utils</a>, which
+					a shadcn-svelte project already has.
 				</p>
 			</li>
 		</ol>

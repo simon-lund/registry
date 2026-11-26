@@ -11,6 +11,23 @@
   },
   "items": [
     {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "Utils",
+      "description": "cn (from the cn package) and the WithElementRef / WithoutChild… type helpers: the same file as the utils.ts that shadcn-svelte init writes. Every item depends on it.",
+      "dependencies": [
+        "cn"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib",
+          "target": "utils.ts"
+        }
+      ]
+    },
+    {
       "name": "motion",
       "type": "registry:theme",
       "title": "Motion",
@@ -49,6 +66,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -131,6 +149,7 @@
       "description": "After a Claude Code mod shared on r/ClaudeAI (reddit.com/r/ClaudeAI/comments/1xst2qe) that draws a live map of what the agent is doing. What a coding agent is working on, as a map: the agent in the middle with how full its context is, the things it reaches for (you, the model, memory, files, the shell, the network, other agents) evenly round it, and every call going out along a line. A node lights up in ink as it is used: its count, a turning ring while a call to it runs (the agent tree's working mark), a dot travelling out along its line (on the motion tokens, so it follows the book's slow motion; under reduced motion there is no dot and the ring holds still), and its failed calls as an inverted number on its corner. A call from another node (a subagent reading files) draws a curve between the two. Selecting a node puts its line in copper and narrows the log to its calls. A call is running, done or failed; blocked counts as failed. Parts: AgentMap (nodes, calls, context, bind:selected), AgentMapGraph (the map; an icon snippet per node), AgentMapHub (the agent; its name is yours), AgentMapStatus (one line: what runs now, read out as it changes) and AgentMapLog (every call, newest first; empty and no-results said apart). The app feeds it calls; the item draws them and keeps nothing.",
       "dependencies": [],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -177,7 +196,9 @@
       "title": "Agent tree",
       "description": "Coding agents as a process tree, with the rules Linux uses: every agent has a pid, a parent and exactly one state (working, waiting, needs you, paused, done, or failed with an exit code), shown by a mark and named beside the pid; needs you stands out as an inverted pill; you are process 1 at the top. Selecting an agent shows its reach: what it steers (everything below it and the lines down to it, in the one colour); its own row takes a quiet tint. Sockets between siblings, opened by a shared ancestor, and two agents in one file show on the rows, naming the other agents. On a phone a row keeps the task and drops the pid and letter. Keyboard: arrows move, Enter selects. An `actions` snippet renders the app's own actions on the right of the selected row, so selecting moves nothing; render none where none apply (a finished agent).",
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/agent-tree/agent-tree-node.svelte",
@@ -216,6 +237,7 @@
         "@lucide/svelte"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -300,6 +322,7 @@
         "bits-ui"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "https://ui.simon-lund.com/r/form-reset.json"
       ],
@@ -325,6 +348,7 @@
         "bits-ui"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "input"
       ],
@@ -360,6 +384,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "https://ui.simon-lund.com/r/form-reset.json"
       ],
@@ -405,6 +430,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -471,7 +497,9 @@
       "title": "Form reset",
       "description": "restoreOnReset(el, restore, setDefault?) and hiddenInputOf(el): form reset for controls drawn by bits-ui. bits-ui does not put the drawn control back on form.reset(); restoreOnReset listens for the owning form's reset (the hidden input's form, else the closest form) and calls restore() inside the event, flushed, so the form reads as reset as soon as reset() returns, as with native controls; a cancelled reset is left alone. setDefault puts the mount state on the hidden input (defaultChecked or defaultValue). The component keeps its own mount snapshot. hiddenInputOf finds bits-ui's hidden input (the aria-hidden input right after the root). Switch and Dial use it; no copy, no markup.",
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/form-reset/form-reset.ts",
@@ -491,7 +519,9 @@
       "title": "Inert outside",
       "description": "inertOutside({ keep }): an attachment for a modal layer's surface. While it is open (data-state=\"open\", or none) every element outside it is inert (not focusable, not clickable, hidden from assistive tech that ignores aria-modal): it walks from the surface up to body and makes each sibling on the way inert, so a surface rendered in place works like one in a portal. What keep matches (default [data-slot=toaster]) and the way up to it stay usable. The page comes back the moment data-state leaves open, before the exit motion, so focus can return. Nested layers make their parent inert and give back only what they took; an element the author made inert is never touched. modalLayers.open counts the open layers (reactive). No copy, no markup.",
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/inert-outside/index.ts",
@@ -517,6 +547,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "button",
         "tooltip",
@@ -657,6 +688,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -698,7 +730,9 @@
       "title": "Middot",
       "description": "The separator between two pieces of meta (\"Tomorrow · 09:00\"). A drawn dot with exactly the same space on both sides (0.4em), sitting on the middle of the lowercase letters, instead of the \"·\" character between two narrow font spaces. Carries \" · \" as visually hidden text so screen readers and copy-paste keep the separation.",
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/middot/index.ts",
@@ -721,7 +755,9 @@
         "tailwind-variants",
         "@number-flow/svelte"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/number-input/animated-number.svelte",
@@ -751,6 +787,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "https://ui.simon-lund.com/r/form-reset.json"
       ],
@@ -786,6 +823,7 @@
         "@lucide/svelte"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "tooltip"
       ],
@@ -847,6 +885,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "button",
         "https://ui.simon-lund.com/r/swap.json",
@@ -932,6 +971,7 @@
       "description": "Several things on one spot, one shown at a time (Swap + SwapItem active): an icon and its label turning into a check and \"Copied\", a play icon into pause. The items share one grid cell, so the box keeps the width of the widest and nothing moves. The change is Emil Kowalski's icon swap: both at once, a 4px blur cross-fade on base 220ms (ease-out), icons shrinking to and growing from 25%, words only blurring; reduced motion: a plain fade. Inactive items are hidden from screen readers; announce the change with a live region where it matters.",
       "dependencies": [],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -958,7 +998,9 @@
       "title": "Swipe",
       "description": "The physics of a swipe, shared by SwipeDeck and the Toaster; the caller passes every number. rubber(d, max): the asymptotic give of a side that cannot be pulled. VelocityTracker(window): push(t, x, y) per move, velocity(at, stale) on release in px/ms, zero after a rest of `stale` ms. exitDuration(dist, speed, quick, base): an ease-out that leaves at the finger's speed, bounded quick to base. SwipeMotion: one rAF motion at a time, tween(duration, ease, frame, done) and spring(read, write, v0, { stiffness, dampingRatio, timeScale }, done) home to 0 on any number of axes. ClickSwallow: arm() after a drag, swallow(event) in onclickcapture, armed until the end of the task. CARD_SWIPE_GESTURE is a swiped card's tuning (slop 8, hysteresis 6, flick 0.5px/ms from 16px, rubber 32, stale 60ms, window 100ms, spring 400 / 0.78), a named preset, never a default. Pointer handling, axes, zones and layout stay in each component. No markup, no copy.",
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/swipe/index.ts",
@@ -979,6 +1021,7 @@
       "description": "A stack of cards you go through one at a time, swiping each away. Parts: SwipeDeck (root, one tab stop), SwipeDeckStack (the stage), SwipeDeckCard (any content as children, `value` is its identity), SwipeDeckLabel (turns `left`, `right` or `up` on for its card; frosts the whole card with its icon as the drag goes, in its button's colour: `variant` outline (milky) or default (copper); its word is announced), SwipeDeckEmpty (shown once no card is left), SwipeDeckActions with SwipeDeckAction (a Button per direction) and SwipeDeckUndo. The drag locks to an axis, follows 1:1 toward a labelled direction, rubber-bands elsewhere, commits past a threshold or on a flick, else springs home. The deck owns the order and a 10-step history: onSwipe(card, direction, { via }) fires as a card leaves (return false to keep it); undo (button, Backspace, Cmd+Z / Ctrl+Z, undo()) brings it back and calls onUndo. Keyboard: Left, Right, Up; the label is announced. Only a dragged card has a shadow. Reduced motion cross-fades. No copy inside.",
       "dependencies": [],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "button",
         "https://ui.simon-lund.com/r/swipe.json"
@@ -1046,6 +1089,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "https://ui.simon-lund.com/r/form-reset.json"
       ],
@@ -1072,6 +1116,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "https://ui.simon-lund.com/r/view-change.json"
       ],
@@ -1132,6 +1177,7 @@
         "@lucide/svelte"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "button",
         "https://ui.simon-lund.com/r/swap.json"
       ],
@@ -1210,6 +1256,7 @@
       "description": "The multi-line field, with the part name of the stock shadcn-svelte Textarea and the look of the stock Input: 96px tall at least, destructive ring when aria-invalid. The fixed one has its own grip in the bottom-right corner, inside the rounding (the native resizer is hidden): a drag changes the height between the field's min-h and max-h; with resizeLabel it is a focusable separator (arrows a line, Home/End the limits); resizable={false} leaves it out. `autogrow` grows it with its text instead (CSS field-sizing: content, a script fallback elsewhere) up to a max-h you set, without a grip. Native validation rings it once it was left wrong or a submit was tried, and aria-invalid follows.",
       "dependencies": [],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -1239,7 +1286,9 @@
         "embla-carousel-svelte",
         "embla-carousel"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/time-wheel/index.ts",
@@ -1267,6 +1316,7 @@
         "tailwind-variants"
       ],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json",
         "button",
         "https://ui.simon-lund.com/r/middot.json",
@@ -1333,6 +1383,7 @@
       "description": "ViewChange: a view arriving from the side its entry sits on. Wrap what changes with its key (a route, a section); on a change the content is re-created and comes in 8px from `from` while it fades in (base 220ms on settle), so the eye reads where it came from: the next section from the right, an earlier one from the left, a page from the sidebar's side. sideOf(order, prev, next) gives the side from the entries' order. Without `from` the content is simply replaced (the first render, a keyboard shortcut: never animated). Reduced motion: a fade. The same motion is built into TabsContent, where the side follows the key.",
       "dependencies": [],
       "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json",
         "https://ui.simon-lund.com/r/motion.json"
       ],
       "files": [
@@ -1359,7 +1410,9 @@
       "title": "Voice Meter",
       "description": "A calm live level meter for a voice being recorded: one row of small round dots in currentColor, where the louder moments stretch single dots into short rounded bars, never taller than the meter (`count`, `h-*` and `--voice-meter-dot` / `--voice-meter-gap` size it). Levels are 0..1, newest last, from mutually exclusive sources: `levels` the consumer pushes, an `analyser` it owns, or a `stream` (getUserMedia, which the consumer calls). trackVoiceLevel reads an AnalyserNode or MediaStream with Web Audio and closes what it opened on cleanup; it never stops the stream's tracks. Motion is transform only: the row drifts left one slot per sample. Reduced motion: no growth, no drift; the dots fade in strength with the level. Always aria-hidden: the surrounding UI says what is happening in words.",
       "dependencies": [],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "https://ui.simon-lund.com/r/utils.json"
+      ],
       "files": [
         {
           "path": "src/lib/registry/ui/voice-meter/index.ts",

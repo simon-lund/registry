@@ -8,18 +8,19 @@ export interface Entry {
 	/** Shown large and working under Examples, at the top of the index. */
 	featured?: boolean;
 	/**
-	 * Which list it sits in, as shadcn's docs split the generic components from the AI ones:
-	 * `components` (default) are generic, `ai` are for building with models and agents.
+	 * Which list it sits in, exactly one of: `components` (default), the generic ones; `ai`, for
+	 * building with models and agents; `utilities`, what the others stand on and no component itself.
 	 */
 	group?: Group;
 }
 
-export type Group = 'components' | 'ai';
+export type Group = 'components' | 'ai' | 'utilities';
 
 /** The groups, in the order the sidebar and the index show them. */
 export const groups: { id: Group; title: string }[] = [
 	{ id: 'components', title: 'Components' },
-	{ id: 'ai', title: 'AI' }
+	{ id: 'ai', title: 'AI' },
+	{ id: 'utilities', title: 'Utilities' }
 ];
 
 export const components: Entry[] = [
@@ -142,6 +143,12 @@ export const components: Entry[] = [
 		name: 'toast',
 		title: 'Toast',
 		tagline: 'A toast with undo, a draining bar for its time, and swipe to dismiss.'
+	},
+	{
+		name: 'utils',
+		group: 'utilities',
+		title: 'Utils',
+		tagline: 'cn and the type helpers that every item imports, in the utils.ts a shadcn-svelte app already has.'
 	},
 	{
 		name: 'view-change',
