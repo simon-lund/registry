@@ -2,8 +2,9 @@ import { getContext, setContext } from 'svelte';
 
 /*
  * Shared between MeterField and its parts. Not exported from index.ts: the parts are the API.
- * The field hands out the ids (so the Meter is named by its MeterLabel and described by its
- * MeterValue without the consumer wiring ids) and carries the Meter's tone to the MeterValue.
+ * The field hands out the ids, so the Meter is named by its MeterLabel and described by its
+ * MeterValue without the consumer wiring ids. The Meter's tone reaches the MeterValue in CSS
+ * (the field is a group, the value reads the meter's `data-tone`), with no script between them.
  */
 
 /**
@@ -19,9 +20,11 @@ const KEY = Symbol('simon-lund.meter');
 export class MeterFieldState {
 	labelId: string;
 	valueId: string;
-	/** Whether a MeterValue is mounted (then it describes the meter). */
+	/**
+	 * Whether the field has a MeterValue (then it describes the meter). Set while the MeterValue is
+	 * set up, not in an effect, so the server-rendered page has it too.
+	 */
 	hasValue = $state(false);
-	tone = $state<MeterTone>('optimum');
 
 	constructor(id: string) {
 		this.labelId = `${id}-label`;

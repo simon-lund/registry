@@ -7,7 +7,8 @@
 	/**
 	 * MeterField: a Meter with its words. The MeterLabel at the start and the MeterValue at the end
 	 * of one line, the track under both; it wires the ids, so the Meter is named by its label and
-	 * described by its value. The words come from you; format numbers with `Intl` in your locale.
+	 * described by its value. Put the MeterValue before the Meter, as in the example. The words come
+	 * from you; format numbers with `Intl` in your locale.
 	 *
 	 * @example
 	 * <MeterField>
@@ -34,7 +35,7 @@
 	bind:this={ref}
 	{id}
 	data-slot="meter-field"
-	class={cn('grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-2 [&>[data-slot=meter]]:col-span-2', className)}
+	class={cn('group/meter-field grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-2 [&>[data-slot=meter]]:col-span-2', className)}
 	{...restProps}
 >
 	{@render children?.()}

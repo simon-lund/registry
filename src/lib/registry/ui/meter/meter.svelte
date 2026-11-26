@@ -3,13 +3,13 @@
 
 	/*
 	 * The track is flat (a 12% tint of the text colour, no border, so it shows on the page, a card or
-	 * the muted stage alike) and the fill is ink: a measurement is not
-	 * the value in hand, so it is never copper. Only a poor value turns the fill to the
-	 * destructive colour. Drawn from --meter-track and --meter-fill.
+	 * the muted stage alike) and the fill is ink: a measurement is not the value in hand, so it is
+	 * never copper. Only a poor value turns the fill to the destructive colour. Right to left the
+	 * track is mirrored, so it still fills from the start. Drawn from --meter-track and --meter-fill.
 	 */
 	export const meterVariants = tv({
 		base: [
-			'relative w-full overflow-hidden rounded-full bg-(--meter-track)',
+			'relative w-full overflow-hidden rounded-full bg-(--meter-track) rtl:-scale-x-100',
 			'[--meter-track:color-mix(in_oklch,var(--foreground)_12%,transparent)] [--meter-fill:var(--foreground)]',
 			'data-[tone=poor]:[--meter-fill:var(--destructive)]'
 		],
@@ -38,11 +38,14 @@
 	 * nothing is under way and nothing will finish. A flat track filled from the start in ink;
 	 * a new value slides the fill there (base 220ms, settle; transform only).
 	 *
-	 * Thresholds, as on the HTML `<meter>`: `low` and `high` cut the range into regions, `optimum`
-	 * says which region is good (a quota: `optimum={0}`, less is better; a battery: optimum at
-	 * the top). The tone (`data-tone`) is `optimum`, `suboptimal` (one region away) or `poor` (two
-	 * regions away); only `poor` changes the look, the fill turning destructive. Without
-	 * thresholds the tone is always `optimum`.
+	 * Thresholds, as on the HTML `<meter>`: `low` and `high` cut the range into three regions, and
+	 * `optimum` says which one is good (a quota: `optimum={0}`, less is better; a battery: optimum
+	 * at the top). The tone (`data-tone`) says how far the value is from the good region:
+	 *   optimum     in it: the value's words are muted
+	 *   suboptimal  one region away: the value's words step up to full ink
+	 *   poor        two regions away: the fill and the value's words turn destructive
+	 * `poor` needs both `low` and `high`, with the optimum beyond one of them; with one threshold
+	 * the tone stops at `suboptimal`. Without thresholds it is always `optimum`.
 	 *
 	 * Inside a MeterField it is named by the MeterLabel and described by the MeterValue; alone,
 	 * give it an `aria-label`. Pass `aria-valuetext` with the value in words ("3.2 of 5 GB"),
@@ -52,7 +55,7 @@
 	 * <MeterField>
 	 *   <MeterLabel>Storage</MeterLabel>
 	 *   <MeterValue>3.2 of 5 GB</MeterValue>
-	 *   <Meter value={3.2} max={5} high={4.5} optimum={0} aria-valuetext="3.2 of 5 GB" />
+	 *   <Meter value={3.2} max={5} low={3} high={4.5} optimum={0} aria-valuetext="3.2 of 5 GB" />
 	 * </MeterField>
 	 */
 	let {
@@ -79,10 +82,6 @@
 	const field = useMeterFieldContext();
 	const tone = $derived(meterTone(value, min, max, low, high, optimum));
 	const percent = $derived(max <= min ? 0 : Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100)));
-
-	$effect(() => {
-		if (field) field.tone = tone;
-	});
 </script>
 
 <MeterPrimitive.Root

@@ -53,8 +53,10 @@
 	<PlateExample title="Thresholds" example={example('tones')}>
 		<code>low</code> and <code>high</code> cut the range into three regions and <code>optimum</code>
 		names the good one. Here less is better (<code>optimum=&#123;0&#125;</code>). One region away is
-		<code>suboptimal</code> and looks the same; two regions away is <code>poor</code>, and the fill and
-		the value's words turn destructive. Without thresholds the tone is always <code>optimum</code>.
+		<code>suboptimal</code>: the value's words step up from muted to full ink. Two regions away is
+		<code>poor</code>: the fill and the words turn destructive. <code>poor</code> needs both
+		thresholds; with one, the tone stops at <code>suboptimal</code>. Without thresholds it is always
+		<code>optimum</code>.
 	</PlateExample>
 
 	<PlateExample title="Size" example={example('size')}>
@@ -91,7 +93,7 @@
 				<p>What the Meter measures. Also exported as <code>Label</code>.</p>
 			</PlatePart>
 			<PlatePart name="MeterValue">
-				<p>The value in words, with tabular digits. It turns destructive when the value is poor. Also exported as <code>Value</code>.</p>
+				<p>The value in words, with tabular digits: muted, full ink when the value is suboptimal, destructive when it is poor. Put it before the Meter. Also exported as <code>Value</code>.</p>
 			</PlatePart>
 			<PlatePart name="meterTone" kind="function">
 				<p><code>meterTone(value, min, max, low?, high?, optimum?)</code> gives <code>"optimum"</code>, <code>"suboptimal"</code> or <code>"poor"</code> by the HTML meter rules.</p>
@@ -111,7 +113,8 @@
 	<PlateSection title="Measurements">
 		<PlateMeasures>
 			<PlateMeasure label="Track" value="8px · sm 4px, a 12% tint of the text colour, no border" />
-			<PlateMeasure label="Fill" value="ink; destructive when poor" />
+			<PlateMeasure label="Fill" value="ink; destructive when poor; from the start, also right to left" />
+			<PlateMeasure label="Value's words" value="muted · full ink when suboptimal · destructive when poor" />
 			<PlateMeasure label="New value" value="220ms (--dur-base) on --ease-settle, transform only" />
 			<PlateMeasure label="Label and value" value="14px; the value in 500 weight, tabular digits" />
 			<PlateMeasure label="Reduced motion" value="the fill moves in 120ms" />
