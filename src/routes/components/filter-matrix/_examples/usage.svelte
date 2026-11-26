@@ -1,15 +1,37 @@
 <script lang="ts">
-	import { FilterMatrix, matches } from '#lib/registry/ui/filter-matrix/index.js';
+	import {
+		FilterMatrix,
+		FilterMatrixHeader,
+		FilterMatrixBody,
+		FilterMatrixRow,
+		FilterMatrixHead,
+		FilterMatrixCell,
+		matches,
+		type FilterMatrixValue
+	} from '#lib/registry/ui/filter-matrix/index.js';
 
-	const rows = [{ id: 'work', label: 'Work' }, { id: 'home', label: 'Home' }];
-	const columns = [{ id: 'open', label: 'Open' }, { id: 'done', label: 'Done' }];
-	// how many things lie in each cell, by `area|status`; a missing cell is 0
-	const counts = { 'work|open': 3, 'work|done': 1, 'home|open': 2 };
-
-	let value = $state<string[]>([]);
-	const cellLabel = ({ row, column, count }: { row?: { label: string }; column?: { label: string }; count: number }) =>
-		`${[row?.label, column?.label].filter(Boolean).join(', ') || 'All'}: ${count}`;
-	// and filter your own list with matches(value, task.area, task.status)
+	let value = $state<FilterMatrixValue[]>([]);
+	// and filter your own list: tasks.filter((t) => matches(value, t.area, t.status))
 </script>
 
-<FilterMatrix {rows} {columns} {counts} bind:value {cellLabel} aria-label="Filter" />
+<FilterMatrix rows={['work', 'home']} columns={['open', 'done']} bind:value aria-label="Filter tasks">
+	<FilterMatrixHeader>
+		<FilterMatrixRow>
+			<FilterMatrixHead />
+			<FilterMatrixHead column="open">Open</FilterMatrixHead>
+			<FilterMatrixHead column="done">Done</FilterMatrixHead>
+		</FilterMatrixRow>
+	</FilterMatrixHeader>
+	<FilterMatrixBody>
+		<FilterMatrixRow>
+			<FilterMatrixHead row="work">Work</FilterMatrixHead>
+			<FilterMatrixCell row="work" column="open">3</FilterMatrixCell>
+			<FilterMatrixCell row="work" column="done">1</FilterMatrixCell>
+		</FilterMatrixRow>
+		<FilterMatrixRow>
+			<FilterMatrixHead row="home">Home</FilterMatrixHead>
+			<FilterMatrixCell row="home" column="open">2</FilterMatrixCell>
+			<FilterMatrixCell row="home" column="done">4</FilterMatrixCell>
+		</FilterMatrixRow>
+	</FilterMatrixBody>
+</FilterMatrix>

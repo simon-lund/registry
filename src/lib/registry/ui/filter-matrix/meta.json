@@ -1,7 +1,9 @@
 {
 	"title": "Filter matrix",
-	"description": "Two filters as one grid: rows are one dimension (the areas of your tasks), columns the other, which is usually the shorter (their statuses). Each cell shows how many things lie in it, and the end of every row and column shows its total, the corner the grand total. A click toggles a cell, so the filter is the union of the cells picked; a total picks its whole line; a double-click drops everything picked and picks only that cell. Nothing picked means no filter. Picked cells are copper, the value in hand. bind:value is a list of cell keys; matches() says whether a thing falls inside it. One tab stop: the arrow keys move over every cell and total, Space toggles, Enter picks only this one (the keyboard's double-click), Escape clears. 44px to touch. No copy inside: cellLabel says what a cell holds in your words.",
-	"dependencies": [],
+	"description": "Two filters as one grid, where two dropdowns would be: rows are one dimension (the areas of your tasks), columns the other, usually the shorter (their statuses). A table you compose, as shadcn's Table: FilterMatrix (rows and columns as ids in order, bind:value, onValueChange), FilterMatrixHeader, FilterMatrixBody, FilterMatrixFooter, FilterMatrixRow, FilterMatrixHead (the name of a row or a column; empty, a corner), FilterMatrixCell (one cell, a toggle; its children are the count) and FilterMatrixTotal (a whole row, a whole column, or everything). value is the list of picked cells, each { row, column }; nothing picked means no filter, and matches() says whether a thing passes. A click toggles a cell, a total toggles its whole line, and the second click of a double-click picks only that one. data-state is active or inactive, and partial on a total with some of its line picked; a picked cell is copper, the value in hand. One tab stop: the arrow keys move over every cell and total, Home and End along the row, Space toggles, Enter picks only this one, Escape clears. A cell is named by its two heads; a total needs an aria-label. A row or column that goes takes its picked cells with it. 44px to touch. No copy inside.",
+	"dependencies": [
+		"tailwind-variants"
+	],
 	"registryDependencies": [
 		"motion"
 	]

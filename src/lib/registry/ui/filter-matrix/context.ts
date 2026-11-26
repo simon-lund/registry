@@ -1,39 +1,45 @@
-/** One value of the first dimension: a row (the areas of your tasks). */
-export interface FilterRow {
-	id: string;
-	label: string;
-}
+import { getContext, hasContext, setContext } from 'svelte';
 
-/** One value of the second dimension: a column (their statuses). */
-export interface FilterColumn {
-	id: string;
-	label: string;
-}
+/** How much of what a button stands for is picked: all of it, some of it (a total only), or none. */
+export type FilterMatrixState = 'active' | 'partial' | 'inactive';
 
 /**
- * What a cell, a total or the grand total holds, for `cellLabel` to put into words. Exactly one of:
- * - a cell: `row` and `column`;
- * - a row's total: `row` only;
- * - a column's total: `column` only;
- * - the grand total: neither.
+ * What a button stands for, exactly one of:
+ * - a cell: `row` and `column`
+ * - a row's total: `row` only
+ * - a column's total: `column` only
+ * - the grand total: neither
  */
-export interface FilterCellInfo {
-	row?: FilterRow;
-	column?: FilterColumn;
-	/** How many things lie in it. */
-	count: number;
+export interface FilterMatrixTarget {
+	row?: string;
+	column?: string;
 }
 
-/** The key of one cell: what `value` is a list of. */
-export const cellKey = (row: string, column: string) => `${row}|${column}`;
+// Shared between the FilterMatrix parts. Not exported from index.ts: the parts are the API.
+export type FilterMatrixContext = {
+	stateOf(target: FilterMatrixTarget): FilterMatrixState;
+	/** Whether this button is the grid's one tab stop. */
+	isTabStop(target: FilterMatrixTarget): boolean;
+	/** Where the button sits, as "row,column" indices; a total sits one past the end of its line. */
+	posOf(target: FilterMatrixTarget): string;
+	/** The id a button gets unless the consumer gives one. */
+	idOf(target: FilterMatrixTarget): string;
+	/** The id of the header that names a row or a column, or undefined when it is not in the grid. */
+	headId(axis: 'row' | 'column', id: string): string | undefined;
+	/** A click: toggles what the button stands for, or with `only` picks it and drops the rest. */
+	press(target: FilterMatrixTarget, only: boolean): void;
+	keydown(event: KeyboardEvent, target: FilterMatrixTarget): void;
+	/** The button took focus: it is the tab stop from now on. */
+	focus(target: FilterMatrixTarget): void;
+};
 
-/** Whether a thing in `row` and `column` falls inside the filter. Nothing picked means no filter: everything does. */
-export function matches(value: readonly string[], row: string, column: string): boolean {
-	return value.length === 0 || value.includes(cellKey(row, column));
+const KEY = Symbol('registry.filter-matrix');
+
+export function setFilterMatrix(ctx: FilterMatrixContext) {
+	setContext(KEY, ctx);
 }
 
-/** How many things the filter lets through, from the cells' counts; with nothing picked, all of them. */
-export function selectedCount(value: readonly string[], counts: Record<string, number>): number {
-	const keys = value.length ? value : Object.keys(counts);
-	return keys.reduce((n, k) => n + (counts[k] ?? 0), 0);
+export function getFilterMatrix(part: string): FilterMatrixContext {
+	if (!hasContext(KEY)) throw new Error(`<${part}> must be used inside <FilterMatrix>`);
+	return getContext(KEY);
 }

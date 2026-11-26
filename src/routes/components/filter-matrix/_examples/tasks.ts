@@ -1,5 +1,3 @@
-import type { FilterColumn, FilterRow } from '#lib/registry/ui/filter-matrix/index.js';
-
 // A few tasks, kept in one place so every example filters the same ones.
 export interface Task {
 	title: string;
@@ -7,7 +5,7 @@ export interface Task {
 	status: string;
 }
 
-export const areas: FilterRow[] = [
+export const areas = [
 	{ id: 'work', label: 'Work' },
 	{ id: 'home', label: 'Home' },
 	{ id: 'health', label: 'Health' },
@@ -15,7 +13,7 @@ export const areas: FilterRow[] = [
 	{ id: 'learning', label: 'Learning' }
 ];
 
-export const statuses: FilterColumn[] = [
+export const statuses = [
 	{ id: 'open', label: 'Open' },
 	{ id: 'doing', label: 'Doing' },
 	{ id: 'done', label: 'Done' }
@@ -40,15 +38,9 @@ export const tasks: Task[] = [
 	{ title: 'Finish the Svelte course', area: 'learning', status: 'doing' }
 ];
 
-/** The count of tasks in each cell, by `cellKey(area, status)`. */
-export function countTasks(list: Task[]): Record<string, number> {
-	const counts: Record<string, number> = {};
-	for (const t of list) counts[`${t.area}|${t.status}`] = (counts[`${t.area}|${t.status}`] ?? 0) + 1;
-	return counts;
-}
+/** How many tasks lie in an area, in a status, in both, or anywhere (neither given). */
+export const count = (area?: string, status?: string) =>
+	tasks.filter((t) => (area === undefined || t.area === area) && (status === undefined || t.status === status)).length;
 
-/** What a cell holds, in words: for the screen reader and the tooltip. */
-export function describe(info: { row?: FilterRow; column?: FilterColumn; count: number }): string {
-	const what = [info.row?.label, info.column?.label].filter(Boolean).join(', ') || 'All tasks';
-	return `${what}: ${info.count} ${info.count === 1 ? 'task' : 'tasks'}`;
-}
+/** "1 task", "5 tasks". */
+export const inWords = (n: number) => `${n} ${n === 1 ? 'task' : 'tasks'}`;
